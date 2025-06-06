@@ -8,481 +8,481 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = swas.UI
 build_property.RootNamespace = swas.UI
-build_property.ProjectDir = /root/PAW/PAW/swas.UI/
+build_property.ProjectDir = /root/Dev-Sec-Ops-Project/PAW/swas.UI/
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /root/PAW/PAW/swas.UI
+build_property.MSBuildProjectDirectory = /root/Dev-Sec-Ops-Project/PAW/swas.UI
 build_property._RazorSourceGeneratorDebug = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/AccessDenied.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9BY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/ConfirmEmail.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/ConfirmEmail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9Db25maXJtRW1haWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/ConfirmEmailChange.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/ConfirmEmailChange.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9Db25maXJtRW1haWxDaGFuZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/ForgotPasswordConfirmation.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/ForgotPasswordConfirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9Gb3Jnb3RQYXNzd29yZENvbmZpcm1hdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Lockout.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Lockout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9Mb2Nrb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Login.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Logout.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9Mb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/ChangePassword.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/ChangePassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvQ2hhbmdlUGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/DeletePersonalData.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/DeletePersonalData.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvRGVsZXRlUGVyc29uYWxEYXRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/Disable2fa.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/Disable2fa.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvRGlzYWJsZTJmYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/DownloadPersonalData.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/DownloadPersonalData.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvRG93bmxvYWRQZXJzb25hbERhdGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/Email.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/Email.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvRW1haWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/EnableAuthenticator.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/EnableAuthenticator.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvRW5hYmxlQXV0aGVudGljYXRvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/ExternalLogins.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/ExternalLogins.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvRXh0ZXJuYWxMb2dpbnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/GenerateRecoveryCodes.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/GenerateRecoveryCodes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvR2VuZXJhdGVSZWNvdmVyeUNvZGVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/PersonalData.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/PersonalData.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvUGVyc29uYWxEYXRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/ResetAuthenticator.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/ResetAuthenticator.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvUmVzZXRBdXRoZW50aWNhdG9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/SetPassword.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/SetPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvU2V0UGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/ShowRecoveryCodes.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/ShowRecoveryCodes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvU2hvd1JlY292ZXJ5Q29kZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/TwoFactorAuthentication.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/TwoFactorAuthentication.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvVHdvRmFjdG9yQXV0aGVudGljYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/_Layout.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvX01hbmFnZU5hdi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/_StatusMessage.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/_StatusMessage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvX1N0YXR1c01lc3NhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/_ViewImports.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Manage/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9NYW5hZ2UvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/Register.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9SZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/RegisterConfirmation.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/RegisterConfirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9SZWdpc3RlckNvbmZpcm1hdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/ResendEmailConfirmation.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/ResendEmailConfirmation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9SZXNlbmRFbWFpbENvbmZpcm1hdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/_StatusMessage.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/_StatusMessage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9fU3RhdHVzTWVzc2FnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/_unitadd.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/_unitadd.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9fdW5pdGFkZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Account/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvQWNjb3VudC9fVmlld0ltcG9ydHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/Error.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/_ViewImports.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Areas/Identity/Pages/_ViewStart.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Account/AllUsersEdit.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Account/AllUsersEdit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9BbGxVc2Vyc0VkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Account/FinalLogout.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Account/FinalLogout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9GaW5hbExvZ291dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Account/GetsAllUsers.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Account/GetsAllUsers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9HZXRzQWxsVXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Account/InvalidPage.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Account/InvalidPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9JbnZhbGlkUGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Account/RoleNotAuth.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Account/RoleNotAuth.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Sb2xlTm90QXV0aC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Account/UnAuthUser.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Account/UnAuthUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9VbkF1dGhVc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/ActionException/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/ActionException/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWN0aW9uRXhjZXB0aW9uL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Actions/ActionSeqView.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Actions/ActionSeqView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWN0aW9ucy9BY3Rpb25TZXFWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Actions/Edit.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Actions/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWN0aW9ucy9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Actions/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Actions/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWN0aW9ucy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Actions/_Create.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Actions/_Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWN0aW9ucy9fQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/AttHistory/Actions/ActionSeqView.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/AttHistory/Actions/ActionSeqView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXR0SGlzdG9yeS9BY3Rpb25zL0FjdGlvblNlcVZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/AttHistory/Actions/Edit.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/AttHistory/Actions/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXR0SGlzdG9yeS9BY3Rpb25zL0VkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/AttHistory/Actions/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/AttHistory/Actions/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXR0SGlzdG9yeS9BY3Rpb25zL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/AttHistory/Actions/_Create.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/AttHistory/Actions/_Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXR0SGlzdG9yeS9BY3Rpb25zL19DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/AttHistory/Create.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/AttHistory/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXR0SGlzdG9yeS9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Chat/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Chat/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2hhdC9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/ChatSignalR/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/ChatSignalR/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2hhdFNpZ25hbFIvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Comment/Create.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Comment/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29tbWVudC9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Documents/DocumentHistory.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Documents/DocumentHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRG9jdW1lbnRzL0RvY3VtZW50SGlzdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Documents/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Documents/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRG9jdW1lbnRzL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/AllProjectDetails.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/AllProjectDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BbGxQcm9qZWN0RGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/InvalidPage.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/InvalidPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbnZhbGlkUGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/NewProject.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/NewProject.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9OZXdQcm9qZWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/NewProject_old.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/NewProject_old.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9OZXdQcm9qZWN0X29sZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/Privacy.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/ProjComments.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/ProjComments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcm9qQ29tbWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/ProjectWiseReport.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/ProjectWiseReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcm9qZWN0V2lzZVJlcG9ydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/ProjUnitComments.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/ProjUnitComments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcm9qVW5pdENvbW1lbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/StratgicAnalysis.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/StratgicAnalysis.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9TdHJhdGdpY0FuYWx5c2lzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Home/_CreateTableDetails.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Home/_CreateTableDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9fQ3JlYXRlVGFibGVEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/Create.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/DelayedProj.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/DelayedProj.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvRGVsYXllZFByb2ouY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjComments.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjComments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvakNvbW1lbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjDetails.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvakRldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjDetails_old.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjDetails_old.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvakRldGFpbHNfb2xkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjDraftUndo.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjDraftUndo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvakRyYWZ0VW5kby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjectMovement.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjectMovement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvamVjdE1vdmVtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/projfwduploadDB.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/projfwduploadDB.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvcHJvamZ3ZHVwbG9hZERCLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjHistory.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvakhpc3RvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjHistoryProcess.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjHistoryProcess.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvakhpc3RvcnlQcm9jZXNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjHistoryView.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjHistoryView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvakhpc3RvcnlWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/ProjStatDashBdView.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/ProjStatDashBdView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvUHJvalN0YXREYXNoQmRWaWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Projects/_ProjectForm.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Projects/_ProjectForm.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvamVjdHMvX1Byb2plY3RGb3JtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/ProjEdit/EditWithHistory.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/ProjEdit/EditWithHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvakVkaXQvRWRpdFdpdGhIaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/ProjEdit/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/ProjEdit/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvakVkaXQvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/ProjStakeHolderMov/FwdCreate.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/ProjStakeHolderMov/FwdCreate.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvalN0YWtlSG9sZGVyTW92L0Z3ZENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Rank/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Rank/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmFuay9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Rank/_CreateRank.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Rank/_CreateRank.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmFuay9fQ3JlYXRlUmFuay5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Search/CurrentSearch.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Search/CurrentSearch.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VhcmNoL0N1cnJlbnRTZWFyY2guY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Search/GetProjLogview.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Search/GetProjLogview.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VhcmNoL0dldFByb2pMb2d2aWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Search/SearchProjHistory.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Search/SearchProjHistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VhcmNoL1NlYXJjaFByb2pIaXN0b3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/ccc.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/ccc.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL2NjYy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/Error.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_AddOrEdit.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_AddOrEdit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19BZGRPckVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_AddOrEditUnit.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_AddOrEditUnit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19BZGRPckVkaXRVbml0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_attachmetsread.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_attachmetsread.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19hdHRhY2htZXRzcmVhZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_attachmetsview.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_attachmetsview.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19hdHRhY2htZXRzdmlldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_draftprojfwdupload.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_draftprojfwdupload.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19kcmFmdHByb2pmd2R1cGxvYWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_fwdprojhistory.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_fwdprojhistory.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19md2Rwcm9qaGlzdG9yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_initialstkholdstatus.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_initialstkholdstatus.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19pbml0aWFsc3RraG9sZHN0YXR1cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_newprojfwdupload.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_newprojfwdupload.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19uZXdwcm9qZndkdXBsb2FkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_newprojfwduploadedit.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_newprojfwduploadedit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19uZXdwcm9qZndkdXBsb2FkZWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_ProjDetailhead.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_ProjDetailhead.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Qcm9qRGV0YWlsaGVhZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_ProjectComments.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_ProjectComments.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Qcm9qZWN0Q29tbWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_projfwdupload.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_projfwdupload.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19wcm9qZndkdXBsb2FkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_unitdetls.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_unitdetls.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL191bml0ZGV0bHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_ValidationScriptsPartial.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Stages/Create.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Stages/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RhZ2VzL0NyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Stages/EditStage.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Stages/EditStage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RhZ2VzL0VkaXRTdGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Stages/_CreateStage.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Stages/_CreateStage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RhZ2VzL19DcmVhdGVTdGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/StakeHolder/Create.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/StakeHolder/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3Rha2VIb2xkZXIvQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Status/Create.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Status/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RhdHVzL0NyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Status/Edit.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Status/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RhdHVzL0VkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Status/Index.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Status/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RhdHVzL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Status/_CreateStatus.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Status/_CreateStatus.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RhdHVzL19DcmVhdGVTdGF0dXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/UnitDtls/AddOrEdit.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/UnitDtls/AddOrEdit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVW5pdER0bHMvQWRkT3JFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/_ViewImports.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/_ViewStart.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_Layout.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-r827yf78oz
 
-[/root/PAW/PAW/swas.UI/Views/Shared/_Layoutreg.cshtml]
+[/root/Dev-Sec-Ops-Project/PAW/swas.UI/Views/Shared/_Layoutreg.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXRyZWcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-zvq7g2sph5

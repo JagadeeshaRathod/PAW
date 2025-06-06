@@ -2409,11 +2409,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj",
+      "projectUniqueName": "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/swas.DAL.csproj",
       "projectName": "swas.DAL",
-      "projectPath": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj",
+      "projectPath": "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/swas.DAL.csproj",
       "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/root/PAW/PAW/swas.DAL/obj/",
+      "outputPath": "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/root/.nuget/NuGet/NuGet.Config"

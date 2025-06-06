@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/root/PAW/PAW/swas.BAL/swas.BAL.csproj": {}
+    "/root/Dev-Sec-Ops-Project/PAW/swas.BAL/swas.BAL.csproj": {}
   },
   "projects": {
-    "/root/PAW/PAW/swas.BAL/swas.BAL.csproj": {
+    "/root/Dev-Sec-Ops-Project/PAW/swas.BAL/swas.BAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/root/PAW/PAW/swas.BAL/swas.BAL.csproj",
+        "projectUniqueName": "/root/Dev-Sec-Ops-Project/PAW/swas.BAL/swas.BAL.csproj",
         "projectName": "swas.BAL",
-        "projectPath": "/root/PAW/PAW/swas.BAL/swas.BAL.csproj",
+        "projectPath": "/root/Dev-Sec-Ops-Project/PAW/swas.BAL/swas.BAL.csproj",
         "packagesPath": "/root/.nuget/packages/",
-        "outputPath": "/root/PAW/PAW/swas.BAL/obj/",
+        "outputPath": "/root/Dev-Sec-Ops-Project/PAW/swas.BAL/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/root/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/root/PAW/PAW/swas.DAL/swas.DAL.csproj": {
-                "projectPath": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj"
+              "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/swas.DAL.csproj": {
+                "projectPath": "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/swas.DAL.csproj"
               }
             }
           }
@@ -75,14 +75,14 @@
         }
       }
     },
-    "/root/PAW/PAW/swas.DAL/swas.DAL.csproj": {
+    "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/swas.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj",
+        "projectUniqueName": "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/swas.DAL.csproj",
         "projectName": "swas.DAL",
-        "projectPath": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj",
+        "projectPath": "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/swas.DAL.csproj",
         "packagesPath": "/root/.nuget/packages/",
-        "outputPath": "/root/PAW/PAW/swas.DAL/obj/",
+        "outputPath": "/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/root/.nuget/NuGet/NuGet.Config"

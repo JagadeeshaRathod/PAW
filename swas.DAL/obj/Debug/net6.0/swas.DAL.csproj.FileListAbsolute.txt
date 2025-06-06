@@ -26,3 +26,17 @@ D:/PAW/PAW/swas.DAL/obj/Debug/net6.0/ref/swas.DAL.dll
 /root/PAW/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.pdb
 /root/PAW/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.genruntimeconfig.cache
 /root/PAW/PAW/swas.DAL/obj/Debug/net6.0/ref/swas.DAL.dll
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/bin/Debug/net6.0/swas.DAL.deps.json
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/bin/Debug/net6.0/swas.DAL.runtimeconfig.json
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/bin/Debug/net6.0/swas.DAL.dll
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/bin/Debug/net6.0/swas.DAL.pdb
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.csproj.AssemblyReference.cache
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.GeneratedMSBuildEditorConfig.editorconfig
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.AssemblyInfoInputs.cache
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.AssemblyInfo.cs
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.csproj.CoreCompileInputs.cache
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.dll
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/refint/swas.DAL.dll
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.pdb
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/swas.DAL.genruntimeconfig.cache
+/root/Dev-Sec-Ops-Project/PAW/swas.DAL/obj/Debug/net6.0/ref/swas.DAL.dll
