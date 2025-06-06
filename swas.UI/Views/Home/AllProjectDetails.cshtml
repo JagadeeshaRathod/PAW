@@ -1,0 +1,656 @@
+﻿@using swas.BAL.DTO;
+@using swas.DAL.Models
+@using swas.BAL.Helpers
+@model UnitValidate
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Software Whitelisting Autoation Software";
+    int sno = 0;
+    //ViewBag.Title = "Projects List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var username = ViewBag.LoggedInUserName;
+    var ip = ViewBag.ipadd;
+    var flag = ViewBag.flag;
+
+    var ButtonText = ViewBag.ButtonText;
+
+    var role = ViewBag.userRole;
+    var newproject = ViewBag.RecentAction;
+    var WhiteListed = ViewBag.WhiteListed;
+    var Holdproj = ViewBag.HoldProj;
+    var corse = ViewBag.Courses;
+
+    var PdfWhiteList = ViewBag.PdfWhiteListed;
+    var stage = ViewBag.RFPProj;
+    Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+}
+<head>
+    <link href="~/css/newpage.css" rel="stylesheet" />
+
+    <link href="~/css/NewProject.css" rel="stylesheet" />
+    <link href="~/assets/css/tooltip.css" rel="stylesheet" />
+
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="~/assets/js/bootstrap.min.js"></script>
+
+    <link href="~/assets/css/font-awesome/fonts/font-awesome.min.css" rel="stylesheet" />
+    <script language="JavaScript" type="text/javascript" src="~/assets/js/jquery.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/js/main.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/jquery.dataTables.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.bootstrap4.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.buttons.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.bootstrap4.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/jszip.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/vfs_fonts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.html5.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.print.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.colVis.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.responsive.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/responsive.bootstrap4.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/js/sweetalert2.all.min.js"></script>
+    <script src="~/DeveloperJs/ddlSanal.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        .wrapper {
+            padding: 0rem;
+        }
+
+        .page-content {
+            margin-top: 5rem;
+        }
+
+        label {
+            /*  margin-top: 18px;*/
+            display: inline-flex;
+        }
+
+        input[type="search"] {
+            margin-left: 6px;
+            padding: 3px;
+            margin-bottom: 9px;
+        }
+
+        .form-control.form-control-sm {
+            display: unset;
+        }
+
+    </style>
+    <style>
+        /* Apply a common font family and size to all headings */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: Arial, sans-serif !important;
+            font-size: 24px !important;
+        }
+
+        /* Make the page responsive */
+        /* Example of how to make images and videos responsive */
+        img, video {
+            max-width: 79% !important;
+            /*  max-width: 100% !important;*/
+            height: auto !important;
+        }
+
+        /* Example of how to make tables responsive */
+        .table-responsive {
+            overflow-x: auto !important;
+        }
+
+        div.dataTables_wrapper div.dataTables_filter {
+            text-align: right;
+            margin-top: -1rem !important;
+        }
+
+        .dgislogo {
+            width: 90px;
+            height: 60px;
+            padding: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-right: -30px px;
+            margin-top: -6px;
+            margin-left: 543%;
+            height: 60px;
+            margin-top: -7px;
+        }
+
+        .dgislogo1 {
+            width: 90px;
+            height: 60px;
+            padding: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-right: -30px px;
+            margin-top: -6px;
+            margin-left: 543%;
+            height: 60px;
+            margin-top: -7px;
+        }
+
+        .modal-content {
+            margin-left: -20rem !important;
+            width: 111rem !important;
+            height: auto; /* Remove fixed height to allow dynamic content */
+        }
+
+        .modal-body {
+            padding: 20px; /* Add padding for a more spacious look */
+        }
+
+        .form-group {
+            margin-bottom: 20px; /* Add margin to form groups for spacing */
+        }
+
+        /* Customize your form controls */
+        .form-control {
+            width: 100%;
+            /*padding: 10px;*/
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Style your buttons */
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .bold-underline {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .login {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 6vh;
+            margin: 0;
+            /*background-color: #f0f0f0;*/
+        }
+
+        .login-header {
+            background-color: #044c92;
+            height: 3rem;
+            /* width: 60rem !important;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 4px;
+            color: white;
+            width: 29rem; /* Optional: to make the header full width */
+            /* Optional: to limit the width */
+            text-align: center;
+            border-radius: 8px; /* Optional: to give rounded corners */
+        }
+
+        .headertext {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .pdf-link {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .headline {
+            margin-top: 1rem !important;
+            color: #044c92;
+            font-weight: 600;
+        }
+
+        .images {
+            margin-left: 2rem;
+            /* margin-right: 8rem; */
+            margin-top: -1rem;
+            height: 12rem !important;
+            width: 12rem;
+            width: 18rem !important;
+        }
+
+        .font-d {
+            padding: 6px !important;
+            background-color: #044c92;
+            color: white;
+            font-weight: 900;
+        }
+
+        .card {
+            cursor: pointer;
+        }
+
+        .card1 {
+            box-shadow: 1px 1px 6px 1px gray !important;
+        }
+
+        .modal-header {
+            color: white;
+            background-color: #022649;
+        }
+
+        .modal-title {
+            margin-left: 39rem !important;
+        }
+
+
+
+        .card-r {
+            width: 55rem !important;
+            margin-left: 0.9rem !important;
+        }
+
+        /* .main-card {
+                    background-image: url('/assets/images/test.jpg');
+                }*/
+
+        .card1:hover {
+            transform: scale(1.1);
+        }
+
+        .col-sponsor {
+            width: 20%;
+        }
+
+        .col-project {
+            width: 30%;
+        }
+
+        .card-box {
+            width: 62rem !important;
+        }
+
+
+        .col-width9 {
+            width: 6% !important; /* Adjust the width as needed */
+        }
+
+        .s-no-column {
+            width: 1%; /* This is the percentage width you want */
+        }
+
+        .col-width10 {
+            width: 10% !important; /* Adjust the width as needed */
+        }
+
+        .col-width16 {
+            width: 16% !important; /* Adjust the width as needed */
+        }
+
+        .dt-buttons {
+            margin-bottom: 10px !important;
+        }
+
+        .buttonsToHide {
+            display: none !important;
+        }
+
+        .WhitelistedTable {
+            margin-top: 23px;
+        }
+
+        a{
+           
+            text-decoration:none;
+        }
+    </style>
+
+</head>
+<div class="modal fade bd-example-modal-xl" id="ProjectPolicyModel" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Policy on Whitelisting</h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-striped table-bordered datatablefordownload">
+                    <thead>
+                        <tr>
+                            <th class="text-nowrap text-center">Policy on Whitelisting of SW</th>
+                            <th class="text-nowrap text-center">Whitelisted Software/Appls Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @if (corse != null)
+                                {
+                                    var count = 1;
+                                    foreach (var filename in corse)
+                                    {
+                                        <div class="pdf-link">
+                                            <span class="pdf-number">@count.</span>
+                                            <a asp-controller="Home" asp-action="WaterMark2" asp-route-id="@filename">@filename</a>
+                                        </div>
+                                        count++;
+                                    }
+                                }
+                                else
+                                {
+                                    <div>No recent actions available</div>
+                                }
+                            </td>
+                            <td>
+                                @if (PdfWhiteList != null)
+                                {
+                                    var count = 1;
+                                    foreach (var filename in PdfWhiteList)
+                                    {
+                                        <div class="pdf-link">
+                                            <span class="pdf-number">@count.</span>
+                                            <a href="@Url.Action("WaterMark", "Home", new { id = filename })" target="_blank">@filename</a>
+                                        </div>
+                                        count++;
+                                    }
+                                }
+                                else
+                                {
+                                    <div>No recent actions available</div>
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl" id="ProjectUnderProcess" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Project Under Process Details</h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table id="HeldTable" class="table table-striped table-bordered datatablefordownload">
+                    <thead style="position: sticky;top: -18px">
+                        <tr>
+                            <th style="width:1% !important;" class=" text-center f-5 s-no-column">S.No</th>
+                            <th style="width:9% !important;" class="text-center col-width9">Name of Sponsor</th>
+                            <th class="">Project Name</th>
+                            <th style="width:9% !important;" class="text-center col-width9">From</th>
+                            <th class="text-center col-width6">To</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Stage</th>
+                            <th class="text-center">SubStage</th>
+                            <th style="width:6% !important;" class="text-center col-width6">Action</th>
+                            <th class="text-center">Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Holdproj != null)
+                        {
+                            int count = 1;
+
+
+                            @foreach (var unitsa in Holdproj)
+                            {
+                                <tr>
+                                    <td class="s-no-column">@count</td>
+                                    <td class="RefLetter-container col-width9">
+                                        @unitsa.UnitName
+                                        <div class="RefLetter">
+                                            @unitsa.Sponser
+                                        </div>
+                                    </td>
+
+                                    <td class="">
+                                        <div class="tooltip-container" data-tooltip="@unitsa.ProjName">
+                                            <span class="short-text">@truncateText(unitsa.ProjName, 6)</span>
+                                            <span class="tooltip tooltip-text">@unitsa.ProjName</span>
+                                        </div>
+                                    </td>
+
+                                    @*<td class="f-12">
+                            <div class="tooltip-container" data-tooltip="@unitsa.ProjName">
+                            <span class="short-text"></span>
+                            <span class="tooltip tooltip-text"></span>
+                            </div>
+                            </td>*@
+
+
+                                    <td class="RefLetter-container col-width9">
+                                        @unitsa.FromUnitUserDetail
+                                        <div class="RefLetter">
+                                            @unitsa.FromUnitName
+                                        </div>
+                                    </td>
+                                    <td class="col-width9">@unitsa.ToUnitName</td>
+                                    <td class="col-width10">@unitsa.DateTimeOfUpdate</td>
+                                    <td class="col-width10">@unitsa.StageName</td>
+                                    <td class="col-width10">@unitsa.StatusName</td>
+                                    <td class="col-width9">@unitsa.ActionName</td>
+
+                                    @*<td class="f-12">
+                            <div class="tooltip-container" data-tooltip="@unitsa.Remark">
+                            <span class="short-text"></span>
+                            <span class="tooltip tooltip-text1"></span>
+                            </div>
+                            </td>*@
+                                    <td class="text-center">
+                                        <div class="tooltip-container" data-tooltip="@unitsa.Remark">
+                                            <span class="short-text">@truncateText(unitsa.Remark, 2)</span>
+                                            <span class="tooltip tooltip-text1">@unitsa.Remark</span>
+                                        </div>
+                                    </td>
+
+
+                                </tr>
+                                count = count + 1;
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-xl" id="WhiteListedProjectDetail" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">WhiteListed Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body WhitelistedTable">
+                <table id="WhitelistedTable" class="table  table-striped table-bordered datatablefordownload" style="overflow: scroll;">
+                    <!-- Table header -->
+
+                    <thead style="position: sticky;top:-18px">
+                        @*  <tr>
+                        <th colspan="3"></th>
+                        <th colspan="3" class="text-center">Sponsor Contact Details</th>
+                        <th colspan="6"></th>
+                        </tr> *@
+                        <tr>
+                            <th class="text-nowrap text-center" style="width:1%">S.No</th>
+                            <th class="text-nowrap text-center" style="width:10% !important">Name of Sw Appl</th>
+                            <th class="text-nowrap text-center" style="width:12% !important">Project Cat</th>
+
+                            <th class="text-nowrap text-center" style="width:4% !important">Appt</th>
+                            <th class="text-nowrap text-center" style="width:4% !important">Fmn</th>
+                            <th class="text-nowrap text-center" style="width:2% !important">Contact No</th>
+                            <th class="text-nowrap text-center" style="width:4% !important">Dt of ACG Clearance</th>
+                            <th class="text-nowrap text-center" style="width:2% !important">Cert No & Date</th>
+                            <th class="text-nowrap text-center" style="width:4% !important">Valid Upto</th>
+                            <th class="text-nowrap text-center" style="width:4% !important">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (WhiteListed != null)
+                        {
+                            int count = 1;
+                            int headerid = 0;
+                            @foreach (var unitx in WhiteListed)
+                            {
+                                @*  if (headerid != @unitx.HeaderID)
+                        {
+                        <tr>
+
+                        <td colspan="1" style="font-size:12px;">@unitx.Header</td>
+
+
+                        </tr>
+
+                        } *@
+                                <tr>
+
+
+                                    <td>@count</td>
+                                    <td>@unitx.ProjName</td>
+                                    <td>@unitx.Header</td>
+
+                                    <td>@unitx.Appt</td>
+                                    <td>@unitx.Fmn</td>
+                                    <td>@unitx.ContactNo</td>
+                                    <td>@unitx.Clearence</td>
+                                    <td>@unitx.CertNo @unitx.date</td>
+                                    <td>@unitx.ValidUpto</td>
+                                    <td>@unitx.Remarks</td>
+
+
+                                </tr>
+
+                                count = count + 1;
+                                headerid = @unitx.HeaderID;
+                            }
+                        }
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="h-100 gradient-form main-card">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-12">
+                <div class="card rounded-3 text-black card-box">
+                    <div class="d-flex align-items-center gradient-custom-2">
+                        <div class="text-white px-3 py-4  mx-md-4">
+                            <div class="cards-list">
+                                <div class="row box card-r">
+                                    <div class="col-md-4" id="PolicyWhiteList">
+                                        <div class="card1 hover-point">
+                                            <div class="card_title title-white" style="text-align: center; color: black;">
+                                                <p class="font-d">Policy on Whitelisting</p>
+                                            </div>
+                                            <div class="card_image"><img src="~/assets/images/Policy1.png" class="images" /></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" id="whitelistCard">
+                                        <div class="card1 hover-point">
+                                            <div class="card_title title-white" style="text-align: center; color: black;">
+                                                <p class="font-d">Projs Under Process</p>
+                                            </div>
+                                            <div class="card_image"><img src="~/assets/images/projectunder.png" class="images" /></div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-4" id="WhiteListedProject">
+                                        <div class="card1 hover-point">
+                                            <div class="card_title title-white" style="text-align: center; color: black;">
+                                                <p class="font-d">WhiteListed Project</p>
+                                            </div>
+                                            <div class="card_image"><img src="~/assets/images/Completed1.png" class="images" /></div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions {
+    public string truncateText(string text, int maxWords)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return string.Empty;
+        }
+
+        var words = text.Split(' ');
+        var truncatedText = string.Join(' ', words.Take(maxWords));
+        return truncatedText;
+    }
+}
+
+<script>
+    $(document).ready(function () {
+        $('#PolicyWhiteList').on('click', function () {
+            $('#ProjectPolicyModel').modal('show');
+        });
+
+        $('#whitelistCard').on('click', function () {
+            $('#ProjectUnderProcess').modal('show');
+        });
+
+        $('#WhiteListedProject').on('click', function () {
+            $('#WhiteListedProjectDetail').modal('show');
+        });
+    });
+</script>
+
+
+
+
+
+
+
+<script>
+
+    function openForm() {
+        document.getElementById("myForm").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+    }
+</script>
+
+
+
+<script>
+    var flag = "@flag";
+    var ButtonText = "@ButtonText";
+    var username = "@username";
+    var ip = '@ip';
+</script>
+<script src="~/developerjs/Tooltip.js"></script>
+<script src="~/developerjs/newproject.js"></script>
+
+<script src="~/developerjs/NewProjectDataTable.js"></script>
+
+@*<script src="~/developerjs/commanfordatatable.js"></script>
+*@

@@ -1,0 +1,311 @@
+{
+  "format": 1,
+  "restore": {
+    "/root/PAW/PAW/swas.UI/swas.UI.csproj": {}
+  },
+  "projects": {
+    "/root/PAW/PAW/swas.BAL/swas.BAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/root/PAW/PAW/swas.BAL/swas.BAL.csproj",
+        "projectName": "swas.BAL",
+        "projectPath": "/root/PAW/PAW/swas.BAL/swas.BAL.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/root/PAW/PAW/swas.BAL/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/root/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "/root/PAW/PAW/swas.DAL/swas.DAL.csproj": {
+                "projectPath": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Grpc.Core": {
+              "target": "Package",
+              "version": "[2.46.6, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "System.Data.DataSetExtensions": {
+              "target": "Package",
+              "version": "[4.6.0-preview3.19128.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.428/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/root/PAW/PAW/swas.DAL/swas.DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj",
+        "projectName": "swas.DAL",
+        "projectPath": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/root/PAW/PAW/swas.DAL/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/root/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Grpc.Core": {
+              "target": "Package",
+              "version": "[2.46.6, )"
+            },
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.428/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/root/PAW/PAW/swas.UI/swas.UI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/root/PAW/PAW/swas.UI/swas.UI.csproj",
+        "projectName": "swas.UI",
+        "projectPath": "/root/PAW/PAW/swas.UI/swas.UI.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/root/PAW/PAW/swas.UI/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/root/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "/root/PAW/PAW/swas.BAL/swas.BAL.csproj": {
+                "projectPath": "/root/PAW/PAW/swas.BAL/swas.BAL.csproj"
+              },
+              "/root/PAW/PAW/swas.DAL/swas.DAL.csproj": {
+                "projectPath": "/root/PAW/PAW/swas.DAL/swas.DAL.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "BouncyCastle.NetCore": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
+            "Grpc.Core": {
+              "target": "Package",
+              "version": "[2.46.6, )"
+            },
+            "Microsoft.AspNetCore.DataProtection": {
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Razor.Extensions": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.Extensions.Identity.Core": {
+              "target": "Package",
+              "version": "[6.0.20, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[6.0.15, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
+            "bootstrap": {
+              "target": "Package",
+              "version": "[5.3.0, )"
+            },
+            "itext.bouncy-castle-adapter": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "itext7": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "itext7.bouncy-castle-adapter": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.428/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

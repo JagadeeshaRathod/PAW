@@ -1,0 +1,481 @@
+﻿@using swas.BAL.DTO
+@using swas.BAL.Helpers
+@using swas.DAL.Models
+
+@model MailBox
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+   
+    ViewData["Title"] = "Status Detail";
+    int snosent = 0;
+     Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+         
+    
+    int commentIndex = 0;
+
+
+}
+<style>
+
+
+            .blue-button {
+            /* Add your styles for the black button here */
+            background-color: #044C92; /* Example background color */
+            border: 1px solid #000;
+            color: #fff;
+            /* Add other styles as needed */
+        }
+
+        .green-button {
+            /* Styles for the green button */
+            background-color: #4CAF50; /* Example green color */
+            /* Add other styles as needed */
+        }
+
+        .yellow-button {
+            /* Styles for the yellow button */
+            background-color: #FFC107; /* Example yellow color */
+            /* Add other styles as needed */
+        }
+
+        .red-button {
+            /* Styles for the red button */
+            background-color: #F44336; /* Example red color */
+            /* Add other styles as needed */
+        }
+
+        /* Add 3D effect styles for the buttons */
+        .table-button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Example shadow effect */
+            transition: transform 0.3s;
+        }
+
+            .table-button:hover {
+                transform: translateY(-3px);
+                background-color:blue;/* Example hover effect for 3D appearance */
+            }
+
+    
+    /* Custom styles for the icon */
+    .icon {
+        width: 50px; 
+        height: 50px;
+        border-radius: 50%; 
+        object-fit: cover; 
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+</style>
+<!----Table for Stakeholder Status Change----->
+<a href="~/Home/Index">
+    <img src="~/assets/images/icons/home.png" alt="Icon" class="img-fluid icon" />
+
+</a>
+<div class="card-body">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+
+            <table id="Sents" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Ser No</th>
+                        <th>Proj ID</th>
+                        <th>Proj Name</th>
+
+                        <th>Initiated By</th>
+
+                        <th>Updated On</th>
+
+                        <th>Held With</th>
+                     
+                        @*<th>Stage</th>
+                        <th>Status</th>*@
+                        <th>Action</th>
+                        <th>Comments</th>
+                        <th>Stakeholder Comments</th>
+                        @*<th>Days in Inbox</th>*@
+                       
+                        @*@if (Logins.unitid == 1 && Logins.Role == "Dte")
+                        {
+                            @if (Logins.unitid == 1)
+                            {
+                                <th>Process</th>
+                            }
+                            @if (Logins.Role == "Dte")
+                            {
+                                <th>Return(Obsn)</th>
+                            }
+                            @if (Logins.Role == "Dte" && Logins.unitid == 1)
+                            {
+                                <th>Reject(Duplicate)</th>
+                            }
+                        }*@
+                        @*<th>Att</th>*@
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var project in Model.SendItems)
+                    {
+                        <tr>
+
+                            <td>
+                                @{
+                                    snosent++;
+                                }
+                                @snosent
+                            </td>
+                            <td>@project.ProjId</td>
+                            <td>
+                                <a class="editButton" data-proj-name="@project.ProjName" data-proj-id="@project.ProjId" href="/Projects/ProjHistoryProcess?EncyID=@project.EncyPsmID">
+                                    @project.ProjName
+                                </a>
+
+                            </td>
+                            <td>@project.StakeHolder</td>
+                           @*  <td></td>@project.ActionDt?.ToString("dd-MM-yyyy") *@
+
+                            @* <td>@project.RecdFmUser</td> *@
+                           @*  <td>@project.FwdtoDate?.ToString("dd-MM-yyyy")</td> *@
+
+                         @*   <td>@project.Stages</td>
+                            <td>
+                                @project.Status
+                            </td>*@
+                            <td>
+                                @project.Action
+
+                            </td>
+                            <td>
+                               @*  @project.Comments *@
+
+                            </td>
+                           <td>
+                                @{
+                                    string blogComment = ""; //project.BlogComment;
+                                    int maxWords = 10; // Change this to your desired number of words
+                commentIndex++;
+
+                if (!string.IsNullOrEmpty(blogComment) && blogComment.Split(' ').Length > maxWords)
+                {
+                    var words = blogComment.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string shortComment = string.Join(' ', words.Take(maxWords));
+                    string remainingContent = string.Join(' ', words.Skip(maxWords));
+
+                    <span id="shortComment_@commentIndex">@shortComment...</span>
+                    <span id="fullComment_@commentIndex" style="display:none;">@blogComment</span>
+                    <a href="javascript:void(0);" id="showMoreLink_@commentIndex" onclick="showMore('@commentIndex')">Show More</a>
+                    <a href="javascript:void(0);" id="showLessLink_@commentIndex" style="display:none;" onclick="showLess('@commentIndex')">Show Less</a>
+
+                    <script>
+                        function showMore(index) {
+                            document.getElementById('shortComment_' + index).style.display = 'none';
+                            document.getElementById('fullComment_' + index).style.display = 'inline';
+                            document.getElementById('showMoreLink_' + index).style.display = 'none';
+                            document.getElementById('showLessLink_' + index).style.display = 'inline';
+                        }
+
+                        function showLess(index) {
+                            document.getElementById('shortComment_' + index).style.display = 'inline';
+                            document.getElementById('fullComment_' + index).style.display = 'none';
+                            document.getElementById('showMoreLink_' + index).style.display = 'inline';
+                            document.getElementById('showLessLink_' + index).style.display = 'none';
+                        }
+                    </script>
+                }
+                else
+                {
+                    <span>@blogComment</span>
+                }
+            }
+        </td>
+
+
+                            @*<td>
+                        @project.TotalDays
+
+                        </td>*@
+                          
+                        @*    @if (Logins.Role == "Dte" && Logins.unitid == 1)
+                            {
+
+                                @if (Logins.unitid == 1)
+                                {
+                                    <td> @* //** *@
+                              @*          @if (project.ActionId < 5 && project.ActionId != 8)
+                                        {
+                                            <a href="javascript:void(0);" class="processDetail" data-id="@project.EncyPsmID">
+                                                <img src="/assets/images/icons/process1.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+                                @if (Logins.Role == "Dte" && project.ActionId != 8)
+                                {
+                                    <td>
+                                        @if (project.ActionId < 5)
+                                        {
+                                            <a href="javascript:void(0);" class="RetObsn" data-id="@project.EncyPsmID">
+                                                <img src="/assets/images/icons/back.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                                            </a>
+                                        }
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                @if (Logins.Role == "Dte" && Logins.unitid == 1)
+                                {
+                                    <td> @* //** *@
+                                     @*   @if (project.ActionId < 5 && project.ActionId != 8)
+                                        {
+                                            <a href="javascript:void(0);" class="RetDuplicate" data-id="@project.EncyPsmID">
+                                                <img src="/assets/images/icons/reject.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                                            </a>
+                                        }
+                                    </td>
+                                }
+
+
+                            }*@
+
+                          @*  <td>
+
+                                @if (project.AttCnt > 0)
+                                {
+
+                                    <a href="javascript:void(0);" class="newanchorDetailk" data-id="@project.CurrentPslmId">
+                                        <img src="/assets/images/icons/attachemnts_clip.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                                    </a>
+
+
+                                }
+                                else
+                                {
+
+                                }
+                            </td>*@
+
+
+
+                        </tr>
+
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+@*
+
+    <div class="modal fade" id="UnitAdd" tabindex="-1" aria-labelledby="ProjectAddLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                   
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    @Html.Partial("_CreateTableDetails", new StkComment())
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+*@
+    </div>
+    <!----END Table for Stakeholder Status Change----->
+
+     @* 2, 23, 21 fwd to unit for devp *@
+
+    
+<script type="text/javascript">
+
+    $(function () {
+        $(".processDetail").click(function () {
+
+            var $buttonClicked = $(this);
+            var ProjectId = $buttonClicked.attr('data-id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to Process!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Process it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/ProjStakeHolderMov/ProcessMail',
+                        type: 'POST',
+                        data: { "id": ProjectId, "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                        success: function (response) {
+                            console.log(response);
+                            if (response && response === 1) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Project Processed successfully',
+                                    showConfirmButton: false,
+                                    timer: 700
+                                });
+                            }
+
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            console.error('Error occurred:', error);
+                            // Handle error if needed
+                        }
+                    });
+                }
+            });
+
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+    $(function () {
+        $(".RetDuplicate").click(function () {
+
+            var $buttonClicked = $(this);
+            var ProjectId = $buttonClicked.attr('data-id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to Return!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Return it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/ProjStakeHolderMov/RetDuplicate',
+                        type: 'POST',
+                        data: { "id": ProjectId, "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                        success: function (response) {
+                            console.log(response);
+                            if (response && response === 1) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Project Returned successfully',
+                                    showConfirmButton: false,
+                                    timer: 700
+                                });
+                            }
+
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            console.error('Error occurred:', error);
+                            // Handle error if needed
+                        }
+                    });
+                }
+            });
+
+        });
+    });
+
+
+    $(function () {
+        $(".RetObsn").click(function () {
+            var $buttonClicked = $(this);
+            var ProjectId = $buttonClicked.attr('data-id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to Return with Obsn!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Return it!',
+                input: 'text', // Add an input field for comments
+                inputPlaceholder: 'Enter your observation comments...',
+                inputValidator: (value) => {
+                    // Apply the regex to remove unwanted characters
+                    var cleanedValue = value.replace(/[^a-zA-Z0-9/ ]/g, "");
+
+                    // Update the input value with the cleaned value
+                    Swal.getInput().value = cleanedValue;
+
+                    // You can add additional validation if needed
+                    if (!cleanedValue) {
+                        return 'Please enter your observation comments!';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var observationComments = Swal.getInput().value;
+
+                    $.ajax({
+                        url: '/ProjStakeHolderMov/RetwithObsn',
+                        type: 'POST',
+                        data: {
+                            "id": ProjectId,
+                            "observationComments": observationComments,
+                            "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            if (response && response === 1) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Project Returned successfully',
+                                    showConfirmButton: false,
+                                    timer: 900
+                                });
+                            }
+
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            console.error('Error occurred:', error);
+                            // Handle error if needed
+                        }
+                    });
+                }
+            });
+
+            // Add event listener for keyup and input events
+            Swal.getInput().addEventListener('keyup', function () {
+                var cleanedValue = this.value.replace(/[^a-zA-Z0-9/ ]/g, "");
+                this.value = cleanedValue;
+            });
+
+            Swal.getInput().addEventListener('input', function () {
+                var cleanedValue = this.value.replace(/[^a-zA-Z0-9/ ]/g, "");
+                this.value = cleanedValue;
+            });
+        });
+    });
+
+
+
+
+
+
+
+
+
+    </script>
+
+

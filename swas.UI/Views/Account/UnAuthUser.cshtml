@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "UnAuthorized User";
+    Layout = null;
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>UnAuthorized User</title>
+    <style type="text/css">
+
+        .headerText {
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .header_customTxt-wrapper {
+            position: absolute;
+            display: inline-block;
+            top: 22%;
+            left: 52%;
+        }
+
+            .header_customTxt-wrapper a {
+                color: #fff;
+                font-weight: bold;
+                font-size: 24px;
+            }
+
+        .quick-area {
+            display: inline-block;
+            width: 80%;
+        }
+
+        header {
+            position: fixed;
+            top: 30%;
+            left: 0;
+            width: 100%;
+            padding-top: 10px;
+            background: right 0 #3367d6;
+            height: 65px;
+            box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.2);
+            display: block;
+            z-index: 999;
+            box-sizing: border-box;
+        }.headerText{
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    
+    <img src="~/images/mpcrs_header.png" />
+
+    <form id="form1" runat="server">
+
+        <header>
+            <center>
+               
+                <a class="headerText" id="headerCustText" >You are not Auth user. Pl Contact Admin</a>
+            </center>
+
+        </header>
+        <div class="quick-area">
+        </div>
+    </form>
+</body>
+</html>

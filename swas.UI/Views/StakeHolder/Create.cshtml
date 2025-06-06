@@ -1,0 +1,83 @@
+﻿@*View Created by Sub Maj M Sanal Kumar on :  02 Aug 23
+Reviewd by Hav Mani on : 
+*@
+
+@using swas.DAL.Models
+@model List<tbl_mStakeHolder>
+
+@{
+    ViewBag.Title = "Stakeholders List";
+}
+
+<h2>Stakeholders List</h2>
+
+<div class="wrapper" style="margin-top: 6rem;">
+    <div class="add-new-btn">
+        <button id="addNewButton">Add New</button>
+    </div>
+
+    <table id="stakeholdersTable" class="display">
+        <thead>
+            <tr>
+                <th>Stakeholder ID</th>
+                <th>Stakeholder Name</th>
+                <th>Is Deleted</th>
+                <th>Is Active</th>
+                <th>Edit/Delete By</th>
+                <th>Edit/Delete Date</th>
+                <th>Updated By User ID</th>
+                <th>Date of Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stakeholder in Model)
+            {
+                <tr>
+                    <td>@stakeholder.StakeHolderId</td>
+                    <td>@stakeholder.StakeHolder</td>
+                    <td>@stakeholder.IsDeleted</td>
+                    <td>@stakeholder.IsActive</td>
+                    <td>@stakeholder.EditDeleteBy</td>
+                    <td>@stakeholder.EditDeleteDate?.ToString("dd-MM-yyyy")</td>
+                    <td>@stakeholder.UpdatedByUserId</td>
+                    <td>@stakeholder.DateTimeOfUpdate?.ToString("dd-MM-yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@*
+@using (Html.BeginForm("Create", "Stakeholders", FormMethod.Post, new { id = "addNewForm" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.StakeHolder)
+        @Html.EditorFor(model => model.StakeHolder, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsDeleted)
+        @Html.EditorFor(model => model.IsDeleted, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsActive)
+        @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.EditDeleteBy)
+        @Html.EditorFor(model => model.EditDeleteBy, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.EditDeleteDate)
+        @Html.EditorFor(model => model.EditDeleteDate, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.UpdatedByUserId)
+        @Html.EditorFor(model => model.UpdatedByUserId, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.DateTimeOfUpdate)
+        @Html.EditorFor(model => model.DateTimeOfUpdate, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" id="cancelButton" class="btn btn-secondary">Cancel</button>
+}*@

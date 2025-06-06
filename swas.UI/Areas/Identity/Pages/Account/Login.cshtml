@@ -1,0 +1,161 @@
+﻿@page
+@using swas.Areas.Identity.Pages.Account
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    //Layout = null;
+    Layout = "~/Views/Shared/_Layoutreg.cshtml";
+}
+<style>
+
+    .d-flex1 {
+        box-shadow: 18px 10px 39px black;
+        display: flex !important;
+        padding: 10px -7px;
+        padding-left: 33px;
+        padding-bottom: 21px;
+        padding-top: -16px;
+        margin-top: 17rem !important;
+        width: 50% !important;
+    }
+</style>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Login</title>
+
+  
+    <!--plugins-->
+  
+
+    <script src="~/developerjs/login.js"></script>
+    <style>
+        .d-flex1 {
+            box-shadow: 18px 10px 39px black;
+            display: flex !important;
+            padding: 10px -7px;
+            padding-left: 33px;
+            padding-bottom: 21px;
+            padding-top: -16px;
+            margin-top: 6rem;
+            width: 50% !important;
+        }
+        .bg-primary
+        {
+            background-color: #923eb9 !important;
+    margin-top: -200px !important;
+    margin-right: 274px !important;
+        }
+    </style>
+
+</head>
+  @*  < !--After hosting changes  Start-- > *@
+<body class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container aj">
+                    <div class="row justify-content-center">
+                        <div class="d-flex1">
+
+                            <div class="col-sm-12">
+                                <h3 style="text-align: center;font-size: 33px;color: white;">
+                                  
+                                </h3>
+                                <div class="card shadow-lg border-0 rounded-lg">
+                                    <div class="card-header">
+                                       
+                                        <h6 style="text-align: center;font-size: 28px;">
+                                            Login
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+
+
+                                        <form id="account" method="post" class="form-group row g-3">
+
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="col-12">
+                                                
+                                                <label asp-for="Input.UserName" class="form-label">Username</label>
+                                                 <div class="input-group" >
+                                                <input asp-for="Input.UserName" class="form-control" maxlength="35" aria-required="true" placeholder="Username" />
+                                                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                            </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label asp-for="Input.Password" class="inputChoosePassword" class="form-label">Enter Password</label>
+                                                <div class="input-group" id="show_hide_password">
+
+
+                                                    <input asp-for="Input.Password" type="password" class="form-control" value="Dte@123" autocomplete="current-password" aria-required="true" id="myInput" placeholder="Password" /> <a href="javascript:;" class="input-group-text bg-transparent"><input type="checkbox" onclick="myFunction()">@*<i class='bx bx-hide'></i>*@</a>
+                                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Remember Me</label>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-12">
+                                                <div class="d-grid">
+                                                    <button id="login-submit" type="submit" class="btn btn-primary"><i class="bx bxs-lock-open"></i>Sign in</button>
+
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        @*<div id="layoutAuthentication_footer">
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex   align-items-center justify-content-center  medium">
+                            <div class="text-black; align-content-center">Copyright &copy; Developed by ASDC, DGIS, Sponsor :  Provost Dte </div>
+
+                        </div>
+                    </div>
+                </footer>
+            </div>*@
+        <footer class="footer" style="position: fixed;margin-bottom: 0px; margin-left: -280px;">
+            <div class="footer-text">
+                Copyright &copy; Developed by ASDC, DGIS
+            </div>
+        </footer>
+
+    </div>
+
+   
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/sweetalert2.all.min.js"></script>
+
+
+    <script>
+        function ValInData(input) {
+            // var regex = /[^a-zA-Z0-9/_ ]/g;
+            // input.value = input.value.replace(regex, "");
+        }
+    </script>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+
+    }
+</body>
+
+     @*  < !--After hosting changes  End-- > *@

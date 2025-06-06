@@ -1,0 +1,200 @@
+body {
+}
+
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 2627px;
+    }
+}
+
+
+
+.my-button-class {
+    background-color: #007bff; /* Blue background color */
+    color: #fff; /* White text color */
+    padding: 10px 20px; /* Padding around the button text */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor to a pointer on hover */
+    width: 250px;
+    font-display: block;
+}
+
+    /* Define a hover effect for the button */
+    .my-button-class:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+#marquee-container {
+    position: relative;
+    width: 300px; /* Adjust the width as needed */
+    height: 100px; /* Adjust the height as needed */
+    overflow: hidden;
+}
+
+#marquee {
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    bottom: 0;
+    animation: scrollText 10s linear infinite; /* Adjust duration as needed */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.page-content {
+    padding: 0rem !important;
+}
+.modal-header .btn-close {
+    background-color: red;
+}
+.Getdetailsbtn {
+    margin-bottom: -3.0rem !important;
+    z-index: 0;
+}
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.row {
+    margin-top: 0.5rem !important;
+    margin-right: calc(0.5 * var(--bs-gutter-x)) !important;
+    margin-left: calc(0.5 * var(--bs-gutter-x)) !important;
+}
+
+
+
+.policy {
+    padding: 1rem;
+    background-color: #0081ff;
+    color: white;
+    justify-content: center;
+    text-align: center;
+}
+
+.policy2 {
+    padding: 1rem;
+    background-color: #0081ff;
+    color: white;
+    justify-content: center;
+    text-align: center;
+}
+
+.top-headers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 65px;
+    padding: 3rem;
+    padding: 0 1.5rem;
+    justify-content: center;
+    background-clip: border-box;
+    z-index: 5;
+    text-align: center;
+    transition: 0.3s all;
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 50%);
+    background: #044c92;
+    background: linear-gradient(90deg,#044c92 100%, #044c92 77%, #044c92 0% );
+}
+
+.footers {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0.7rem;
+    color: white;
+    background-color: #fff;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+    transition: .3s all;
+    background: #007bff;
+    background: linear-gradient(90deg,#044c92 100%, #044c92 77%, #044c92 0% );
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.wrapper {
+    max-width: 100%;
+    padding: 1rem;
+}
+
+.top-headers {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+    .top-headers .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+.headertext {
+    font-size: 1.5rem;
+}
+
+.user-setting img {
+    height: 4rem;
+    width: 6rem;
+}
+
+.page-content {
+    padding: 1rem;
+}
+
+.row1 {
+    margin-top: 6rem;
+}
+
+
+
+.wrapper .page-content {
+    padding-top: 0rem !important;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+   background-color:#ffffff
+}
+
+.accordion-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 10px;
+    width: 100%;
+}
+
+    .accordion-button:hover {
+        background-color: #0056b3;
+    }
+.table > thead {
+    background-color: #0575b7 !important;
+}

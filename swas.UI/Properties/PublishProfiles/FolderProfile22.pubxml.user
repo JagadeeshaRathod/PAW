@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\PAWPUB</_PublishTargetUrl>
+    <History>True|2024-05-29T06:13:36.9901090Z;True|2024-05-29T09:03:03.0048078+05:30;True|2024-05-28T17:38:28.9436052+05:30;True|2024-05-28T17:29:19.0949164+05:30;True|2024-05-28T17:19:51.9080540+05:30;True|2024-05-28T17:16:04.6018583+05:30;True|2024-05-28T16:20:15.3638168+05:30;True|2024-05-28T16:18:12.4681908+05:30;True|2024-05-28T16:12:00.5188734+05:30;True|2024-05-28T15:24:47.6731040+05:30;True|2024-05-28T15:18:54.0659061+05:30;True|2024-05-28T12:43:08.9288808+05:30;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

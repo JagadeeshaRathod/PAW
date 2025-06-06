@@ -1,0 +1,253 @@
+﻿@model InputModel
+@using Microsoft.AspNetCore.Identity;
+@using Newtonsoft.Json;
+@using swas.BAL.Helpers
+@using swas.BAL.Repository
+@using swas.DAL
+@using swas.DAL.Models
+@using swas.BAL.Interfaces
+@using swas.BAL.DTO
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var roles = (List<Types>)ViewData["roles"];
+    var iamuser = (List<AddlTask>)ViewData["IAMUser"];
+    var units = (List<UnitDtl>)ViewData["Unit"];
+    var typesList = ViewBag.Type;
+    var Rank = (List<mRank>)ViewData["rank"];
+    Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+
+}
+
+<div>
+    <div class="card radius-10" style="margin-right: 20%;margin-left: 5%;">
+        <div class="card-body" style="width:75%; margin-left: 13%;">
+            <div class="card-d  btn-primary card-header " style="color:white ; background-color:#044c92">
+                <h3 class="text-center card-show font-weight-light my-4"><u>NEW USER EDIT REGISTRATION</u></h3>
+            </div>
+
+            <form method="post" action="@Url.Action("UpdateUserEdit", "Account")">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <table class="table table-striped table-bordered">
+                            <tr>
+                                <td>
+                                    <label asp-for="UserName" class="label control-label" style="margin: 5px;">Regn Id (UserName)</label>
+                                </td>
+                                <td style="width:65%">
+                                    <input asp-for="UserName" class="form-control" onkeyup="ValInDataEdit(this)" maxlength="20" aria-required="true" placeholder="Regn Id Reqd for Login & More Users Regn for this unit" />
+                                    <input hidden asp-for="Id" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </td>
+                            </tr>
+
+
+
+                            <tr>
+                                <td>
+                                    <label asp-for="RankId" class="label control-label" style="margin: 5px;">Select Rank</label>
+                                </td>
+                                <td>
+                                    <select asp-for="RankId" class="form-control dropdownsearch" aria-required="true">
+                                        @foreach (var rank in Rank)
+                                        {
+                                            <option value="@rank.Id">@rank.RankName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="RankId" class="text-danger"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input hidden asp-for="RankName" class="form-control" maxlength="100" aria-required="true" placeholder="Offrs Name" />
+                                    <label asp-for="OfficerName" class="label control-label" style="margin: 5px;"> Name</label>
+                                </td>
+                                <td>
+                                    <input asp-for="OfficerName" class="form-control" maxlength="100" aria-required="true" placeholder="Offrs Name" />
+                                    <span asp-validation-for="OfficerName" class="text-danger"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label asp-for="appointment" class="label control-label" style="margin: 5px;">Appointment</label>
+                                </td>
+                                <td>
+                                    <input asp-for="appointment" class="form-control" onkeyup="ValInDataEdit(this)" maxlength="35" aria-required="true" placeholder="Appointment" />
+
+
+                                    <span asp-validation-for="appointment" class="text-danger"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label asp-for="Tele_Army" class="label control-label" style="margin: 5px;">Tele No (Army)</label>
+                                </td>
+                                <td>
+                                    <input asp-for="Tele_Army" class="form-control" maxlength="35" aria-required="true" placeholder="Tele No (Army)" />
+                                    <span asp-validation-for="Tele_Army" class="text-danger"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label asp-for="unitId" class="label control-label">Select Unit</label>
+                                </td>
+                                <td>
+                                    <select asp-for="unitId" class="form-control dropdownsearch">
+
+                                        @foreach (var unit in units)
+                                        {
+                                            <option value="@unit.unitid">@unit.UnitName</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="unitId" class="text-danger"></span>
+
+                                </td>
+
+                            </tr>
+                            @*<tr>
+                            <td>
+                            <label asp-for="Input.ExRegnId" class="label" class="control-label"></label>
+                            </td>
+                            <td>
+
+                            <input asp-for="Input.ExRegnId" class="form-control" onkeyup="ValInData(this)" maxlength="35" aria-required="true" placeholder="If first user for this unit leave blank " />
+
+
+                            <span asp-validation-for="Input.ExRegnId" class="text-danger"></span>
+                            </td>
+                            </tr>*@
+                            <tr>
+                                <td>
+                                    <label asp-for="RoleName" class="label control-label">Select Role</label>
+                                </td>
+                                <td>
+                                    <select asp-for="RoleName" class="ms form-control inputs dropdownsearch ">
+                                        @foreach (var Role in typesList)
+                                        {
+                                            if (ViewData["ty"].ToString() == Role.Name)
+                                            {
+                                                <option selected value="@Role.Id">@Role.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@Role.Id">@Role.Name</option>
+                                            }
+                                            
+                                        }
+
+                                    </select>
+                                    <span asp-validation-for="RoleName" class="text-danger"></span>
+                                </td>
+                            </tr>
+
+
+
+                            @* <tr>
+                            @if (Logins.Role == "Dte")
+                            {
+                            <td>
+                            <label asp-for="Input.domain_iam" class="label" class="control-label">Select IAM User</label>
+                            </td>
+                            <td>
+                            <select asp-for="Input.domain_iam" class=" ms form-control inputs" asp-items='new SelectList(iamuser,"Id","Name")'>
+                            <option value ="">----- Select IAM User ------</option> 
+
+                            </select>
+                            <span asp-validation-for="Input.RoleName" class="text-danger"></span>
+                            </td>
+                            }
+                            else
+                            {
+                            <td></td>
+                            <td></td>
+                            }
+                            </tr>*@
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <div class="input-group" id="show_hide_password">
+
+                                        <input asp-for="Password" hidden="hidden" maxlength="15" class="ms form-control inputs" readonly="readonly" autocomplete="new-password" aria-required="true" id="myInput" placeholder="Password" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <div class="input-group" id="show_hide_password">
+
+                                        <input asp-for="ConfirmPassword" hidden="hidden" maxlength="15" class="ms form-control inputs" readonly="readonly" autocomplete="new-password" aria-required="true" id="myCnfInput" placeholder="Confirm Password" /><i class='bx bx-hide' onclick="myFunctions()"></i>
+
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+
+                            @*<tr style="text-align:center">
+                            <td colspan="2">
+
+                            <button type="submit" class="btn btn-success m-2" style="width: 132px;" id="btnsearch">Register</button>
+
+                            </td>
+
+                            </tr>*@
+                            <tr style="text-align:center">
+                                <td colspan="2">
+
+                                    <div class="col-12" style="color:red">@TempData["msg"]</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div>
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                <center>
+                                    <button type="submit" class="btn btn-save" id="AddlDetails" style="background-color: blue;color:white">
+                                        Update
+                                    </button>
+                                    <span style="margin-left: 20px;">
+                                        <button type="button" class="btn btn-save" style="background-color: blue; color: white">
+                                            <a href="/Account/GetsAllUsers" style="color: white;">
+                                                Back
+                                            </a>
+                                        </button>
+
+                                    </span>
+                                </center>
+                            </div>
+                            <br>  <br> <br> <br> <br> <br> <br>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function ValInDataEdit(input) {
+        var regex = /[^a-zA-Z0-9 ]/g;
+        input.value = input.value.replace(regex, "");
+    }
+    $(document).ready(function () {
+        $('.dropdownsearch').select2();
+    });
+</script>

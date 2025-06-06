@@ -1,0 +1,97 @@
+﻿
+@using swas.DAL.Models;
+@model List<tbl_Projects>
+@{
+    int snob = 0;
+    int sno = 0;
+}
+    <div class="card-body">
+
+       
+   <div class="card radius-10 w-100">
+    <div class="card-body">
+
+        <table id="IndexTable" class="table table-striped table-bordered">
+            <!-- Table header -->
+            <thead>
+                <tr>
+                    <th>Ser No</th>
+                     <th>Att</th>
+                    <th>Project</th>
+                    <th>Stakeholder</th>
+                    <th>Held With</th>
+                    <th> Comment</th>
+                    <th>Updated on</th>
+                   
+                     <th>Aim & Scope</th>
+                        @foreach (var project in ViewBag.stakeholders)
+                        {
+                         <th>@project.StakeHolder</th>
+                        }
+                      
+                   
+                </tr>
+            </thead>
+
+         <tbody>
+    @foreach (var project in ViewBag.projects)
+    {
+        <tr>
+            <td>
+                @{
+                    sno++;
+                }
+                @sno
+            </td>
+            <td>
+                @if (project.AttCnt > 0)
+                {
+                    <a href="javascript:void(0);" class="anchorDetail" data-id="@project.CurrentPslmId">
+                        <img src="/assets/images/icons/attachemnts_clip.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                    </a>
+                }
+            </td>
+            <td>@project.ProjName</td>
+            <td>@project.StakeHolder</td>
+            <td>@project.FwdtoUser</td>
+            <td>@project.Comments</td>
+            <td>@project.DateTimeOfUpdate?.ToString("dd-MM-yyyy")</td>
+            <td>
+                @project.AimScope
+            </td>
+               
+        @foreach (var th in ViewBag.stakeholders)
+        {
+            <td class="red-background">
+                <button type="button" class="btn yellow-button table-button" data-bs-toggle="modal" data-bs-target="#UnitAdd" data-proj-id="@project.ProjId" data-psm-id="@project.CurrentPslmId" data-stakeholder-id="@th.StakeHolderId" data-stakeholder-name="@th.StakeHolder">
+                    Click
+                </button>
+            </td>
+        }
+        </tr>
+    }
+</tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="UnitAdd" tabindex="-1" aria-labelledby="ProjectAddLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                   @* <h5 class="modal-title" id="UnitAddLabel">Add Action</h5>*@
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    @Html.Partial("_CreateTableDetails", new tbl_Projects())
+
+
+                </div>
+
+            </div>
+        </div>
+        </div>		

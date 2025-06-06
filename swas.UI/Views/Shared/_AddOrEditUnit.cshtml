@@ -1,0 +1,233 @@
+﻿@using swas.DAL.Models
+
+@model UnitDtl
+
+
+@{
+    Model.Updatecde = 1;
+
+}
+
+<link rel="stylesheet" href="~/" asp-append-version="true" />
+<!--plugins-->
+@*   <link href="~/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" /> *@
+@*<link href="~/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />*@
+<link href="~/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+
+<!-- CSS Files -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="~/assets/css/bootstrap-extended.css" rel="stylesheet">
+<link href="~/assets/css/style.css" rel="stylesheet">
+<link href="~/assets/css/icons.css" rel="stylesheet">
+<link href="~/assets/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/css/sweetalert2.min.css" rel="stylesheet">
+<!--Theme Styles-->
+<link href="~/assets/css/dark-theme.css" rel="stylesheet" />
+<link href="~/assets/css/semi-dark.css" rel="stylesheet" />
+<link href="~/assets/css/header-colors.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="~/assets/dataTable/css/bootstrap.css">*@
+<link rel="stylesheet" href="~/assets/dataTable/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/assets/dataTable/css/buttons.bootstrap4.min.css">
+<link rel="stylesheet" href="~/assets/dataTable/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/assets/dataTable/css/all.min.css">
+
+<style>
+    .modal-content {
+        height: auto; /* Remove fixed height to allow dynamic content */
+    }
+
+    .modal-body {
+        padding: 20px; /* Add padding for a more spacious look */
+    }
+
+    .form-group {
+        margin-bottom: 20px; /* Add margin to form groups for spacing */
+    }
+
+    /* Customize your form controls */
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    /* Style your buttons */
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+</style>
+
+@using (Html.BeginForm("AddOrEdit2FORUNIT", "UnitDtls", FormMethod.Post, new { id = "addNewForm" }))
+{
+    <div class="row" style="padding:5px;">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.UnitName, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.UnitName, new { @class = "form-control", required = "required", onkeyup="ValInData(this)" })
+                @Html.ValidationMessageFor(model => model.UnitName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Command, new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Command, new SelectList(ViewBag.cl, "comdid", "Command_Name"), new { id = "Command", @class = "form-control  dropdownsearch", onchange = "populateCorpsDropdown(this)" })
+                @Html.ValidationMessageFor(model => model.Command, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.UnitSusNo, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.UnitSusNo, new { @class = "form-control", required = "required", onkeyup="ValInData(this)" })
+                @Html.ValidationMessageFor(model => model.UnitSusNo, "", new { @class = "text-danger" })
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.Loc, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Loc, new { @class = "form-control", required = "required", onkeyup="ValInData(this)" })
+                @Html.ValidationMessageFor(model => model.Loc, "", new { @class = "text-danger" })
+            </div>*@
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.TypeId, new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.TypeId, new SelectList(ViewBag.ty, "Id", "Name"), new { @class = "form-control  dropdownsearch" })
+                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Updatecde)
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CorpsId, new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.CorpsId, new SelectList(new List<SelectListItem>(), "Value", "Text"), new { @class = "form-control  dropdownsearch" })
+                @Html.ValidationMessageFor(model => model.CorpsId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group" style="text-align:center;margin-right:250px; margin-top:10px;">
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="col-md-6" style="margin-left:294px">
+
+                <button type="submit" class="btn btn-primary" id="AddlDetails">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+}
+
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Error',
+                text: '@TempData["FailureMessage"]',
+                icon: 'failure',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+    }
+</script>
+
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Success',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+        </text>
+        TempData.Remove("SuccessMessage");
+    }
+</script>
+
+
+<script>
+
+    function populateCorpsDropdown(selectElement) {
+        var selectedCommandId = $(selectElement).val();
+
+        $.ajax({
+            url: "/Ddl/ddlCorps",
+            data: { Command: selectedCommandId },
+            type: "GET",
+            dataType: "json",
+            success: function (result) {
+
+                if (result.length > 0) {
+                    var list = "";
+
+
+                    list = '<option value="0">---- Select  ----</option>';
+
+                    for (var j = 0; j < result.length; j++) {
+
+
+                        list += '<option value=' + result[j].corpsid + '>' + result[j].corpsname + '</option>';
+                    }
+
+
+
+                    $('#CorpsId').html(list);
+
+                    $('#CorpsId').val($('#addNewForm').html());
+                    $("#CorpsId").val("0");
+
+                }
+                else {
+                    var list = "";
+                    list = '<option value="0" selected="true">---- Select ----</option>';
+
+                    $('#CorpsId').html(list).selectedCommandId;
+
+                    $('#CorpsId').val($('#addNewForm').html());
+
+                    $("#CorpsId").val("0");
+
+                }
+
+            }
+        });
+    };
+
+</script>
+
+<style>
+    .hidden-date {
+        display: none;
+    }
+</style>
+
+
+<script>
+    function ValInData(input) {
+        var regex = /[^a-zA-Z0-9/ ]/g;
+        input.value = input.value.replace(regex, "");
+    }
+
+    $(document).ready(function () {
+        $('.dropdownsearch').select2();
+    });
+</script>

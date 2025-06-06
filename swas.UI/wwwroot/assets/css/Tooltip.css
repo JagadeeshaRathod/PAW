@@ -1,0 +1,117 @@
+﻿/* tooltip */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-containerRemark {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    display: none;
+    visibility: hidden;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    width: max-content;
+}
+
+.tooltip-container:hover .tooltip {
+    display: block;
+    visibility: visible;
+}
+
+
+
+
+.RefLetter-container {
+    position: relative;
+    /* display: inline-block;*/
+}
+
+.RefLetter {
+    visibility: hidden;
+    width: 250px;
+    /*background-color: #333;*/
+    background-color: #5a8cd6;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 60%;
+    /*bottom: 100%;*/
+    left: 55%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    margin-top: 12px;
+}
+
+.RefLetter-container:hover .RefLetter {
+    visibility: visible;
+    opacity: 1;
+}
+
+.RefLetter-container {
+    position: relative;
+    /* display: inline-block;*/
+}
+
+
+
+.tooltip-text {
+    visibility: hidden;
+    width: auto;
+    height: auto;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    padding: 10px;
+    right: -190%;
+    left: 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    word-wrap: break-word;
+    box-sizing: border-box;
+
+    /*visibility: hidden;
+    width: 360px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 60%;
+    left: 55%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    margin-top: 12px;*/
+}
+
+.tooltip-text1 {
+    visibility: hidden;
+    width: auto;
+    height: auto;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    padding: 10px;
+    left: -275%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    word-wrap: break-word;
+    box-sizing: border-box;
+}

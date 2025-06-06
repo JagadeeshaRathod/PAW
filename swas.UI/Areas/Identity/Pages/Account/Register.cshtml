@@ -1,0 +1,428 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+
+@using System.Collections
+@using swas.BAL.DTO
+@using swas.BAL.Helpers
+@using swas.DAL.Models
+@model RegisterModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+
+@{
+    // ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layoutreg.cshtml";
+
+    var roles = (List<IdentityRole>)ViewData["roles"];
+    var iamuser = (List<AddlTask>)ViewData["IAMUser"];
+    var units = (List<UnitDtl>)ViewData["Unit"];
+    var Rank = (List<mRank>)ViewData["rank"];
+
+
+
+    Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+
+
+}
+
+
+<style>
+    .col-md-2 {
+        max-width: 100% !important;
+    }
+
+    .card-header:first-child {
+        border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+        width: 100%;
+        background: #044c92;
+    }
+
+    .plus-circle {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: red;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .plus-circle:hover {
+            background-color: darkred;
+        }
+</style>
+
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+
+        <div class="card radius-10" style="margin-right: 20%;margin-left: 5%;">
+            <div class="card-body" style="width:75%; margin-left: 13%;">
+                <div class="card-d  btn-primary card-header ">
+                    <h3 class="text-center card-show font-weight-light my-4"><u>NEW USER REGISTRATION</u></h3>
+                </div>
+
+                <form id="registerForm" method="post">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <table class="table table-striped table-bordered">
+                                @if (Logins != null)
+                                {
+                                    <tr>
+                                        <td>
+                                            <label asp-for="Input.UserName" class="label control-label" style="margin: 5px;">Regn Id (UserName)</label>
+                                        </td>
+                                        <td style="width:65%">
+                                            <input asp-for="Input.UserName" class="form-control"  maxlength="20" aria-required="true" placeholder="Regn Id Reqd for Login & More Users Regn for this unit" />
+
+                                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>
+                                            <label asp-for="Input.UserName" class="label control-label" style="margin: 5px;">Regn Id (UserName)</label>
+                                        </td>
+                                        <td style="width:65%">
+                                            <input asp-for="Input.UserName" class="form-control" onkeyup="ValInData(this)" maxlength="20" aria-required="true" readonly placeholder="Regn Id Reqd for Login & More Users Regn for this unit" />
+
+                                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                        </td>
+                                    </tr>
+                                }
+
+
+                                <tr>
+                                    <td>
+                                        <label asp-for="Input.Rank" class="label control-label" style="margin: 5px;">Rank</label>
+                                    </td>
+                                    <td>
+                                        <!-- Replace input with select element -->
+                                        <select asp-for="Input.Rank" class="form-control dropdownsearch" aria-required="true">
+                                            <option value="">--- Select ---</option>
+                                            @foreach (var rank in Rank)
+                                            {
+                                                <option value="@rank.RankName">@rank.RankName</option>
+                                            }
+                                        </select>
+
+                                        <span asp-validation-for="Input.Rank" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label asp-for="Input.OfficerName" class="label control-label" style="margin: 5px;"> Name</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Input.OfficerName" class="form-control"  maxlength="50"  placeholder="Offrs Name" />
+
+
+                                        <span asp-validation-for="Input.OfficerName" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label asp-for="Input.appointment" class="label control-label" style="margin: 5px;">Appointment</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Input.appointment" class="form-control" onkeyup="ValInData(this)" maxlength="35" aria-required="true" placeholder="Appointment" />
+
+
+                                        <span asp-validation-for="Input.appointment" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label asp-for="Input.Tele_Army" class="label control-label" style="margin: 5px;">Tele No (Army)</label>
+                                    </td>
+                                    <td>
+                                        <input asp-for="Input.Tele_Army" class="form-control" onkeyup="ValInData(this)" maxlength="35" aria-required="true" placeholder="Tele No (Army)" />
+
+
+                                        <span asp-validation-for="Input.Tele_Army" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label asp-for="Input.unitId" class="label control-label">Select Unit</label>
+                                    </td>
+                                    <td>
+                                        <select asp-for="Input.unitId" class="form-control dropdownsearch">
+                                            <option value="">Select Unit</option>
+                                            @foreach (var unit in units)
+                                            {
+                                                <option value="@unit.unitid">@unit.UnitName</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="Input.unitId" class="text-danger"></span>
+
+                                    </td>
+                                    <td>
+                                        <div class="plus" id="UnitRegister" style=" width: 40px;
+                                               height: 40px;
+                                               line-height: 40px;
+                                               text-align: center;
+                                               border-radius: 50%;
+                                               background-color: #044c92;
+                                               color: white;
+                                               font-size: 24px;
+                                               cursor: pointer;
+                                               transition: background-color 0.3s ease;
+                                                ">
+                                            +
+                                        </div>
+                                    </td>
+                                </tr>
+                                @*<tr>
+                                <td>
+                                <label asp-for="Input.ExRegnId" class="label" class="control-label"></label>
+                                </td>
+                                <td>
+
+                                <input asp-for="Input.ExRegnId" class="form-control" onkeyup="ValInData(this)" maxlength="35" aria-required="true" placeholder="If first user for this unit leave blank " />
+
+
+                                <span asp-validation-for="Input.ExRegnId" class="text-danger"></span>
+                                </td>
+                                </tr>*@
+
+                                <tr>
+                                    <td>
+                                        <label asp-for="Input.RoleName" class="label" class="control-label">Select Role</label>
+                                    </td>
+                                    <td>
+                                        <select asp-for="Input.RoleName" class=" ms form-control inputs dropdownsearch" asp-items='new SelectList(roles,"Id","Name")'>
+                                            <option value ="">----- Select Role ------</option> 
+
+                                        </select>
+                                        <span asp-validation-for="Input.RoleName" class="text-danger"></span>
+                                    </td>
+                                </tr>
+                                @* <tr>
+                                @if (Logins.Role == "Dte")
+                                {
+                                <td>
+                                <label asp-for="Input.domain_iam" class="label" class="control-label">Select IAM User</label>
+                                </td>
+                                <td>
+                                <select asp-for="Input.domain_iam" class=" ms form-control inputs" asp-items='new SelectList(iamuser,"Id","Name")'>
+                                <option value ="">----- Select IAM User ------</option> 
+
+                                </select>
+                                <span asp-validation-for="Input.RoleName" class="text-danger"></span>
+                                </td>
+                                }
+                                else
+                                {
+                                <td></td>
+                                <td></td>
+                                }
+                                </tr>*@
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <div class="input-group" id="show_hide_password">
+
+                                            <input asp-for="Input.Password" hidden="hidden" maxlength="15" class="ms form-control inputs" readonly="readonly" autocomplete="new-password" aria-required="true" id="myInput" placeholder="Password" />
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <div class="input-group" id="show_hide_password">
+
+                                            <input asp-for="Input.ConfirmPassword" hidden="hidden" maxlength="15" class="ms form-control inputs" readonly="readonly" autocomplete="new-password" aria-required="true" id="myCnfInput" placeholder="Confirm Password" /><i class='' onclick="myFunctions()"></i>
+
+                                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+                                <tr style="text-align:center">
+                                    <td colspan="2">
+
+                                        <button type="submit" class="btn btn-success m-2" style="width: 132px;" id="btnsearch">Register</button>
+
+                                    </td>
+
+                                </tr>
+                                <tr style="text-align:center">
+                                    <td colspan="2">
+
+                                        <div class="col-12" style="color:red">@TempData["msg"]</div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<div class="modal fade" id="UnitAdd" tabindex="-1" aria-labelledby="UnitAddViewLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:650px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="UnitAddLabel">Add Unit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                @Html.Partial("_unitadd", new UnitDtl { UnitName = "" })
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.plus', function () {
+            $('#UnitAdd').modal('show');
+        });
+
+    });
+    $(document).ready(function () {
+        $('.dropdownsearch').select2();
+    });
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#btn-close").click(function () {
+
+            var signUpUrl = '/Identity/Account/Login';
+            window.location.href = signUpUrl;
+        });
+
+    });
+
+</script>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        populateddlUnit();
+
+    });
+
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.pluscircle').on('click', function () {
+            $('#UnitAdd').modal('show');
+        });
+
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#UnitAdd').length) {
+                $('#UnitAdd').modal('hide');
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+                Swal.fire({
+                    title: 'Success',
+                    text: '@TempData["SuccessMessage"]',
+                    // text: 'User successfully Registered!\nPls Approach ASDC for necessary Approval',
+                // html: '<strong>User successfully Registered!</strong><br>Pls Approach ASDC for necessary Approval',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+        </text>
+        TempData.Remove("SuccessMessage");
+    }
+</script>
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+                Swal.fire({
+                    title: 'Regn Failed...!',
+                    text: '@TempData["FailureMessage"]',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+        </text>
+        TempData.Remove("FailureMessage");
+    }
+</script>
+
+<script>
+        function myFunction() {
+            var x = document.getElementById("myInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    $("#Input_UserName").change(function () {
+        var s = $("#Input_UserName").val().substr(0, 1).toUpperCase() + $("#Input_UserName").val().substr(1);
+        $("#myInput").val(s + String.fromCharCode(64) + "123");
+        $("#myCnfInput").val(s + String.fromCharCode(64) + "123");
+    });
+</script>
+
+
+<script>
+    function ValInData(input) {
+        var regex = /[^a-zA-Z0-9 ]/g;
+        input.value = input.value.replace(regex, "");
+    }
+</script>
+

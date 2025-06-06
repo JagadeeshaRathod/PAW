@@ -1,0 +1,490 @@
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using swas.UI.Models;
+using swas.BAL.Helpers;
+using swas.BAL.Utility;
+using swas.BAL.Interfaces;
+using swas.BAL.Repository;
+using swas.DAL.Models;
+using swas.BAL;
+using Microsoft.AspNetCore.Authorization;
+using swas.BAL.DTO;
+using ASPNetCoreIdentityCustomFields.Data;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
+using Microsoft.AspNetCore.Identity;
+using swas.DAL;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.IO;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText;
+using iText.Layout.Element;
+using Grpc.Core;
+using Microsoft.Extensions.Hosting.Internal;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using iText.Kernel.Pdf.Canvas;
+using iText.Kernel.Geom;
+using iText.Kernel.Colors;
+using iText.Layout.Properties;
+using iText.IO.Font.Constants;
+using iText.IO.Font;
+using iText.Kernel.Font;
+using iText.Kernel.Pdf.Extgstate;
+using System.Timers;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using iText.Layout.Font;
+
+namespace swas.UI.Controllers
+{
+    public class DocumentsController : Controller
+    {
+        //private readonly ILogger<HomeController> _logger;
+        private readonly IProjectsRepository _projectsRepository;
+        //private readonly RepositoryUser _repositoryUser;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<LoginModel> _logger;
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        private readonly IDdlRepository _dlRepository;
+        private readonly ApplicationDbContext _context;
+        private readonly IUnitRepository _unitRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        private readonly IProjStakeHolderMovRepository _psmRepository;
+        private readonly IAttHistoryRepository _attHistoryRepository;
+        private readonly IProjStakeHolderMovRepository _stkholdmove;
+        private readonly IWebHostEnvironment _environment;
+        private readonly double rotationAngle;
+        private System.Timers.Timer aTimer;
+
+        public DocumentsController(IWebHostEnvironment hostingEnvironment, IProjectsRepository projectsRepository, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager, IDdlRepository dlRepository, ApplicationDbContext context, IUnitRepository unitRepository, IHttpContextAccessor httpContextAccessor, IProjStakeHolderMovRepository psmRepository, IAttHistoryRepository attHistoryRepository, IProjStakeHolderMovRepository stkholdmove, IWebHostEnvironment environment)
+        {
+            //  _logger = logger; _repositoryUser = repositoryUser;
+            _projectsRepository = projectsRepository;
+            _hostingEnvironment = hostingEnvironment;
+            _signInManager = signInManager;
+            _logger = logger;
+            _userManager = userManager;
+
+            _dlRepository = dlRepository;
+            _context = context;
+            _unitRepository = unitRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _psmRepository = psmRepository;
+            _attHistoryRepository = attHistoryRepository;
+            _stkholdmove = stkholdmove;
+            _environment = environment;
+        }
+
+        [Authorize(Policy = "UnitAdmin")]
+        ///Created by Mr Manish  
+        public IActionResult Index()
+        {
+            var dateTime = DateTime.Now;
+            try
+            {
+                Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContext.Session, "User");
+                var ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                var currentDatetime = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
+                var watermarkText = $" {ipAddress}\n  {currentDatetime}";
+
+                TempData["ipadd"] = watermarkText;
+
+                if (Logins.IsNotNull())
+                {
+                    int? stakeholderId = Logins.unitid;
+
+
+                    var AttHistry = _context.AttHistory.FirstOrDefault();
+                    ViewBag.AttHistry = AttHistry;
+
+                    var proj = _context.Projects.ToList();
+                    ViewBag.proj = proj;
+
+                    return View();
+                }
+                else
+                {
+                    return Redirect("/Identity/Account/Login");
+                }
+            }
+            catch (Exception ex)
+            {
+                swas.BAL.Utility.Error.ExceptionHandle(ex.Message);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [Authorize(Policy = "UnitAdmin")]
+        [HttpGet]
+        ///Created by Mr Manish  
+        public async Task<IActionResult> DocumentHistory(string projName, int projId)
+        {
+
+            Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContext.Session, "User");
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            var currentDatetime = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
+            var watermarkText = $" {ipAddress}  {currentDatetime}";
+
+            var proj = _context.Projects.FirstOrDefault(p => p.ProjName == projName);
+
+            if (proj != null)
+            {
+                var Query = from project in _context.Projects
+                            join psm in _context.ProjStakeHolderMov on project.ProjId equals psm.ProjId
+                            join attHistory in _context.AttHistory on psm.PsmId equals attHistory.PsmId
+                            where project.ProjId == projId
+                            select new
+                            {
+                                project.ProjId,
+                                psm.PsmId,
+                                attHistory.AttPath,
+                                attHistory.Reamarks,
+                                attHistory.ActFileName
+                            };
+
+                var result = Query.ToList();
+                ViewBag.proj = proj;
+                ViewBag.ProjName = projName;
+                ViewBag.result = result;
+                return View(result);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+        [HttpPost]
+        ///Created by Mr Manish  
+        public ActionResult DownloadAction(string[] selectedCheckboxes)
+        {
+
+            Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContext.Session, "User");
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            var currentDatetime = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
+            var watermarkText = $" {ipAddress}\n {currentDatetime}";
+
+            if (selectedCheckboxes == null || selectedCheckboxes.Length < 2)
+            {
+                return View("Error");
+            }
+
+            MemoryStream mergedPdfStream = new MemoryStream();
+            using (PdfWriter pdfWriter = new PdfWriter(mergedPdfStream))
+            using (PdfDocument pdf = new PdfDocument(pdfWriter))
+            using (Document document = new Document(pdf))
+            {
+                string uploadsFolder = System.IO.Path.Combine(_hostingEnvironment.WebRootPath, "Uploads");
+
+                foreach (var fileName in selectedCheckboxes)
+                {
+                    string filePath = System.IO.Path.Combine(uploadsFolder, fileName);
+
+                    if (!System.IO.File.Exists(filePath))
+                    {
+                        // File not found, display an error message
+                        return Json(new { error = true, errorMessage = "PDF File Not Found" });
+                    }
+
+                    using (PdfDocument sourcePdf = new PdfDocument(new PdfReader(filePath)))
+                    {
+                        int numberOfPages = sourcePdf.GetNumberOfPages();
+
+                        for (int i = 1; i <= numberOfPages; i++)
+                        {
+
+                            PdfPage page = sourcePdf.GetPage(i);
+                            PdfPage newPage = pdf.AddNewPage(new PageSize(page.GetPageSize()));
+                            WatermarkWithPdf(newPage, watermarkText);
+                            PdfCanvas canvas = new PdfCanvas(newPage);
+                            canvas.AddXObject(page.CopyAsFormXObject(pdf));
+
+                        }
+                    }
+                }
+            }
+
+            var mergedPdfBytes = mergedPdfStream.ToArray();
+
+            aTimer = new System.Timers.Timer();
+            aTimer.Elapsed += OnTimer;
+            aTimer.Interval = TimeSpan.FromSeconds(60).TotalMilliseconds;
+            aTimer.AutoReset = false;
+            aTimer.Enabled = true;
+
+            bool isPreview = selectedCheckboxes.Length <= 5;
+
+            if (isPreview)
+            {
+
+                return Json(new { pdfPath = "data:application/pdf;base64," + Convert.ToBase64String(mergedPdfBytes) });
+            }
+            else
+            {
+
+                return File(mergedPdfStream, "application/pdf", "MergedPDF.pdf");
+            }
+
+        }
+
+        private void WatermarkWithPdf(PdfPage page, string watermarkText)
+        {
+            float fontSize = 50f;
+            PdfCanvas canvas = new PdfCanvas(page);
+            canvas.SaveState();
+
+            canvas.SetLineWidth(2f);
+            canvas.SetLineDash(3f, 3f);
+
+            PdfFont font = PdfFontFactory.CreateFont();
+            canvas.SetFontAndSize(font, fontSize);
+
+            float lineHeight = font.GetFontProgram().GetFontMetrics().GetTypoAscender() - font.GetFontProgram().GetFontMetrics().GetTypoDescender();
+
+            float totalWidth = font.GetWidth(watermarkText, fontSize);
+            float totalHeight = lineHeight;
+
+            float xPosition = (page.GetPageSizeWithRotation().GetWidth() - totalWidth) / 0.9f;
+            float yPosition = page.GetPageSizeWithRotation().GetHeight() * 0.1f;
+
+            AffineTransform transform = AffineTransform.GetTranslateInstance(xPosition, yPosition);
+            transform.Rotate(40 * Math.PI / 180);
+            canvas.ConcatMatrix(transform);
+
+            float lineXPosition = 0;
+            float lineYPosition = 0;
+
+            canvas.BeginText()
+                  .MoveText(lineXPosition, lineYPosition)
+                  .SetFillColor(ColorConstants.LIGHT_GRAY)
+                  .ShowText(watermarkText)
+                  .EndText();
+
+            canvas.RestoreState();
+        }
+
+
+
+        public void OnTimer(Object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                string filePath = System.IO.Path.Combine(_hostingEnvironment.WebRootPath, "DownloadFile\\MergedPDF.pdf");
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Comman.ExceptionHandle(ex.Message);
+            }
+        }
+
+    }
+
+}
+
+
+
+
+
+
+************************************************  view ***************************************
+
+@using swas.DAL.Models
+@{
+    ViewData["Title"] = "Documents Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int sno = 0;
+}
+
+<style>
+    .form-card {
+        display: block; /* Initially show the form */
+    }
+
+    .additional-details {
+        display: none; /* Hide the additional details initially */
+    }
+
+    .underline-h5 {
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0 auto; /* Center the box */
+        text-align: center;
+        border-color: #03c1fc;
+        /*box-shadow: 2px 6px 5px -3px #062b50;*/
+        background-color: #0cafff;
+        color: white;
+        font-family: Arial;
+        font-size: 19px;
+        margin-bottom: 0.5rem;
+        height: -1px;
+    }
+
+    .vertical-table {
+        margin-top: 50px;
+    }
+
+    .custom-checkbox {
+        margin-bottom: 10px;
+    }
+
+    .download-button {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .modal-content {
+        height: 100%;
+        width: 100%;
+    }
+
+    #previewFrame{
+        height:485px;
+        width:785px;
+    }
+</style>
+
+<div>
+    <h5 class="text-center mb-4 underline-h5" style="text-align: center; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;height: 33px;">
+        <span>
+            Project Name: @ViewBag.ProjName
+        </span>
+    </h5>
+</div>
+<div class="row">
+
+    <div id="DocumentsMerge" class="col-6" style="overscroll-behavior-y:auto">
+        <div class="card radius-12">
+            <div class="vertical-table">
+                <table id="Documents" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>S/No</th>
+                            <th>Document Desc</th>
+                            <th>File Name</th>
+                            <th>Checklist</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var tst in ViewBag.result)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        sno++;
+                                    }
+                                    @sno
+                                </td>
+                                <td>@tst.ActFileName</td>
+                                <td>@tst.Reamarks</td>
+                                <td>
+                                    <input type="checkbox" class="checklist-item" data-att-path="@tst.AttPath" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <button type="button" id="downloadButton" style="align-self:center; background-color:darkblue;color:white;margin-left: 50%;">PDF PREVIEW</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="mergedpdf" class="col-6">
+        
+        <div class="card radius-12" >
+            <div class="container">
+                <h5 class="text-center mb-4 underline-h5" style="text-align: center; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;height: 33px;">
+                    <span>
+                        PDF PREVIEW
+                    </span>
+                </h5>
+                <div id="pdfContainer">
+                    <iframe id="previewFrame"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#downloadButton').click(function () {
+            var selectedItems = document.querySelectorAll('.checklist-item:checked');
+            var selectedDetails = [];
+
+            selectedItems.forEach(function (checkbox) {
+                selectedDetails.push(checkbox.getAttribute('data-att-path'));
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DownloadAction", "Documents")',
+                data: {
+                    selectedCheckboxes: selectedDetails
+                },
+                success: function (response) {
+                    if (response.error) {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.errorMessage || 'An error occurred.'
+                        });
+                    } else if (response.pdfPath) {
+                        displayPreview(response.pdfPath);
+                    } else if (response.pdfContent) {
+                        downloadMergedPDF(response.pdfContent);
+                    } else {
+                        console.log('Invalid response format');
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        function displayPreview(pdfPath) {
+            var frame = document.getElementById('previewFrame');
+            frame.src = pdfPath;
+
+            $('#pdfContainer').show();
+
+            $(document).on('click', function (event) {
+                if (!$(event.target).closest('#pdfContainer').length) {
+                    $('#pdfContainer').hide();
+                }
+            });
+        }
+
+        function downloadMergedPDF(pdfContent) {
+            var blob = new Blob([pdfContent], { type: 'application/pdf' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'MergedPDF.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    });
+</script>
+
+

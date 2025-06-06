@@ -1,0 +1,2334 @@
+﻿@using swas.DAL.Models
+
+
+
+@{
+    ViewData["Title"] = "Search Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "Search", FormMethod.Get))
+{
+
+}
+
+
+<style>
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 8px 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    /*  tr:hover {
+                background-color: #f5f5f5;
+            }
+         */
+
+
+    /* Display the table with the class "display-table" */
+    .display-table {
+        display: table;
+    }
+
+
+    .multiselect {
+        width: 200px;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+        }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px solid #ccc;
+        max-height: 150px;
+        overflow: auto;
+    }
+
+        #checkboxes ul {
+            padding: 0;
+        }
+
+            #checkboxes ul li {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                background-color: #f9f9f9;
+                border: 1px solid #ccc;
+            }
+
+                #checkboxes ul li input {
+                    margin-right: 5px;
+                }
+
+    .lni-radio-button {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-radio {
+        text-align: center;
+        margin: 0 4px;
+    }
+
+        .custom-radio input[type="radio"] {
+            display: none;
+        }
+
+        .custom-radio .radio-label {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: #FFF;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .custom-radio input[type="radio"]:checked + .radio-label {
+            background-color: #dee2e6;
+            font-display: block;
+            color: black;
+        }
+
+    .search-container {
+        padding: 0px;
+        border-radius: 1px solid skyblue;
+        border-radius: 15px;
+        background-color: #f0f0f0;
+        margin-top: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+        background-color: #f7f7f7;
+    }
+
+    body {
+        font-family: arial;
+    }
+
+    .card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+
+
+    .form-group {
+        display: flex;
+        align-items: center;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="text"] {
+        flex: 0;
+        padding: 5px;
+        border: 2px solid #ccc;
+        border-radius: 0px;
+    }
+
+
+    .datePicker {
+        flex: 2;
+    }
+
+
+
+    #ProjDetails {
+        background-color: #f0f0f0;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        display: none;
+    }
+
+    #searchFormStackHolder {
+        justify-content: left;
+    }
+
+
+    .dropdown {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    a {
+        color: black;
+    }
+
+    .dropdown dd,
+    .dropdown dt {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .dropdown ul {
+        margin: -1px 0 0 0;
+    }
+
+    .dropdown dd {
+        position: relative;
+    }
+
+    .dropdown a,
+    .dropdown a:visited {
+        color: black;
+        text-decoration: none;
+        outline: none;
+        font-size: 12px;
+    }
+
+    .dropdown dt a {
+        background-color: white;
+        display: block;
+        min-height: 42px;
+        line-height: 14px;
+        overflow: hidden;
+        border: 0;
+        width: 199px;
+        padding: 5px;
+        border: 2px solid #ccc;
+        border-radius: 0px;
+    }
+
+        .dropdown dt a span,
+        .multiSel span {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0 3px 2px 0;
+        }
+
+    .multiSel1 span {
+        cursor: pointer;
+        display: inline-block;
+        padding: 0 3px 2px 0;
+    }
+
+    .multiSel2 span {
+        cursor: pointer;
+        display: inline-block;
+        padding: 0 3px 2px 0;
+    }
+
+    .multiSel3 span {
+        cursor: pointer;
+        display: inline-block;
+        padding: 0 3px 2px 0;
+    }
+
+    .multiSel4 span {
+        cursor: pointer;
+        display: inline-block;
+        padding: 0 3px 2px 0;
+    }
+
+    .dropdown dd ul {
+        overflow: auto;
+        border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+        background-color: white;
+        border: 3px;
+        color: black;
+        display: none;
+        left: 0px;
+        padding: 5px;
+        top: 1px;
+        width: 100%;
+        list-style: none;
+        height: 100px;
+        overflow: scroll;
+    }
+
+    .dropdown span.value {
+        display: none;
+    }
+
+    .dropdown dd ul li a:hover {
+        background-color: #dee2e6;
+    }
+
+</style>
+
+
+
+
+<div style="text-align: center;">
+    <label class="custom-radio">
+        <input type="radio" name="showDiv" id="showAll" />
+        <span class="radio-label">Project Name</span>
+
+    </label>
+    <label class="custom-radio">
+        <input type="radio" name="showDiv" id="showRadio1" />
+        <span class="radio-label">HeldWith</span>
+    </label>
+    <label class="custom-radio">
+        <input type="radio" name="showDiv" id="showRadio2" />
+        <span class="radio-label">Stage</span>
+    </label>
+    <label class="custom-radio">
+        <input type="radio" name="showDiv" id="showRadio3" />
+        <span class="radio-label">Status</span>
+    </label>
+    <label class="custom-radio">
+        <input type="radio" name="showDiv" id="showRadio4" />
+        <span class="radio-label">Action</span>
+    </label>
+
+    <label class="custom-radio">
+        <input type="radio" name="showDiv" id="showRadio5" />
+        <span class="radio-label">Initiated By</span>
+    </label>
+</div>
+
+
+<div id="searchContainer" class="search-container">
+    <form class="form-group" asp-action="SearchResluts" id="searchFormProjName">
+        <div class="card-body">
+            <div class="row justify-content-center">
+
+                <div class="col-md-auto">
+                    <label>Projet Name:</label>&nbsp;
+                    <input id="searchText" type="text" name="SearchText" />
+                </div>
+
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <label>From Date:</label>&nbsp;
+                <input id="TimeStampFromProj" type="date" class="datePicker" />
+            </div>
+            <div class="col-md-auto">
+                <label>To Date:</label>&nbsp;
+                <input id="TimeStampToProj" type="date" class="datePicker" />
+            </div>
+
+        </div>
+        <div class="col-md-auto" style="text-align:center">
+            <button type="button" class="btn btn-primary btn-sm" id="SearchProjName">Search</button>
+        </div>
+
+    </form>
+</div>
+
+<div id="searchStackholder" class="search-container">
+    <form class="form-group" asp-action="SearchstackResults" id="searchStackholder">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-auto">
+                    <dl class="dropdown">
+                        <dt>
+                            <a href="#">
+                                @*<span class="hida">Select HeldWith</span>*@
+                                <span class="multiSel">Select HeldWith</span>
+                                <p class="multiSel"></p>
+                            </a>
+                        </dt>
+                        <dd>
+                            <div class="mutliSelect">
+                                <ul>
+                                    @if (ViewBag.stack != null)
+                                    {
+                                        @foreach (var item in ViewBag.stack)
+                                        {
+                                            <li>
+                                                <input type="checkbox" value="@item" name="selectedStacks" required />
+                                                @item
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No data available</p>
+                                    }
+                                </ul>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <label>From Date:</label>&nbsp;
+                <input id="TimeStampFromheld" type="date" class="datePicker" required />
+            </div>
+            <div class="col-md-auto">
+                <label>To Date:</label>&nbsp;
+                <input id="TimeStampToheld" type="date" class="datePicker" required />
+            </div>
+        </div>
+        <div class="col-md-auto" style="text-align: center">
+            <button type="button" class="btn btn-primary btn-sm" id="searchstackButton">Search</button>
+        </div>
+    </form>
+</div>
+
+<div id="searchStage" class="search-container">
+    <form class="form-group" asp-action="SearchStageResult" id="searchStage">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-auto">
+                    <dl class="dropdown">
+                        <dt>
+                            <a href="#">
+                                @*<span class="hida">Select stage</span>*@
+                                <span class="multiSel1">Select Stage</span>
+                                <p class="multiSel1"></p>
+                            </a>
+                        </dt>
+                        <dd>
+                            <div class="mutliSelect">
+                                <ul>
+                                    @if (ViewBag.stage != null)
+                                    {
+                                        @foreach (var item in ViewBag.stage)
+                                        {
+                                            <li>
+                                                <input type="checkbox" value="@item" name="selectedstage" required />
+                                                @item
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No data available</p>
+                                    }
+                                </ul>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <label>From Date:</label>&nbsp;
+                <input id="TimeStampFromStage" type="date" class="datePicker" required />
+            </div>
+            <div class="col-md-auto">
+                <label>To Date:</label>&nbsp;
+                <input id="TimeStampToStage" type="date" class="datePicker" required />
+            </div>
+        </div>
+        <div class="col-md-auto" style="text-align: center">
+            <button type="button" class="btn btn-primary btn-sm" id="searchstageButton">Search</button>
+        </div>
+
+
+
+
+
+    </form>
+</div>
+
+<div id="searchStatus" class="search-container">
+    <form class="form-group" asp-action="SearchStatusResult" id="searchStatus">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-auto">
+                    <dl class="dropdown">
+                        <dt>
+                            <a href="#">
+                                @*<span class="hida">Select status</span>*@
+                                <span class="multiSel2">Select Status</span>
+                                <p class="multiSel2"></p>
+                            </a>
+                        </dt>
+                        <dd>
+                            <div class="mutliSelect">
+                                <ul>
+                                    @if (ViewBag.status != null)
+                                    {
+                                        @foreach (var item in ViewBag.status)
+                                        {
+                                            <li>
+                                                <input type="checkbox" value="@item" name="selectedstatus" required />
+                                                @item
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No data available</p>
+                                    }
+                                </ul>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <label>From Date:</label>&nbsp;
+                <input id="TimeStampFromStatus" type="date" class="datePicker" required />
+            </div>
+            <div class="col-md-auto">
+                <label>To Date:</label>&nbsp;
+                <input id="TimeStampToStatus" type="date" class="datePicker" required />
+            </div>
+        </div>
+        <div class="col-md-auto" style="text-align: center">
+            <button type="button" class="btn btn-primary btn-sm" id="searchstatusbutton">Search</button>
+        </div>
+
+
+
+
+
+    </form>
+</div>
+
+<div id="searchAction" class="search-container">
+    <form class="form-group" asp-action="SearchActionResult" id="searchAction">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-auto">
+                    <dl class="dropdown">
+                        <dt>
+                            <a href="#">
+                                @*  <span class="hida">Select Action</span>*@
+                                <span class="multiSel3">Select Action</span>
+                                <p class="multiSel3"></p>
+                            </a>
+                        </dt>
+                        <dd>
+                            <div class="mutliSelect">
+                                <ul>
+                                    @if (ViewBag.action != null)
+                                    {
+                                        @foreach (var item in ViewBag.action)
+                                        {
+                                            <li>
+                                                <input type="checkbox" value="@item" name="selectedaction" required />
+                                                @item
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No data available</p>
+                                    }
+                                </ul>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <label>From Date:</label>&nbsp;
+                <input id="TimeStampFromAction" type="date" class="datePicker" required />
+            </div>
+            <div class="col-md-auto">
+                <label>To Date:</label>&nbsp;
+                <input id="TimeStampToAction" type="date" class="datePicker" required />
+            </div>
+        </div>
+        <div class="col-md-auto" style="text-align: center">
+            <button type="button" class="btn btn-primary btn-sm" id="searchactionbutton">Search</button>
+        </div>
+
+
+
+
+
+    </form>
+</div>
+
+<div id="searchinitiatedby" class="search-container">
+    <form class="form-group" asp-action="SearchstackResults" id="searchStackholder">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-auto">
+                    <dl class="dropdown">
+                        <dt>
+                            <a href="#">
+                                @*<span class="hida">Select Initiated By</span>*@
+                                <span class="multiSel4">Select Stake</span>
+                                <p class="multiSel4"></p>
+                            </a>
+                        </dt>
+                        <dd>
+                            <div class="mutliSelect">
+                                <ul>
+                                    @if (ViewBag.stack != null)
+                                    {
+                                        @foreach (var item in ViewBag.stack)
+                                        {
+                                            <li>
+                                                <input type="checkbox" value="@item" name="selectedStackholder" required />
+                                                @item
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No data available</p>
+                                    }
+                                </ul>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <label>From Date:</label>&nbsp;
+                <input id="TimeStampFromInitiatedBy" type="date" class="datePicker" required />
+            </div>
+            <div class="col-md-auto">
+                <label>To Date:</label>&nbsp;
+                <input id="TimeStampToInitiatedBy" type="date" class="datePicker" required />
+            </div>
+        </div>
+        <div class="col-md-auto" style="text-align: center">
+            <button type="button" class="btn btn-primary btn-sm" id="searchinitiatedbyButton">Search</button>
+        </div>
+    </form>
+</div>
+
+
+
+<div id="tableProjContainer">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+
+            <table id="SearchProjTable" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th>ProjectID</th>
+                        <th>Project</th>
+                        <th>Initiated Date</th>
+                        <th>Stage</th>
+                        <th>HeldWith</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Comment</th>
+
+
+                    </tr>
+                </thead>
+
+
+                <tbody id="searchtableProj">
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="tableStackContainer">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+
+            <table id="SearchStackHolderTable" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+
+                        <th>ProjectID</th>
+                        <th>Project</th>
+                        <th>Initiated Date</th>
+                        <th>Stage</th>
+                        <th>HeldWith</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Comment</th>
+
+                    </tr>
+                </thead>
+
+
+                <tbody id="searchStackHolderResults">
+
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div id="tableStageContainer">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+
+            <table id="SearchStageTable" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th>ProjectID</th>
+                        <th>Project</th>
+                        <th>Initiated Date</th>
+                        <th>Stage</th>
+                        <th>HeldWith</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Comment</th>
+
+                    </tr>
+                </thead>
+
+
+                <tbody id="searchStageResults">
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="tableStatusContainer">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+
+            <table id="SearchStatusTable" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th>ProjectID</th>
+                        <th>Project</th>
+                        <th>Initiated Date</th>
+                        <th>Stage</th>
+                        <th>HeldWith</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+
+                <tbody id="searchStatusResults">
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="tableActionContainer">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+
+            <table id="SearchActionTable" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th>ProjectId</th>
+                        <th>Project</th>
+                        <th>Initiated Date</th>
+                        <th>Stage</th>
+                        <th>HeldWith</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Comment</th>
+
+
+                    </tr>
+                </thead>
+
+
+                <tbody id="searchActionResults">
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="tableInitiatedByContainer">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+
+            <table id="SearchInitiatedByTable" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th>ProjectId</th>
+                        <th>Project</th>
+                        <th>Initiated Date</th>
+                        <th>Stage</th>
+                        <th>StakeHolder</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Comment</th>
+
+
+                    </tr>
+                </thead>
+
+
+                <tbody id="searchInitiatedByResults">
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@*Get data From Project name By Ajex*@
+<script>
+
+    $(document).ready(function () {
+        var tableInitialized = false;
+        var table; // Declare a variable to hold the DataTable instance
+
+        $('#SearchProjName').click(function () {
+            var searchText = $('#searchText').val();
+            var fromTimeStamp = $('#TimeStampFromProj').val();
+            var toTimeStamp = $('#TimeStampToProj').val();
+
+            if (fromTimeStamp > toTimeStamp) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'To Date must be greater than From Date',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+
+                toTimeStamp.val('');
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchResults", "Search")',
+                data: {
+                    SearchText: searchText,
+                    TimeStampFrom: fromTimeStamp,
+                    TimeStampTo: toTimeStamp,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (data) {
+                    // Destroy the existing DataTable instance if it exists
+                    if (tableInitialized) {
+                        table.clear().destroy();
+                    }
+
+                    if (data === 0) {
+                        location.reload();
+                    }
+
+                    if (data && data.length > 0) {
+                        var tableRow = '';
+                        var isDataValid = true;
+
+                        for (var i = 0; i < data.length; i++) {
+                            var projectId = data[i].projectId !== undefined ? data[i].projectId : '';
+                            var projectName = data[i].projectName !== undefined ? data[i].projectName : '';
+                            var initiatedDate = data[i].initiatedDate !== NaN ? formatDate(data[i].initiatedDate) : '';
+                            var stage = data[i].stage !== undefined ? data[i].stage : '';
+                            var heldWith = data[i].heldWith !== undefined ? data[i].heldWith : '';
+                            var status = data[i].status !== undefined ? data[i].status : '';
+                            var action = data[i].action !== undefined ? data[i].action : '';
+                            var comment = data[i].comment !== undefined ? data[i].comment : '';
+
+                            if (projectId === '' || projectName === '' || initiatedDate === '' || stage === '' || heldWith === '' || status === '' || action === '' || comment === '') {
+                                isDataValid = false;
+                                break;
+                            }
+
+                            tableRow += '<tr>';
+                            tableRow += '<td>' + projectId + '</td>';
+                            tableRow += '<td>' + '<a class="editButton" data-proj-name="' + projectName + '" data-proj-id="' + projectId + '" href="/Search/SearchProjHistory?dataProjId=' + projectId + '">' + projectName + '</a>' + '</td>';
+                            tableRow += '<td>' + initiatedDate + '</td>';
+                            tableRow += '<td>' + stage + '</td>';
+                            tableRow += '<td>' + heldWith + '</td>';
+                            tableRow += '<td>' + status + '</td>';
+                            tableRow += '<td>' + action + '</td>';
+                            tableRow += '<td>' + comment + '</td>';
+                            tableRow += '</tr>';
+                        }
+
+                        if (isDataValid) {
+
+                            $('#searchtableProj').empty().html(tableRow);
+
+                            table = $('#SearchProjTable').DataTable({
+                                lengthChange: true,
+                                dom: 'lBfrtip',
+                                buttons: [
+                                    'copy',
+                                    'excel',
+                                    'csv',
+                                    {
+                                        text: 'PDF',
+                                        extend: 'pdfHtml5',
+                                        action: function (e, dt, node, config) {
+                                            PdfDiv();
+                                        }
+                                    },
+                                ],
+                                searchBuilder: {
+                                    conditions: {
+                                        num: {
+                                            // Define your conditions here
+                                        }
+                                    }
+                                }
+                            });
+
+                            var buttonContainer = table.buttons().container();
+                            var searchBuilderContainer = table.searchBuilder.container();
+                            buttonContainer.insertBefore(table.table().container());
+                            searchBuilderContainer.insertBefore(table.table().container());
+
+                            table.draw();
+                            tableInitialized = true;
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Data Not Found',
+                                text: 'One or more properties in the data are undefined.',
+                                confirmButtonColor: '#d33',
+                                confirmButtonText: 'OK'
+                            });
+                            console.log('Data Not Found.');
+                        }
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Data Not Found',
+                            text: 'No data found in the response.',
+                            confirmButtonColor: '#d33',
+                            confirmButtonText: 'OK'
+                        });
+                        console.log('Data Not Found.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error: " + status + " - " + error);
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        function formatDate(dateStr) {
+            var initiatedDate = new Date(dateStr);
+            var day = initiatedDate.getDate();
+            var month = initiatedDate.getMonth() + 1;
+            var year = initiatedDate.getFullYear();
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
+            return day + '/' + month + '/' + year;
+        }
+
+
+        function PdfDiv() {
+            var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+            popupWin.document.open();
+
+            var tableStyles = `
+                                       <style type="text/css">
+                                                    table {
+                                                        width: 100%;
+                                                        border-collapse: collapse;
+                                                        margin-bottom: 20px;
+                                                    }
+
+                                                    .table > thead {
+                                                        vertical-align: bottom;
+                                                        background-color: red;
+                                                    }
+
+                                                    th, td {
+                                                        padding: 8px;
+                                                        border: 1px solid #ddd;
+                                                        text-align: center;
+                                                    }
+
+                                                    th {
+                                                        background-color: #f2f2f2;
+                                                        color: black;
+                                                    }
+                                                </style>
+                                            `;
+
+            var table = $('#SearchProjTable').DataTable();
+            var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+            var tableHTML = '<table>';
+
+            tableHTML += '<thead>';
+            tableHTML += '<tr>';
+            table.columns().header().each(function (header) {
+                tableHTML += '<th>' + header.innerHTML + '</th>';
+            });
+            tableHTML += '</tr>';
+            tableHTML += '</thead>';
+
+            tableHTML += '<tbody>';
+            for (var i = 0; i < filteredData.length; i++) {
+                tableHTML += '<tr>';
+                for (var j = 0; j < filteredData[i].length; j++) {
+                    tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                }
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</tbody>';
+
+            tableHTML += '</table>';
+
+            var watermarkText = '@(TempData["ipadd"])';
+
+            popupWin.document.write('<html><head>'
+                + tableStyles + '</head><body onload="window.print()">'
+                + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                + watermarkText + '</div></body></html>');
+            popupWin.document.close();
+        }
+    });
+
+</script>
+@*End*@
+
+
+@*Get data From MultiSelect Checklist Dropdown Stackholder name By Ajex*@
+<script>
+
+    $(document).ready(function () {
+        var table; // Declare a variable to hold the DataTable instance
+
+        $('#searchstackButton').click(function () {
+            var selectedStacks = [];
+            $('input[name="selectedStacks"]:checked').each(function () {
+                selectedStacks.push($(this).val());
+            });
+
+            var fromTimeStamp = $('#TimeStampFromheld').val();
+            var toTimeStamp = $('#TimeStampToheld').val();
+
+            if (fromTimeStamp > toTimeStamp) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'To Date must be greater than From Date',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+
+                toTimeStamp.val('');
+            }
+
+
+            // CREATED BY MANISH
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchstackResult", "Search")',
+                data: JSON.stringify({
+                    searchStakename: selectedStacks,
+                    TimeStampFrom: fromTimeStamp,
+                    TimeStampTo: toTimeStamp
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    // Destroy the existing DataTable instance if it exists
+                    if (table) {
+                        table.destroy();
+                    }
+                    if (data === 0) {
+                        location.reload();
+                    }
+                    var tableRows = '';
+                    for (var i = 0; i < data.length; i++) {
+                         
+                        tableRows += '<tr>';
+                        tableRows += '<td>' + data[i].projectId + '</td>';
+                        tableRows += '<td>' + '<a class="editButton" data-proj-name="' + data[i].projectName + '" data-proj-id="' + data[i].projectId + '" href="/Search/SearchProjHistory?dataProjId=' + data[i].projectId + '">' + data[i].projectName + '</a>' + '</td>';
+                        tableRows += '<td>' + formatDate(data[i].initiatedDate) + '</td>';
+                        tableRows += '<td>' + data[i].stage + '</td>';
+                        tableRows += '<td>' + data[i].heldWith + '</td>';
+                        tableRows += '<td>' + data[i].status + '</td>';
+                        tableRows += '<td>' + data[i].action + '</td>';
+                        tableRows += '<td>' + data[i].comment + '</td>';
+                        tableRows += '</tr>';
+                    }
+                    $('#searchStackHolderResults').empty().html(tableRows);
+
+                    table = $('#SearchStackHolderTable').DataTable({
+                        lengthChange: true,
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copy',
+                            'excel',
+                            'csv',
+                            {
+                                text: 'PDF',
+                                extend: 'pdfHtml5',
+                                action: function (e, dt, node, config) {
+                                    PdfDiv();
+                                }
+                            },
+                        ],
+                        searchBuilder: {
+                            conditions: {
+                                num: {
+                                    // Define your conditions here
+                                }
+                            }
+                        }
+                    });
+
+                    var buttonContainer = table.buttons().container();
+                    var searchBuilderContainer = table.searchBuilder.container();
+                    buttonContainer.insertBefore(table.table().container());
+                    searchBuilderContainer.insertBefore(table.table().container());
+
+                    table.draw();
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error: " + status + " - " + error);
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        function formatDate(dateStr) {
+            var initiatedDate = new Date(dateStr);
+            var day = initiatedDate.getDate();
+            var month = initiatedDate.getMonth() + 1; // Months are 0-based
+            var year = initiatedDate.getFullYear();
+
+            // Ensure that day and month are formatted as two digits
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
+
+            return day + '/' + month + '/' + year;
+        }
+
+        function PdfDiv() {
+            var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+            popupWin.document.open();
+
+            var tableStyles = `
+                    <style type="text/css">
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-bottom: 20px;
+                        }
+
+                        .table > thead {
+                            vertical-align: bottom;
+                            background-color: red;
+                        }
+
+                        th, td {
+                            padding: 8px;
+                            border: 1px solid #ddd;
+                            text-align: center;
+                        }
+
+                        th {
+                            background-color: #f2f2f2;
+                            color: black;
+                        }
+                    </style>
+                `;
+
+            var table = $('#SearchStackHolderTable').DataTable();
+            var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+            var tableHTML = '<table>';
+
+            tableHTML += '<thead>';
+            tableHTML += '<tr>';
+            table.columns().header().each(function (header) {
+                tableHTML += '<th>' + header.innerHTML + '</th>';
+            });
+            tableHTML += '</tr>';
+            tableHTML += '</thead>';
+
+            tableHTML += '<tbody>';
+            for (var i = 0; i < filteredData.length; i++) {
+                tableHTML += '<tr>';
+                for (var j = 0; j < filteredData[i].length; j++) {
+                    tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                }
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</tbody>';
+
+            tableHTML += '</table>';
+
+            var watermarkText = '@(TempData["ipadd"])';
+
+            popupWin.document.write('<html><head>'
+                + tableStyles + '</head><body onload="window.print()">'
+                + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                + watermarkText + '</div></body></html>');
+            popupWin.document.close();
+        }
+
+    });
+</script>
+
+@*End*@
+
+@*Get data From MultiSelect Checklist Dropdown Stage name By Ajex*@
+<script>
+    $(document).ready(function () {
+        var table; // Declare a variable to hold the DataTable instance
+        $('#searchstageButton').click(function () {
+            var selectedstage = [];
+            $('input[name="selectedstage"]:checked').each(function () {
+                selectedstage.push($(this).val());
+            });
+
+            var fromTimeStamp = $('#TimeStampFromStage').val();
+            var toTimeStamp = $('#TimeStampToStage').val();
+
+            if (fromTimeStamp > toTimeStamp) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'To Date must be greater than From Date',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+
+                toTimeStamp.val('');
+            }
+
+            // VULNARABILITY MITIGATED BY SUB MAJ SANAL
+
+            // CREATED BY MANISH
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchStageResult", "Search")',
+                data: JSON.stringify({
+                    searchStakename: selectedstage,
+                    TimeStampFrom: fromTimeStamp,
+                    TimeStampTo: toTimeStamp
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    // Destroy the existing DataTable instance if it exists
+                    if (table) {
+                        table.destroy();
+                    }
+                    if (data === 0) {
+                        location.reload();
+                    }
+                    var tableRows = '';
+                    for (var i = 0; i < data.length; i++) {
+                        tableRows += '<tr>';
+                        tableRows += '<td>' + data[i].projectId + '</td>';
+                        tableRows += '<td>' + '<a class="editButton" data-proj-name="' + data[i].projectName + '" data-proj-id="' + data[i].projectId + '" href="/Search/SearchProjHistory?dataProjId=' + data[i].projectId + '">' + data[i].projectName + '</a>' + '</td>';
+                        tableRows += '<td>' + formatDate(data[i].initiatedDate) + '</td>';
+                        tableRows += '<td>' + data[i].stage + '</td>';
+                        tableRows += '<td>' + data[i].heldWith + '</td>';
+                        tableRows += '<td>' + data[i].status + '</td>';
+                        tableRows += '<td>' + data[i].action + '</td>';
+                        tableRows += '<td>' + data[i].comment + '</td>';
+                        tableRows += '</tr>';
+                    }
+
+                    $('#searchStageResults').empty().html(tableRows);
+
+                    table = $('#SearchStageTable').DataTable({
+                        lengthChange: true,
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copy',
+                            'excel',
+                            'csv',
+                            {
+                                text: 'PDF',
+                                extend: 'pdfHtml5',
+                                action: function (e, dt, node, config) {
+                                    PdfDiv();
+                                }
+                            },
+                        ],
+                        searchBuilder: {
+                            conditions: {
+                                num: {
+                                    // Define your conditions here
+                                }
+                            }
+                        }
+                    });
+
+                    var buttonContainer = table.buttons().container();
+                    var searchBuilderContainer = table.searchBuilder.container();
+                    buttonContainer.insertBefore(table.table().container());
+                    searchBuilderContainer.insertBefore(table.table().container());
+
+                    table.draw();
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error: " + status + " - " + error);
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        function formatDate(dateStr) {
+            var initiatedDate = new Date(dateStr);
+            var day = initiatedDate.getDate();
+            var month = initiatedDate.getMonth() + 1; // Months are 0-based
+            var year = initiatedDate.getFullYear();
+
+            // Ensure that day and month are formatted as two digits
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
+
+            return day + '/' + month + '/' + year;
+        }
+
+        function PdfDiv() {
+            var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+            popupWin.document.open();
+
+            var tableStyles = `
+                                        <style type="text/css">
+                                            table {
+                                                width: 100%;
+                                                border-collapse: collapse;
+                                                margin-bottom: 20px;
+                                            }
+
+                                            .table > thead {
+                                                vertical-align: bottom;
+                                                background-color: red;
+                                            }
+
+                                            th, td {
+                                                padding: 8px;
+                                                border: 1px solid #ddd;
+                                                text-align: center;
+                                            }
+
+                                            th {
+                                                background-color: #f2f2f2;
+                                                color: black;
+                                            }
+                                        </style>
+                                    `;
+
+            var table = $('#SearchStageTable').DataTable();
+            var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+            var tableHTML = '<table>';
+
+            tableHTML += '<thead>';
+            tableHTML += '<tr>';
+            table.columns().header().each(function (header) {
+                tableHTML += '<th>' + header.innerHTML + '</th>';
+            });
+            tableHTML += '</tr>';
+            tableHTML += '</thead>';
+
+            tableHTML += '<tbody>';
+            for (var i = 0; i < filteredData.length; i++) {
+                tableHTML += '<tr>';
+                for (var j = 0; j < filteredData[i].length; j++) {
+                    tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                }
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</tbody>';
+
+            tableHTML += '</table>';
+
+            var watermarkText = '@(TempData["ipadd"])';
+
+            popupWin.document.write('<html><head>'
+                + tableStyles + '</head><body onload="window.print()">'
+                + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                + watermarkText + '</div></body></html>');
+            popupWin.document.close();
+        }
+    });
+</script>
+
+@*End*@
+
+@*Get data From MultiSelect Checklist Dropdown Status name By Ajex*@
+<script>
+    $(document).ready(function () {
+        var table; // Declare a variable to hold the DataTable instance
+        $('#searchstatusbutton').click(function () {
+            var selectedstatus = [];
+            $('input[name="selectedstatus"]:checked').each(function () {
+                selectedstatus.push($(this).val());
+            });
+
+
+            var fromTimeStamp = $('#TimeStampFromStatus').val(); // Replace with the actual input ID
+            var toTimeStamp = $('#TimeStampToStatus').val(); // Replace with the actual input ID
+
+            if (fromTimeStamp > toTimeStamp) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'To Date must be greater than From Date',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+
+                toTimeStamp.val('');
+            }
+            // VULNARABILITY MITIGATED BY SUB MAJ SANAL
+
+            // CREATED BY MANISH
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchStatusResult", "Search")',
+                data: JSON.stringify({
+                    searchStakename: selectedstatus,
+                    TimeStampFrom: fromTimeStamp,
+                    TimeStampTo: toTimeStamp
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (table) {
+                        table.destroy();
+                    }
+                    if (data === 0) {
+                        location.reload();
+                    }
+
+                    var tableRows = '';
+                    for (var i = 0; i < data.length; i++) {
+                        tableRows += '<tr>';
+                        tableRows += '<td>' + data[i].projectId + '</td>';
+                        tableRows += '<td>' + '<a class="editButton" data-proj-name="' + data[i].projectName + '" data-proj-id="' + data[i].projectId + '" href="/Search/SearchProjHistory?dataProjId=' + data[i].projectId + '">' + data[i].projectName + '</a>' + '</td>';
+                        tableRows += '<td>' + formatDate(data[i].initiatedDate) + '</td>';
+                        tableRows += '<td>' + data[i].stage + '</td>';
+                        tableRows += '<td>' + data[i].heldWith + '</td>';
+                        tableRows += '<td>' + data[i].status + '</td>';
+                        tableRows += '<td>' + data[i].action + '</td>';
+                        tableRows += '<td>' + data[i].comment + '</td>';
+                        tableRows += '</tr>';
+                    }
+                    $('#searchStatusResults').empty().html(tableRows);
+
+                    table = $('#SearchStatusTable').DataTable({
+                        lengthChange: true,
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copy',
+                            'excel',
+                            'csv',
+                            {
+                                text: 'PDF',
+                                extend: 'pdfHtml5',
+                                action: function (e, dt, node, config) {
+                                    PdfDiv();
+                                }
+                            },
+                        ],
+                        searchBuilder: {
+                            conditions: {
+                                num: {
+                                    // Define your conditions here
+                                }
+                            }
+                        }
+                    });
+
+                    var buttonContainer = table.buttons().container();
+                    var searchBuilderContainer = table.searchBuilder.container();
+                    buttonContainer.insertBefore(table.table().container());
+                    searchBuilderContainer.insertBefore(table.table().container());
+
+                    table.draw();
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error: " + status + " - " + error);
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        function formatDate(dateStr) {
+            var initiatedDate = new Date(dateStr);
+            var day = initiatedDate.getDate();
+            var month = initiatedDate.getMonth() + 1; // Months are 0-based
+            var year = initiatedDate.getFullYear();
+
+            // Ensure that day and month are formatted as two digits
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
+
+            return day + '/' + month + '/' + year;
+        }
+
+        function PdfDiv() {
+            var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+            popupWin.document.open();
+
+            var tableStyles = `
+                                            <style type="text/css">
+                                                table {
+                                                    width: 100%;
+                                                    border-collapse: collapse;
+                                                    margin-bottom: 20px;
+                                                }
+
+                                                .table > thead {
+                                                    vertical-align: bottom;
+                                                    background-color: red;
+                                                }
+
+                                                th, td {
+                                                    padding: 8px;
+                                                    border: 1px solid #ddd;
+                                                    text-align: center;
+                                                }
+
+                                                th {
+                                                    background-color: #f2f2f2;
+                                                    color: black;
+                                                }
+                                            </style>
+                                        `;
+
+            var table = $('#SearchStatusTable').DataTable();
+            var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+            var tableHTML = '<table>';
+
+            tableHTML += '<thead>';
+            tableHTML += '<tr>';
+            table.columns().header().each(function (header) {
+                tableHTML += '<th>' + header.innerHTML + '</th>';
+            });
+            tableHTML += '</tr>';
+            tableHTML += '</thead>';
+
+            tableHTML += '<tbody>';
+            for (var i = 0; i < filteredData.length; i++) {
+                tableHTML += '<tr>';
+                for (var j = 0; j < filteredData[i].length; j++) {
+                    tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                }
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</tbody>';
+
+            tableHTML += '</table>';
+
+            var watermarkText = '@(TempData["ipadd"])';
+
+            popupWin.document.write('<html><head>'
+                + tableStyles + '</head><body onload="window.print()">'
+                + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                + watermarkText + '</div></body></html>');
+            popupWin.document.close();
+        }
+    });
+</script>
+
+@*End*@
+
+@*Get data From MultiSelect Checklist Dropdown Action name By Ajex*@
+<script>
+    $(document).ready(function () {
+        var table; // Declare a variable to hold the DataTable instance
+
+        $('#searchactionbutton').click(function () {
+            var selectedaction = [];
+            $('input[name="selectedaction"]:checked').each(function () {
+                selectedaction.push($(this).val());
+            });
+
+
+            var fromTimeStamp = $('#TimeStampFromAction').val(); // Replace with the actual input ID
+            var toTimeStamp = $('#TimeStampToAction').val(); // Replace with the actual input ID
+
+            if (fromTimeStamp > toTimeStamp) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'To Date must be greater than From Date',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+
+                toTimeStamp.val('');
+            }
+
+
+            // VULNARABILITY MITIGATED BY SUB MAJ SANAL
+
+            // CREATED BY MANISH
+
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchActionResult", "Search")',
+
+                data: JSON.stringify({
+                    searchStakename: selectedaction,
+                    TimeStampFrom: fromTimeStamp,
+                    TimeStampTo: toTimeStamp
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (table) {
+                        table.destroy();
+                    }
+                    if (data === 0) {
+                        location.reload();
+                    }
+                    var tableRows = '';
+                    for (var i = 0; i < data.length; i++) {
+                        tableRows += '<tr>';
+                        tableRows += '<td>' + data[i].projectId + '</td>';
+                        tableRows += '<td>' + '<a class="editButton" data-proj-name="' + data[i].projectName + '" data-proj-id="' + data[i].projectId + '" href="/Search/SearchProjHistory?dataProjId=' + data[i].projectId + '">' + data[i].projectName + '</a>' + '</td>';
+                        tableRows += '<td>' + formatDate(data[i].initiatedDate) + '</td>';
+                        tableRows += '<td>' + data[i].stage + '</td>';
+                        tableRows += '<td>' + data[i].heldWith + '</td>';
+                        tableRows += '<td>' + data[i].status + '</td>';
+                        tableRows += '<td>' + data[i].action + '</td>';
+                        tableRows += '<td>' + data[i].comment + '</td>';
+                        tableRows += '</tr>';
+                    }
+                    $('#searchActionResults').empty().html(tableRows);
+
+                    table = $('#SearchActionTable').DataTable({
+                        lengthChange: true,
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copy',
+                            'excel',
+                            'csv',
+                            {
+                                text: 'PDF',
+                                extend: 'pdfHtml5',
+                                action: function (e, dt, node, config) {
+                                    PdfDiv();
+                                }
+                            },
+                        ],
+                        searchBuilder: {
+                            conditions: {
+                                num: {
+                                    // Define your conditions here
+                                }
+                            }
+                        }
+                    });
+
+                    var buttonContainer = table.buttons().container();
+                    var searchBuilderContainer = table.searchBuilder.container();
+                    buttonContainer.insertBefore(table.table().container());
+                    searchBuilderContainer.insertBefore(table.table().container());
+
+                    table.draw();
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error: " + status + " - " + error);
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        function formatDate(dateStr) {
+            var initiatedDate = new Date(dateStr);
+            var day = initiatedDate.getDate();
+            var month = initiatedDate.getMonth() + 1; // Months are 0-based
+            var year = initiatedDate.getFullYear();
+
+            // Ensure that day and month are formatted as two digits
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
+
+            return day + '/' + month + '/' + year;
+        }
+
+        function PdfDiv() {
+            var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+            popupWin.document.open();
+
+            var tableStyles = `
+                                            <style type="text/css">
+                                                table {
+                                                    width: 100%;
+                                                    border-collapse: collapse;
+                                                    margin-bottom: 20px;
+                                                }
+
+                                                .table > thead {
+                                                    vertical-align: bottom;
+                                                    background-color: red;
+                                                }
+
+                                                th, td {
+                                                    padding: 8px;
+                                                    border: 1px solid #ddd;
+                                                    text-align: center;
+                                                }
+
+                                                th {
+                                                    background-color: #f2f2f2;
+                                                    color: black;
+                                                }
+                                            </style>
+                                        `;
+
+            var table = $('#SearchActionTable').DataTable();
+            var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+            var tableHTML = '<table>';
+
+            tableHTML += '<thead>';
+            tableHTML += '<tr>';
+            table.columns().header().each(function (header) {
+                tableHTML += '<th>' + header.innerHTML + '</th>';
+            });
+            tableHTML += '</tr>';
+            tableHTML += '</thead>';
+
+            tableHTML += '<tbody>';
+            for (var i = 0; i < filteredData.length; i++) {
+                tableHTML += '<tr>';
+                for (var j = 0; j < filteredData[i].length; j++) {
+                    tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                }
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</tbody>';
+
+            tableHTML += '</table>';
+
+            var watermarkText = '@(TempData["ipadd"])';
+
+            popupWin.document.write('<html><head>'
+                + tableStyles + '</head><body onload="window.print()">'
+                + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                + watermarkText + '</div></body></html>');
+            popupWin.document.close();
+        }
+    });
+</script>
+
+@*End*@
+
+@*Get data From MultiSelect Checklist Dropdown Initiated By name By Ajex*@
+<script>
+    $(document).ready(function () {
+        var table; // Declare a variable to hold the DataTable instance
+        $('#searchinitiatedbyButton').click(function () {
+            var selectedStackholder = [];
+            $('input[name="selectedStackholder"]:checked').each(function () {
+                selectedStackholder.push($(this).val());
+            });
+
+
+            var fromTimeStamp = $('#TimeStampFromInitiatedBy').val(); // Replace with the actual input ID
+            var toTimeStamp = $('#TimeStampToInitiatedBy').val(); // Replace with the actual input ID
+
+            if (fromTimeStamp > toTimeStamp) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'To Date must be greater than From Date',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+
+                toTimeStamp.val('');
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchInitiatedByResult", "Search")',
+                data: JSON.stringify({
+                    searchStakename: selectedStackholder,
+                    TimeStampFrom: fromTimeStamp,
+                    TimeStampTo: toTimeStamp
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (table) {
+                        table.destroy();
+                    }
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchInitiatedByResult", "Search")',
+                data: JSON.stringify({
+                    searchStakename: selectedStackholder,
+                    TimeStampFrom: fromTimeStamp,
+                    TimeStampTo: toTimeStamp
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (table) {
+                        table.destroy();
+                    }
+                    if (data === 0) {
+                        location.reload();
+                    }
+                    var tableRows = '';
+                    for (var i = 0; i < data.length; i++) {
+                        tableRows += '<tr>';
+                        tableRows += '<td>' + data[i].projectId + '</td>';
+                        tableRows += '<td>' + '<a class="editButton" data-proj-name="' + data[i].projectName + '" data-proj-id="' + data[i].projectId + '" href="/Search/SearchProjHistory?dataProjId=' + data[i].projectId + '">' + data[i].projectName + '</a>' + '</td>';
+                        tableRows += '<td>' + formatDate(data[i].initiatedDate) + '</td>';
+                        tableRows += '<td>' + data[i].stage + '</td>';
+                        tableRows += '<td>' + data[i].stakeholderName + '</td>';
+                        tableRows += '<td>' + data[i].status + '</td>';
+                        tableRows += '<td>' + data[i].action + '</td>';
+                        tableRows += '<td>' + data[i].comment + '</td>';
+                        tableRows += '</tr>';
+                    }
+                    $('#searchInitiatedByResults').empty().html(tableRows);
+                    table = $('#SearchInitiatedByTable').DataTable({
+                        lengthChange: true,
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copy',
+                            'excel',
+                            'csv',
+                            {
+                                text: 'PDF',
+                                extend: 'pdfHtml5',
+                                action: function (e, dt, node, config) {
+                                    PdfDiv();
+                                }
+                            },
+                        ],
+                        searchBuilder: {
+                            conditions: {
+                                num: {
+                                    // Define your conditions here
+                                }
+                            }
+                        }
+                    });
+
+                    var buttonContainer = table.buttons().container();
+                    var searchBuilderContainer = table.searchBuilder.container();
+                    buttonContainer.insertBefore(table.table().container());
+                    searchBuilderContainer.insertBefore(table.table().container());
+
+                    table.draw();
+                },
+                error: function (xhr, status, error) {
+                    console.log("AJAX Error: " + status + " - " + error);
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        function formatDate(dateStr) {
+            var initiatedDate = new Date(dateStr);
+            var day = initiatedDate.getDate();
+            var month = initiatedDate.getMonth() + 1; // Months are 0-based
+            var year = initiatedDate.getFullYear();
+
+            // Ensure that day and month are formatted as two digits
+            day = day < 10 ? '0' + day : day;
+            month = month < 10 ? '0' + month : month;
+
+            return day + '/' + month + '/' + year;
+        }
+
+        function PdfDiv() {
+            var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+            popupWin.document.open();
+
+            var tableStyles = `
+                                            <style type="text/css">
+                                                table {
+                                                    width: 100%;
+                                                    border-collapse: collapse;
+                                                    margin-bottom: 20px;
+                                                }
+
+                                                .table > thead {
+                                                    vertical-align: bottom;
+                                                    background-color: red;
+                                                }
+
+                                                th, td {
+                                                    padding: 8px;
+                                                    border: 1px solid #ddd;
+                                                    text-align: center;
+                                                }
+
+                                                th {
+                                                    background-color: #f2f2f2;
+                                                    color: black;
+                                                }
+                                            </style>
+                                        `;
+
+            var table = $('#SearchInitiatedByTable').DataTable();
+            var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+            var tableHTML = '<table>';
+
+            tableHTML += '<thead>';
+            tableHTML += '<tr>';
+            table.columns().header().each(function (header) {
+                tableHTML += '<th>' + header.innerHTML + '</th>';
+            });
+            tableHTML += '</tr>';
+            tableHTML += '</thead>';
+
+            tableHTML += '<tbody>';
+            for (var i = 0; i < filteredData.length; i++) {
+                tableHTML += '<tr>';
+                for (var j = 0; j < filteredData[i].length; j++) {
+                    tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                }
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</tbody>';
+
+            tableHTML += '</table>';
+
+            var watermarkText = '@(TempData["ipadd"])';
+
+            popupWin.document.write('<html><head>'
+                + tableStyles + '</head><body onload="window.print()">'
+                + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                + watermarkText + '</div></body></html>');
+            popupWin.document.close();
+        }
+    });
+</script>
+@*End*@
+
+
+
+
+
+@*Multiselcted Checklist Dropdown Script*@
+<script>
+
+
+    $(".dropdown dt a").on('click', function () {
+        $(".dropdown dd ul").slideToggle('fast');
+    });
+
+    $(".dropdown dd ul li a").on('click', function () {
+        $(".dropdown dd ul").hide();
+    });
+
+    $(document).bind('click', function (e) {
+        var $clicked = $(e.target);
+        if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+    });
+
+    $('.mutliSelect input[type="checkbox"]').on('click', function () {
+
+        //var title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
+        title = $(this).val() + ",";
+
+        if ($(this).is(':checked')) {
+            var html = '<span title="' + title + '">' + title + '</span>';
+            $('.multiSel').append(html);
+            $('.multiSel1').append(html);
+            $('.multiSel2').append(html);
+            $('.multiSel3').append(html);
+            $('.multiSel4').append(html);
+
+
+            $('.multiSel').hide();
+            $('.multiSel1').hide();
+            $('.multiSel2').hide();
+            $('.multiSel3').hide();
+            $('.multiSel4').hide();
+        } else {
+            $('span[title="' + title + '"]').remove();
+            var ret = $(".multiSel");
+            var ret = $(".multiSel1");
+            var ret = $(".multiSel2");
+            var ret = $(".multiSel3");
+            var ret = $(".multiSel4");
+
+            $('.dropdown dt a').append(ret);
+
+        }
+    });
+
+</script>
+@*End*@
+
+
+@* Initialize radio buttons to hide and show and the search container*@
+<script>
+    $(document).ready(function () {
+        // Initialize radio buttons and the search container
+        var radioProjectName = $('#showAll');
+        var radioStackholderName = $('#showRadio1');
+        var radioStageName = $('#showRadio2');
+        var radioStatusName = $('#showRadio3');
+        var radioActionName = $('#showRadio4');
+        var radioinitiatedBy = $('#showRadio5');
+        var searchContainer = $('#searchContainer');
+        var searchStackholder = $('#searchStackholder');
+        var searchStage = $('#searchStage');
+        var searchStatus = $('#searchStatus');
+        var searchAction = $('#searchAction');
+        var searchinitiatedby = $('#searchinitiatedby');
+        var tableActionContainer = $('#tableActionContainer');
+        var tableStageContainer = $('#tableStageContainer');
+        var tableStatusContainer = $('#tableStatusContainer');
+        var tableStackContainer = $('#tableStackContainer');
+        var tableProjContainer = $('#tableProjContainer');
+        var tableInitiatedByContainer = $('#tableInitiatedByContainer');
+
+        function hideOtherElements() {
+            searchStackholder.hide();
+            searchStage.hide();
+            searchStatus.hide();
+            searchAction.hide();
+            searchinitiatedby.hide();
+        }
+
+        function hidetables() {
+            tableStackContainer.hide();
+            tableStatusContainer.hide();
+            tableStageContainer.hide();
+            tableActionContainer.hide();
+            tableInitiatedByContainer.hide();
+        }
+
+
+        function hideOtherElements1() {
+            searchContainer.hide();
+            searchStage.hide();
+            searchStatus.hide();
+            searchAction.hide();
+            searchinitiatedby.hide();
+        }
+
+        function hidetables1() {
+            tableProjContainer.hide();
+            tableStatusContainer.hide();
+            tableStageContainer.hide();
+            tableActionContainer.hide();
+            tableInitiatedByContainer.hide();
+        }
+
+        function hideOtherElements2() {
+            searchStackholder.hide();
+            searchContainer.hide();
+            searchStatus.hide();
+            searchAction.hide();
+            searchinitiatedby.hide();
+        }
+
+        function hidetables2() {
+            tableProjContainer.hide();
+            tableStatusContainer.hide();
+            tableStackContainer.hide();
+            tableActionContainer.hide();
+            tableInitiatedByContainer.hide();
+        }
+
+
+        function hideOtherElements3() {
+            searchStackholder.hide();
+            searchContainer.hide();
+            searchStage.hide();
+            searchAction.hide();
+            searchinitiatedby.hide();
+        }
+
+        function hidetables3() {
+            tableProjContainer.hide();
+            tableStageContainer.hide();
+            tableStackContainer.hide();
+            tableActionContainer.hide();
+            tableInitiatedByContainer.hide();
+        }
+
+        function hideOtherElements4() {
+            searchStackholder.hide();
+            searchContainer.hide();
+            searchStage.hide();
+            searchStatus.hide();
+            searchinitiatedby.hide();
+        }
+
+        function hideOtherElements5() {
+            searchStackholder.hide();
+            searchContainer.hide();
+            searchStage.hide();
+            searchStatus.hide();
+            searchAction.hide();
+        }
+
+        function hidetables4() {
+            tableProjContainer.hide();
+            tableStageContainer.hide();
+            tableStackContainer.hide();
+            tableStatusContainer.hide();
+            tableInitiatedByContainer.hide();
+        }
+
+
+        function hidetables5() {
+            tableProjContainer.hide();
+            tableStageContainer.hide();
+            tableStackContainer.hide();
+            tableStatusContainer.hide();
+            tableActionContainer.hide();
+        }
+
+
+
+
+
+        radioProjectName.change(function () {
+            if (radioProjectName.is(':checked')) {
+                // Show the search container when "showAll" is selected
+                searchContainer.show();
+                tableProjContainer.show()
+                hideOtherElements();
+                hidetables();
+
+            } else {
+                // Hide the search container when another option is selected
+                searchContainer.hide();
+                // Show other elements when a different option is selected
+                searchStackholder.show();
+                searchStage.show();
+                searchStatus.show();
+                searchAction.show();
+                tableActionContainer.show();
+                tableStageContainer.show();
+                tableStatusContainer.show();
+                tableStackContainer.show();
+                tableProjContainer.hide();
+
+            }
+        });
+
+        radioStackholderName.change(function () {
+            if (radioStackholderName.is(':checked')) {
+                // Show the search container when "showAll" is selected
+                searchStackholder.show();
+                tableStackContainer.show();
+                hideOtherElements1();
+                hidetables1();
+
+            } else {
+                // Hide the search container when another option is selected
+                searchContainer.show();
+                searchStackholder.hide();
+                searchStage.show();
+                searchStatus.show();
+                searchAction.show();
+                tableActionContainer.show();
+                tableStageContainer.show();
+                tableStatusContainer.show();
+                tableStackContainer.hide();
+                tableProjContainer.show();
+
+            }
+        });
+
+        radioStageName.change(function () {
+            if (radioStageName.is(':checked')) {
+                searchStage.show();
+                tableStageContainer.show();
+                hideOtherElements2();
+                hidetables2();
+            } else {
+                searchContainer.show();
+                searchStackholder.show();
+                searchStage.hide();
+                searchStatus.show();
+                searchAction.show();
+                tableActionContainer.show();
+                tableStageContainer.hide();
+                tableStatusContainer.show();
+                tableStackContainer.show();
+                tableProjContainer.show();
+            }
+        });
+
+        radioStatusName.change(function () {
+            if (radioStatusName.is(':checked')) {
+                // Show the search container when "showAll" is selected
+                searchStatus.show();
+                tableStatusContainer.show();
+                hidetables3();
+                hideOtherElements3();
+            } else {
+                // Hide the search container when another option is selected
+                searchContainer.show();
+                // Show other elements when a different option is selected
+                searchStackholder.show();
+                searchStage.show();
+                searchStatus.hide();
+                searchAction.show();
+                tableActionContainer.show();
+                tableStageContainer.show();
+                tableStatusContainer.hide();
+                tableStackContainer.show();
+                tableProjContainer.show();
+
+            }
+        });
+
+        radioActionName.change(function () {
+            if (radioActionName.is(':checked')) {
+                // Show the search container when "showAll" is selected
+                searchAction.show();
+                tableActionContainer.show();
+                hideOtherElements4();
+                hidetables4();
+            } else {
+                // Hide the search container when another option is selected
+                searchContainer.show();
+                // Show other elements when a different option is selected
+                searchStackholder.show();
+                searchStage.show();
+                searchStatus.show();
+                searchAction.hide();
+
+                tableActionContainer.hide();
+                tableStageContainer.show();
+                tableStatusContainer.show();
+                tableStackContainer.show();
+                tableProjContainer.show();
+            }
+        });
+
+
+        radioinitiatedBy.change(function () {
+            if (radioinitiatedBy.is(':checked')) {
+                // Show the search container when "showAll" is selected
+                searchinitiatedby.show();
+                hideOtherElements5();
+                hidetables5();
+                tableInitiatedByContainer.show();
+
+            } else {
+                // Hide the search container when another option is selected
+                searchContainer.hide();
+                // Show other elements when a different option is selected
+                searchStackholder.show();
+                searchStage.show();
+                searchStatus.show();
+                searchAction.show();
+                tableActionContainer.show();
+                tableStageContainer.show();
+                tableStatusContainer.show();
+                tableStackContainer.show();
+                tableProjContainer.show();
+
+            }
+        });
+
+
+        // Initially, hide the search container and other elements
+        searchContainer.hide();
+        searchStackholder.hide();
+        searchStage.hide();
+        searchStatus.hide();
+        searchAction.hide();
+        tableStackContainer.hide();
+        tableStatusContainer.hide();
+        tableStageContainer.hide();
+        tableActionContainer.hide();
+        tableProjContainer.hide();
+
+        hideOtherElements();
+        hideOtherElements1();
+        hideOtherElements2();
+        hideOtherElements3();
+        hideOtherElements4();
+        hidetables();
+        hidetables1();
+        hidetables2();
+        hidetables3();
+        hidetables4();
+        hidetables5();
+    });
+</script>
+

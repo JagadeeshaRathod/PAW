@@ -1,0 +1,128 @@
+﻿/*.container {
+    width: 100%;
+}
+
+.heading-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #333;
+    margin: 0 10px;
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.col-4, .col-8 {
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.col-4 {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+}
+
+.col-8 {
+    flex: 0 0 66.67%;
+    max-width: 66.67%;
+}
+
+#checklist th, #checklist td {
+    font-size: 20px;
+    padding: 5px;
+    border: 1px solid #000000;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#htmlTopdf td, #htmlTopdf th {
+    text-align: center;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+
+.long-text {
+    max-width: 300px;
+    overflow: auto;
+    text-overflow: inherit;
+    white-space: nowrap;
+}
+
+@media print {
+    .container {
+        display: block;
+        page-break-before: auto;
+        page-break-after: auto;
+        page-break-inside: avoid;
+    }
+
+    .content {
+        display: block;
+        page-break-before: auto;
+        page-break-after: auto;
+        page-break-inside: avoid;
+    }
+
+    .col-4, .col-8 {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+        page-break-inside: avoid;
+    }
+
+    #htmlTopdf th, #htmlTopdf td {
+        font-size: 12px;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: underline;
+    margin-top: 30px;
+}
+
+
+#htmlTopdf td {
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#htmlTopdf tr {
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#htmlTopdf th {
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+*/

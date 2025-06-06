@@ -1,0 +1,438 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using swas.BAL.DTO
+@using swas.BAL.Helpers
+@using Microsoft.AspNetCore.Authorization
+
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+
+    TempData["Tabshift"] = 0;
+    Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+
+}
+@{
+
+    bool isAdmin = User.Identity.IsAuthenticated && User.IsInRole("Dte");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>@ViewData["Title"] - PAW</title>
+<!-- loader-->
+<script>
+
+    if (performance.navigation.type === 1) {
+
+        localStorage.setItem('pageRefreshed', 'true');
+    }
+
+
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+
+
+
+
+</script>
+
+
+
+<head>
+
+    <style>
+        .header {
+            background-color: #044c92; /* Replace with your desired header color */
+            color: #044c92; /* Replace with your desired text color for the header */
+        }
+
+        .footer {
+            background-color: #044c92; /* Replace with your desired footer color */
+            color: #044c92; /* Replace with your desired text color for the footer */
+        }
+
+        .wrapper .page-content {
+            margin-top: 0px !important;
+        }
+    </style>
+    <style>
+
+        .loader-container {
+            position: relative;
+            display: table-cell;
+            vertical-align: middle;
+            z-index: 12;
+            text-align: center;
+        }
+
+            .loader-container img {
+                width: 60px;
+            }
+
+        .loader {
+            vertical-align: top;
+        }
+
+
+        .loader {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            vertical-align: middle;
+            background-color: rgba(255, 255, 255, 0.75);
+            position: fixed;
+            display: table;
+            width: 100%;
+            top: 0;
+            height: 100%;
+            min-height: 100%;
+            z-index: 99999;
+            left: 0;
+        }
+
+        .loader-container {
+            position: relative;
+            display: table-cell;
+            vertical-align: middle;
+            z-index: 12;
+            text-align: center;
+        }
+
+            .loader-container img {
+                width: 60px;
+            }
+
+        .loader {
+            vertical-align: top;
+        }
+
+        .top-header1 {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0px;
+            right: 0px;
+            height: 65px;
+            padding: 0 1.5rem;
+            background-clip: border-box;
+            z-index: 5;
+            transition: 0.3s all;
+            box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 50%);
+            background: #044c92;
+            
+        }
+
+            .top-header1 .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+        .headertext {
+            margin: 0;
+        }
+
+        .top-navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-setting {
+            margin-right: 1rem; /* Adjust the margin as needed */
+        }
+
+        .user-img,
+        .dgislogo {
+            height: 40px; /* Adjust the height as needed */
+        }
+
+        /* Add responsive styles if needed */
+
+        .footer1 {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0.7rem;
+            color: white;
+            background-color: #fff;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            transition: .3s all;
+            background: #044c92;
+            
+        }
+
+        .headertext1 {
+            font-size: 35px;
+            font-weight: 600;
+            margin-top: 9px;
+            font-family: "Roboto", sans-serif;
+            color: white;
+            text-shadow: 2px 2px 4px black;
+            margin-left: 55px;
+        }
+
+        .user-img,
+        .dgislogo {
+            height: 40px; /* Adjust the height as needed */
+        }
+
+        .top-navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-setting {
+            margin-right: 1rem; /* Adjust the margin as needed */
+        }
+    </style>
+
+
+    <link rel="stylesheet" href="~/" asp-append-version="true" />
+
+
+    <!-- CSS Files -->
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/css/bootstrap-extended.css" rel="stylesheet">
+    <link href="~/assets/css/style.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/select2.min.css" rel="stylesheet" />
+    <link href="~/assets/css/icons.css" rel="stylesheet">
+    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet">
+    <!--data Table-->
+    <link rel="stylesheet" href="~/assets/dataTable/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/dataTable/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/assets/dataTable/css/buttons.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="~/assets/dataTable/css/all.min.css">
+    <link href="~/assets/dataTable/css/searchbuilder.datatables.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/all.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/jquery.datatables.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/datatables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/datatables.datetime.min.css" rel="stylesheet" />
+
+    <script language="JavaScript" type="text/javascript" src="~/assets/js/jquery.min.js"></script>
+
+    <script language="JavaScript" type="text/javascript" src="~/assets/js/bootstrap.bundle.min.js"></script>
+
+    <!--plugins-->
+
+    <link href="~/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <script language="JavaScript" type="text/javascript" src="~/assets/plugins/chartjs/chart.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/plugins/metismenu/js/metisMenu.min.js"></script>
+
+    <!-- Main JS-->
+    <script language="JavaScript" type="text/javascript" src="~/assets/js/main.js"></script>
+    <!-- dataTable-->
+
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/jquery.dataTables.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.bootstrap4.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.buttons.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.bootstrap4.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/jszip.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/pdfmake.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/vfs_fonts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.html5.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.print.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.colVis.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.responsive.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/assets/dataTable/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/assets/dataTable/js/pdfmake.min.js"></script>
+    <script src="~/assets/dataTable/js/datatables.datetime.min.js"></script>
+    <script src="~/assets/dataTable/js/datatables.searchbuilder.min.js"></script>
+    <script src="~/assets/dataTable/js/fnmultifilter.js"></script>
+    <link href="~/css/sweetalert2.min.css" rel="stylesheet">
+    <script src="~/assets/datatable/js/select2.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/js/sweetalert2.all.min.js"></script>
+
+
+    <script src="~/DeveloperJs/ddlSanal.js"></script>
+
+
+</head>
+
+
+<!--start top header-->
+<header class="top-header1" style="color: blue">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand gap-3">
+            <div class="mobile-menu-button">
+                <ion-icon name="menu-sharp"></ion-icon>
+            </div>
+            <div class="user-setting">
+                <img src="~/assets/images/logo2.png" class="dgislogo" alt="">
+            </div>
+            <p class="headertext1">Portal for Appl Whitelisting (PAW)</p>
+            <div class="user-setting">
+                <img src="~/assets/images/logo2.png" class="dgislogo" alt="">
+            </div>
+            <div class="top-navbar-right">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item dropdown dropdown-user-setting">
+
+
+
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+
+<div class="wrapper">
+    <div id="loading" class="loader">
+        <div class="loader-container">
+            @*<img src="/images/loads.gif" width="600px" height="200px">*@
+            <img src="/assets/images/loadsss.gif" height="100">
+            <div>
+                <h4 style="margin-top: -20px;">Loading...</h4>
+                <span>Please wait... This may take few seconds...</span>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--   unit level users menu end -->
+    @*<div class="container">
+    <main role="main" class="pb-3">*@
+
+    <div class="page-content-wrapper">
+        @if (Logins != null)
+        {
+            <div class="switcher-body" style="visibility: hidden;">
+                <button class="btn btn-primary btn-switcher shadow-sm" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                    <ion-icon name="color-palette-sharp" class="me-0"></ion-icon>
+                </button>
+                <div class="offcanvas offcanvas-end shadow border-start-0 p-2" data-bs-scroll="true" data-bs-backdrop="false"
+                     tabindex="-1" id="offcanvasScrolling">
+                    <div class="offcanvas-header border-bottom">
+                        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Theme Customizer</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <h6 class="mb-0">Theme Variation</h6>
+                        <hr>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="LightTheme" value="option1">
+                            <label class="form-check-label" for="LightTheme">Light</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="DarkTheme" value="option2">
+                            <label class="form-check-label" for="DarkTheme">Dark</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SemiDark" value="option3"
+                                   checked>
+                            <label class="form-check-label" for="SemiDark">Semi Dark</label>
+                        </div>
+                        <hr />
+                        <h6 class="mb-0">Header Colors</h6>
+                        <hr />
+                        <div class="header-colors-indigators">
+                            <div class="row row-cols-auto g-3">
+                                <div class="col">
+                                    <div class="indigator headercolor1" id="headercolor1"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="indigator headercolor2" id="headercolor2"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="indigator headercolor3" id="headercolor3"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="indigator headercolor4" id="headercolor4"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="indigator headercolor5" id="headercolor5"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="indigator headercolor6" id="headercolor6"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="indigator headercolor7" id="headercolor7"></div>
+                                </div>
+                                <div class="col">
+                                    <div class="indigator headercolor8" id="headercolor8"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        <!-- start page content-->
+        <div class="page-content">
+
+            @RenderBody()
+        </div>
+
+    </div>
+    @*</main>
+    </div>*@
+    <!--start footer-->
+
+    <a href="javaScript:;" class="back-to-top">
+        <ion-icon name="arrow-up-outline"></ion-icon>
+    </a>
+
+    <div class="overlay nav-toggle-icon"></div>
+
+    <script>
+        function ValInData(input) {
+            var regex = /[^a-zA-Z0-9/ ]/g;
+            input.value = input.value.replace(regex, "");
+        }
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#loading").hide();
+            $(document).ajaxStart(function () {
+                $("#loading").show();
+            }).ajaxStop(function () {
+                $("#loading").hide();
+            }).ajaxError(function () {
+                $("#loading").hide();
+            });
+
+        });
+
+
+
+    </script>
+</div>
+
+@if (Logins != null)
+{
+    <footer class="footer1" style="position: fixed;margin-bottom: 0px;">
+        <div class="footer-text">
+            Copyright &copy; Developed by ASDC, DGIS
+        </div>
+    </footer>
+}
+
+
+
+@RenderSection("scripts", required: false)
+
+</html>

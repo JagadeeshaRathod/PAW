@@ -1,0 +1,294 @@
+﻿@using swas.DAL.Models
+@model tbl_Projects
+
+@{
+    ViewBag.Title = "Projects List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<style>
+    .form-card {
+        display: block; /* Initially show the form */
+    }
+
+    .additional-details {
+        display: none; /* Hide the additional details initially */
+    }
+
+    .underline-h5 {
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0 auto; /* Center the box */
+        text-align: center;
+        border-color: #03c1fc;
+        /*box-shadow: 2px 6px 5px -3px #062b50;*/
+        background-color: #0cafff;
+        color: white;
+        font-family: Arial;
+        font-size: 19px;
+        margin-bottom: 0.5rem;
+        height: -1px;
+    }
+</style>
+
+@using (Html.BeginForm("EditProjHistory", "ProjEdit", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+
+        <!--Proj Details-->
+        <div class="col-12 col-lg-12 col-xl-12 d-flex">
+
+            <div class="card radius-10 w-100" style="height:285px">
+                <div class="project-heading mb-4">
+                    <h2 class="text-center mb-4 underline-h5" style="text-align: center; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;height: 33px;">Project Basic Details</h2>
+                </div>
+                <div class="card-body" style="overflow-y:auto; margin-top: -63px;">
+
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <th class="w-25">Proj Name</th>
+                            <td>
+                                @Model.ProjName
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <th>Aim & Scope</th>
+                            <td>@Model.AimScope</td>
+
+                        </tr>
+                        <tr>
+                            <th>Usability of Proposed Appln</th>
+                            <td>@Model.UsabilityofProposedAppln</td>
+
+                        </tr>
+
+                        <tr>
+                            <th>Name of Sponsor</th>
+                            <td>@Model.StakeHolder</td>
+
+
+                        </tr>
+                        <tr>
+                            <th>Proposed Tech Stack</th>
+                            <td>@Model.TechStackProposed</td>
+
+                        </tr>
+                        <tr>
+                            <th>Type of Software</th>
+                            <td>@Model.TypeofSW</td>
+                        <tr>
+                            <th>NW Bandwidth Reqmt</th>
+                            <td>@Model.NWBandWidthReqmt</td>
+
+                        </tr>
+                        <tr>
+                            <th>Hosted On</th>
+                            <td>@Model.Hostedon</td>
+
+                        </tr>
+                        <tr>
+                            <th>Deployment Type</th>
+                            <td>@Model.Deplytype</td>
+
+                        </tr>
+                        <tr>
+                            <th>Being Devp In House..?</th>
+                            <td>@Model.BeingDevpInhouse</td>
+
+                        </tr>
+
+                        <tr>
+                            <th>Usability of Propsed Appln</th>
+                            <td>@Model.UsabilityofProposedAppln</td>
+
+                        </tr>
+                        <tr>
+                            <th>Reqmt Justification</th>
+                            <td>@Model.ReqmtJustification</td>
+
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="project-heading mb-4">
+            <h2 class="text-center mb-4 underline-h5" style="text-align: center; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;height: 33px;">Addl Project Details</h2>
+        </div>
+
+        <!-- Proj Details -->
+        <div class="col-12 col-lg-12 col-xl-4 d-flex" style="margin-top:-40px;">
+
+            <div class="card radius-10 w-100">
+                <div class="card-body">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DetlsofUserBase, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.DetlsofUserBase, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DetlsofUserBase, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EnvisagedCost, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EnvisagedCost, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EnvisagedCost, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NWBandWidthReqmt, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.NWBandWidthReqmt, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NWBandWidthReqmt, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Sponsor Details -->
+        <div class="col-12 col-lg-12 col-xl-4 d-flex" style="margin-top:-40px;">
+            <div class="card radius-10 w-100">
+                <div class="card-body">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MajTimeLines, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.MajTimeLines, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MajTimeLines, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TechStackProposed, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.TechStackProposed, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TechStackProposed, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DataSecurity_backup, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.DataSecurity_backup, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DataSecurity_backup, "", new { @class = "text-danger" })
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Tech Details -->
+        <div class="col-12 col-lg-12 col-xl-4 d-flex" style="margin-top:-40px;">
+            <div class="card radius-10 w-100">
+                <div class="card-body">
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TypeofSW, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.TypeofSW, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TypeofSW, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BeingDevpInhouse, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.BeingDevpInhouse, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.BeingDevpInhouse, "", new { @class = "text-danger" })
+                    </div>
+
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EndorsmentbyHeadof, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.EndorsmentbyHeadof, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EndorsmentbyHeadof, "", new { @class = "text-danger" })
+
+
+                        @Html.HiddenFor(model => model.InitialRemark, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.IsWhitelisted, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.ProjName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.ProjCode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.StakeHolderId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.AimScope, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.UsabilityofProposedAppln, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.Action, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.AdRemarks, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.Apptype, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.CompletionDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.InitiatedDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.Hostedon, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.HostTypeID, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.CurrentPslmId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.EditDeleteDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.EditDeleteBy, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.TechStackProposed, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.BeingDevpInhouse, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.NWBandWidthReqmt, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.HiddenFor(model => model.TypeofSW, new { htmlAttributes = new { @class = "form-control" } })
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <center>
+                    <button type="submit" class="btn btn-save" id="AddlDetails" style="background-color: blue;color:white">
+                        Update
+                    </button>
+                    <span style="margin-left: 20px;">
+                        <button type="button" class="btn btn-save" style="background-color: blue; color: white" onclick="window.location.href='@Url.Action("Index")'">
+                            Back
+                        </button>
+
+                    </span>
+                </center>
+            </div>
+            <br>  <br> <br> <br> <br> <br> <br>
+        </div>
+    </div>
+
+}
+
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Project Detl Updated..',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+
+        </text>
+        TempData.Remove("SuccessMessage");
+    }
+</script>
+
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Something Went Wrong....!',
+                text: '@TempData["FailureMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+
+    }
+</script>

@@ -1,0 +1,1307 @@
+﻿@*View Created by Sub Maj M Sanal Kumar on :  02 Aug 23
+	Changes for View :  by Hav Mani on : 02 Aug 23
+*@
+
+@using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal
+@using Newtonsoft.Json;
+@using swas.BAL.Helpers
+@using swas.BAL.Repository
+@using swas.DAL
+@using swas.DAL.Models
+@using swas.BAL.Interfaces
+@using swas.BAL.DTO
+@model CommonDTO
+
+@{
+    ViewBag.Title = "Projects List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int sno = 0;
+    bool sbcde = ViewBag.SubmitCde ?? false;
+    ViewBag.SubmitCde = sbcde;
+
+    TempData["projpsmided"] = TempData["projpsmided"];
+    int tabshift = (int)TempData["Tabshift"];
+    TempData.Remove("Tabshift");
+    if (tabshift == 0)
+        tabshift = 1;
+
+    // if (ViewBag.ProjEdit != null)
+    // {
+    //     Model.ProjEdit = ViewBag.ProjEdit;
+    // }
+    //Projmove pmove = new Projmove();
+    //pmove.DataProjId = 0;
+    if (Model.ProjEdit != null && TempData["ProjID"] == null)
+    {
+        if (Model.ProjEdit.ProjId != 0)
+        {
+            TempData["ProjID"] = Model.ProjEdit.ProjId;
+        }
+
+    }
+    else if ((int)TempData["ProjID"] < 1)
+    {
+        TempData["ProjID"] = TempData["ProjID"];
+    }
+    else
+    {
+        TempData["ProjID"] = 0;
+    }
+    
+}
+
+<div class="container-fluid">
+
+   
+    <div id="editFormContainer" style="display: none;">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                    <div class="newprojectheading">
+                        Edit Project
+                    </div>
+                   
+                    @using (Html.BeginForm("EditProjUndo", "Projects", FormMethod.Post, new { id = "msformx", enctype = "multipart/form-data" }))
+                    {
+
+                        <ul id="progressbar">
+                            <li class="active" id="BasicDetailsed"><strong> Project Basic Details</strong></li>
+                            <li id="AddlDetailsed"><strong>Project Additional Details</strong></li>
+                            <li id="Uploaded"><strong>Upload</strong></li>
+                            <li id="confirmed"><strong>Finish</strong></li>
+                        </ul>
+
+
+                        <fieldset id="5">
+
+
+                            <div class="form-card">
+
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title"></h2>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="steps">Step 1 - 4</div>
+                                    </div>
+                                </div>
+
+
+                                <!--First row start   EDIT BLOCK-->
+                                @*<div class="row d-flex justify-content-center">*@
+
+
+                                <table class="new-table">
+                                    <tr>
+                                        <td>
+                                            @Html.HiddenFor(model => model.ProjEdit.ProjId, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+
+                                            @Html.HiddenFor(model => model.ProjEdit.CurrentPslmId, new { htmlAttributes = new { @class = "form-control", required = "required"  } })
+
+                                            @Html.LabelFor(model => model.ProjEdit.ProjName, "Project Name")<font style="color:red;"><b>*</b></font>
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.ProjName, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.ProjName, "Project Name Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.InitiatedDate, "Initiation Date")<font style="color:red;"><b>*</b></font>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ProjEdit.InitiatedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.InitiatedDate, "Initiation Date Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+
+                                        <td>
+
+                                            @Html.LabelFor(model => model.ProjEdit.CompletionDate, "Completion Date")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+
+                                            @if (Model.ProjEdit != null)
+                                            {
+                                                <input asp-for="@Model.ProjEdit.CompletionDate" type="date" asp-format="{0:dd-MM-yyyy}" class="form-control" />
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBoxFor(model => model.ProjEdit.CompletionDate, new { @class = "form-control", type = "date", required = "required"})
+
+
+                                            }  
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.CompletionDate, "Completion Date Required", new { @class = "text-danger" })
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <!--next row-->
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.IsWhitelisted, "Is Whitelisted")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.IsWhitelisted, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.IsWhitelisted, "Whitelist Status Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.InitialRemark, "Initial Remark")<font style="color:red; "><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.InitialRemark, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.InitialRemark, "Initial Remark Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.StakeHolderId, "Stakeholder")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.ProjEdit.StakeHolderId,   ViewBag.stkhold as SelectList, new {id = "ddlUnitIdedit", @class = "form-control", required = "required" })
+
+                                            @* @Html.DropDownListFor(model => model.ProjEdit.StakeHolderId, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { id = "ddlUnitIdedit", @class = "form-control", required = "required" }) *@
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.StakeHolderId, "Stake Holder Required", new { @class = "text-danger" })
+                                            </div>
+
+
+
+                                            @Html.HiddenFor(model => model.ProjEdit.IsActive, new { htmlAttributes = new { @class = "form-control" } })
+
+                                            @Html.EditorFor(model => model.ProjEdit.DateTimeOfUpdate, new { htmlAttributes = new { @class = "hidden-date form-control", type = "date" } })
+
+
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.AimScope, "Aim and Scope")<font style="color:red; "><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(model => model.ProjEdit.AimScope,  new { @class = "form-control", required = "required",  oninput = "ValInData(this)"   })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.AimScope, "Aim and Scope Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.HQandITinfraReqd, "HQ and IT Infrastructure Required")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.HQandITinfraReqd, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.HQandITinfraReqd, "HQ and IT Infrastructure Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.HostTypeID)<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.ProjEdit.HostTypeID,  ViewBag.Hostedon as SelectList, new { id = "Hostedtype", @class = "form-control", required = "required" })
+
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.HostTypeID, "Hosted on  Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.ContentofSWApp)<font style="color:red; "><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(model => model.ProjEdit.ContentofSWApp,  new { @class = "form-control", required = "required", oninput = "ValInData(this)"  })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.ContentofSWApp, "Content of App  Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.ReqmtJustification)<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(model => model.ProjEdit.ReqmtJustification, new { @class = "form-control", required = "required", oninput = "ValInData(this)"  })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.ReqmtJustification, "Reqmt Justification  Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.UsabilityofProposedAppln)<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.UsabilityofProposedAppln, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.UsabilityofProposedAppln, "Usability Proposed Appln Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                                    <tr>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.Apptype, "Appln Type")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.ProjEdit.Apptype,  ViewBag.apptype as SelectList, new { id = "ddlAppTypeEdit", @class = "form-control", required = "required" })
+                                           
+
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                </table>
+
+                              
+                            </div>
+
+                            <input type="button" name="next" class="next action-button" value="Next" />
+                        </fieldset>
+
+
+                        <fieldset id="6">
+
+
+                            <div class="form-card">
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title"></h2>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="steps">Step 2 - 4</div>
+                                    </div>
+                                </div>
+
+
+                                <table class="new-table">
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.DetlsofUserBase)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.DetlsofUserBase, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.EnvisagedCost)
+
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ProjEdit.EnvisagedCost, new { @class = "form-control", type = "text", id = "envisagedCostInput",onkeyup="ValInData(this)" })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.NWBandWidthReqmt)
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.NWBandWidthReqmt, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.MajTimeLines)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.MajTimeLines, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.TechStackProposed)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.TechStackProposed, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.DataSecurity_backup)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.DataSecurity_backup, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.TypeofSW)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.TypeofSW, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.BeingDevpInhouse)
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.BeingDevpInhouse, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.EndorsmentbyHeadof)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.EndorsmentbyHeadof, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+
+
+                            </div>
+                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            <input type="submit" id="submitUpload" name="next" class="next action-button" value="Next" />
+                           
+
+                        </fieldset>
+
+                        <!--End Proeject Basic Details -->
+                        <!--Start Upload Form-->
+
+                        <fieldset id="uploaded">
+
+                            <div class="form-card">
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title"></h2>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="steps">Step 3 - 4</div>
+                                    </div>
+                                </div>
+
+                                @Html.Partial("_newprojfwdupload");
+
+
+                            </div>
+
+                            @*  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                        *@
+                            <input type="button" id="finaluploaded" name="next" class="next action-button" value="Upload" />
+
+                        </fieldset>
+                        <fieldset id="8">
+                            <div class="form-card">
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title"></h2>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="steps">Step 4 - 4</div>
+                                    </div>
+                                </div>
+
+                                <br><br>
+                                <h2 class="purple-text text-center"><strong>Edited and Fwd !</strong></h2>
+                                <br> <br />
+
+
+                                <div class="purple-text text-center">
+                                    <center>
+                                        <a href="/Projects/ClearTempDataAndRedirect">
+                                            <input type="button" class="next action-button" value="Add More Projects" />
+                                        </a><br><br>
+                                        <a href="/Home/Index">
+                                            <input type="button" class="next action-button" value="Dashboard" />
+                                        </a>
+                                    </center>
+                                </div>
+                                <br><br>
+                                <div class="row justify-content-center">
+                                   
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!--End Upload Form-->
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End This is Edit Project Layout Open and hide-->
+
+
+
+</div>
+
+
+<div class="card radius-10 w-100">
+    <div class="card-body">
+        Project Created/Fwd/Recd
+
+       @*  <table id="SoftwareType1" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+
+                    <th>Project</th>
+                    <th>Stakeholder</th>
+
+                    <th>Initiated Date</th>
+                    <th>Completion Date</th>
+                    <th>Whitelisted</th>
+                    <th>Last Remark</th>
+
+                    <th>Updated on</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var project in Model.Projects)
+                {
+                    <tr>
+
+                        <td>
+                            @if (project.ActionCde == 1)
+                            {
+                                <a class="editButton" data-proj-id="@project.ProjId" data-psm-id="@project.CurrentPslmId" data-proj-name="@project.ProjName">
+                                    <img src="~/assets/images/Edit.png" width="15" height="15" alt="Edit Image">
+                                </a>
+                            }
+
+                        </td>
+                        <td>
+                            @if (project.ActionCde == 1)
+                            {
+                                <a class="deleteButton" data-proj-name="">
+                                    <img src="~/assets/images/Del.png" width="18" height="18" alt="Edit Image">
+                                </a>
+
+                            }
+                            else
+
+                            {
+                                <img src="~/assets/images/icons/accept.png" width="18" height="18" alt="Readed">
+                            }
+                        </td>
+
+
+
+                        <td>
+                            <a class="peditButton" data-proj-name="@project.ProjName">
+                                @project.ProjName
+                            </a>
+                        </td>
+                        <td>@project.StakeHolder</td>
+                        
+                        <td>@project.InitiatedDate?.ToString("dd-MM-yyyy")</td>
+                        <td>@project.CompletionDate?.ToString("dd-MM-yyyy")</td>
+                        <td>@project.IsWhitelisted</td>
+                        <td>@project.InitialRemark</td>
+                       
+                        <td>@project.DateTimeOfUpdate?.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            @project.Status
+
+                        </td>
+
+                        <td>
+                            @project.Action
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+
+        </table>
+ *@
+
+    </div>
+</div>
+
+<div class="modal fade" id="UnitAdd" tabindex="-1" aria-labelledby="UnitAddViewLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:650px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="UnitAddLabel">Add Unit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                @Html.Partial("_unitdetls", new UnitDtl { UnitName = "" })
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.pluscircle', function () {
+            $('#UnitAdd').modal('show');
+        });
+
+
+        var initiatedDateInput = $("#ProjEdit_InitiatedDate");
+        var completionDateInput = $("#ProjEdit_CompletionDate");
+
+        var today = new Date();
+
+
+        var formattedDate = today.getFullYear() + '-' + (today.getMonth() + 1).toString().padStart(2, '0') + '-' + today.getDate().toString().padStart(2, '0');
+
+
+        $("#ProjEdit_InitiatedDate").val(formattedDate);
+
+        var completionDateInput = document.getElementById("ProjEdit_CompletionDate");
+
+    @if (Model.ProjEdit != null && Model.ProjEdit.CompletionDate.HasValue)
+    {
+
+        var completionDateValue = Model.ProjEdit.CompletionDate.Value.ToString("yyyy-MM-dd");
+        @Html.Raw("ProjEdit_CompletionDate.value = '" + completionDateValue + "';")
+    }
+
+                    });
+</script>
+
+
+
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var form = document.getElementById('msform');
+        var submitButton = document.getElementById('submitUpload');
+        submitButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            form.submit();
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        var initiatedDateInput = $("#ProjEdit_InitiatedDate");
+        var completionDateInput = $("#ProjEdit_CompletionDate");
+
+        completionDateInput.on("change", function () {
+
+            var initiatedDateVal = initiatedDateInput.val();
+            var completionDateVal = completionDateInput.val();
+
+            if (!initiatedDateVal) {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Initiation Date is required',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+
+                completionDateInput.val('');
+                return;
+            }
+
+            var initiatedDate = new Date(initiatedDateVal);
+            var completionDate = new Date(completionDateVal);
+
+
+            if (completionDate <= initiatedDate) {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: 'Completion Date must be greater than Initiation Date',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+
+                completionDateInput.val('');
+            }
+        });
+    });
+</script>
+
+
+
+<script>
+
+
+    const addFormContainer = document.getElementById('addForm');
+
+    addFormContainer.style.display = 'block';
+    document.addEventListener('DOMContentLoaded', () => {
+        const editButtons = document.querySelectorAll('.editButton');
+        editButtons.forEach(editButton => {
+            editButton.addEventListener('click', async () => {
+
+
+
+
+                var fdset = "fieldset#" + "uploaded";
+                $(fdset).hide();
+                var fdset = "fieldset#" + "5";
+
+                editFormContainer.style.display = 'block';
+                addFormContainer.style.display = 'none';
+
+                $("#fieldset#5").addClass("active");
+                $(fdset).show();
+
+
+
+                const projId = editButton.getAttribute('data-proj-id');
+                const response = await fetch(`/Projects/Details?id=${projId}`);
+                const data = await response.json();
+
+                if (data.success) {
+
+                    const project = data.project;
+
+
+
+                    const editFormContainer = document.getElementById('editFormContainer');
+                    const ProjNameInput = editFormContainer.querySelector('#ProjEdit_ProjName');
+                    const InitiatedDateInput = editFormContainer.querySelector('#ProjEdit_InitiatedDate');
+                    const CompletionDateInput = editFormContainer.querySelector('#ProjEdit_CompletionDate');
+                    const IsWhitelistedInput = editFormContainer.querySelector('#ProjEdit_IsWhitelisted');
+                    const InitialRemarkInput = editFormContainer.querySelector('#ProjEdit_InitialRemark');
+                    const StakeHolderIdSelect = editFormContainer.querySelector('#ddlUnitIdedit');
+                    const AppTypeidSelect = editFormContainer.querySelector('#ddlAppTypeEdit');
+                    const AimScopeTextarea = editFormContainer.querySelector('#ProjEdit_AimScope');
+                    const HQandITinfraReqdInput = editFormContainer.querySelector('#ProjEdit_HQandITinfraReqd');
+                    const HostedonInput = editFormContainer.querySelector('#Hostedtype');
+                    const ContentofSWAppTextarea = editFormContainer.querySelector('#ProjEdit_ContentofSWApp');
+                    const ReqmtJustificationTextarea = editFormContainer.querySelector('#ProjEdit_ReqmtJustification');
+                    const UsabilityofProposedApplnInput = editFormContainer.querySelector('#ProjEdit_UsabilityofProposedAppln');
+                    const DetlsofUserBaseInput = editFormContainer.querySelector('#ProjEdit_DetlsofUserBase');
+
+                    const EnvisagedCostTextarea = editFormContainer.querySelector('#envisagedCostInput');
+
+                    const NWBandWidthReqmtInput = editFormContainer.querySelector('#ProjEdit_NWBandWidthReqmt');
+
+
+                    const MajTimeLinesInput = editFormContainer.querySelector('#ProjEdit_MajTimeLines');
+                    const TechStackProposedInput = editFormContainer.querySelector('#ProjEdit_TechStackProposed');
+                    const DataSecurity_backupInput = editFormContainer.querySelector('#ProjEdit_DataSecurity_backup');
+                    const TypeofSWInput = editFormContainer.querySelector('#ProjEdit_TypeofSW');
+                    const BeingDevpInhouseInput = editFormContainer.querySelector('#ProjEdit_BeingDevpInhouse');
+                    const EndorsmentbyHeadofInput = editFormContainer.querySelector('#ProjEdit_EndorsmentbyHeadof');
+
+                    const ProjEditProjId = editFormContainer.querySelector('#ProjEdit_ProjId');
+                    const CurrentPslmId = editFormContainer.querySelector('#ProjEdit_CurrentPslmId');
+
+
+
+                    CurrentPslmId.value = project.currentPslmId;
+                    ProjEditProjId.value = project.projId;
+                    ProjNameInput.value = project.projName;
+
+                    InitiatedDateInput.value = formatDate(project.initiatedDate);
+                    CompletionDateInput.value = formatDate(project.completionDate);
+
+                    setSelectedValue(StakeHolderIdSelect, project.stakeHolderId);
+                    setSelectedValue(AppTypeidSelect, project.apptype);
+                    setSelectedValue(HostedonInput, project.hostTypeID);
+
+
+
+
+                    IsWhitelistedInput.value = project.isWhitelisted;
+                    InitialRemarkInput.value = project.initialRemark;
+                    AimScopeTextarea.value = project.aimScope;
+                    HQandITinfraReqdInput.value = project.hQandITinfraReqd;
+
+                    ContentofSWAppTextarea.value = project.contentofSWApp;
+
+                    ReqmtJustificationTextarea.value = project.reqmtJustification;
+                    UsabilityofProposedApplnInput.value = project.usabilityofProposedAppln;
+                    DetlsofUserBaseInput.value = project.detlsofUserBase;
+                    EnvisagedCostTextarea.value = project.envisagedCost;
+
+                    NWBandWidthReqmtInput.value = project.nwBandWidthReqmt;
+
+                    MajTimeLinesInput.value = project.majTimeLines;
+                    TechStackProposedInput.value = project.techStackProposed;
+                    DataSecurity_backupInput.value = project.dataSecurity_backup;
+                    TypeofSWInput.value = project.typeofSW;
+                    BeingDevpInhouseInput.value = project.beingDevpInhouse;
+                    EndorsmentbyHeadofInput.value = project.endorsmentbyHeadof;
+
+
+
+                    editFormContainer.style.display = 'block';
+                    addFormContainer.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    function formatDate(dateString) {
+        const dateParts = dateString.split('T')[0].split('-');
+        return `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
+    }
+
+    function setSelectedValue(selectElement, value) {
+
+        for (let option of selectElement.options) {
+            if (option.value == value) {
+                option.selected = true;
+
+                break;
+
+            }
+
+        }
+    }
+
+
+
+
+
+    editAnchors.forEach((editAnchor) => {
+        editAnchor.addEventListener('click', (event) => {
+            event.preventDefault();
+            const projName = editAnchor.getAttribute('data-proj-name');
+
+
+            editFormContainer.style.display = 'block';
+            addFormContainer.style.display = 'none';
+        });
+    });
+
+
+
+
+
+
+
+</script>
+@*HostedonInput.value = project.hostedon;*@
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const pdfInput = document.getElementById("pdfInput");
+        const pdfList = document.getElementById("pdfList");
+        const selectedFileList = document.getElementById("selected-file-list");
+        const remarksInput = document.getElementById("remarksInput");
+        const uploadedFiles = [];
+
+
+        function createPDFItem(file) {
+            const pdfItem = document.createElement("div");
+            pdfItem.className = "pdf-item";
+            pdfItem.setAttribute("data-filename", file.name);
+
+            const pdfPreview = document.createElement("div");
+            pdfPreview.className = "pdf-preview";
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                const fileType = file.type;
+
+                if (fileType.includes("image")) {
+                    pdfPreview.innerHTML = `<img src="${reader.result}" alt="Image Preview" class="image-preview">`;
+                } else if (fileType === "application/pdf") {
+                    pdfPreview.innerHTML = `<embed src="${reader.result}" type="application/pdf" width="100%" height="400px" />`;
+                }
+            };
+            reader.readAsDataURL(file);
+
+            const deleteButton = document.createElement("button");
+            deleteButton.innerHTML = "&times;";
+            deleteButton.className = "delete-button";
+            deleteButton.addEventListener("click", () => {
+                pdfList.removeChild(pdfItem);
+                const index = uploadedFiles.findIndex(item => item.pdfItem === pdfItem);
+                if (index !== -1) {
+                    uploadedFiles.splice(index, 1);
+                }
+                pdfInput.value = "";
+
+                updateSelectedFileList();
+            });
+
+            pdfItem.appendChild(pdfPreview);
+            pdfItem.appendChild(deleteButton);
+
+            return pdfItem;
+        }
+
+        function formatFileSize(size) {
+            const units = ['B', 'KB', 'MB', 'GB'];
+            let index = 0;
+            while (size >= 1024 && index < units.length - 1) {
+                size /= 1024;
+                index++;
+            }
+            return `${size.toFixed(2)} ${units[index]}`;
+        }
+
+        function updateSelectedFileList() {
+            selectedFileList.innerHTML = "";
+
+            for (const uploadedFile of uploadedFiles) {
+                const listItem = document.createElement("li");
+                const remarks = uploadedFile.remarks !== "" ? uploadedFile.remarks : "No Remarks";
+                const fileSize = formatFileSize(uploadedFile.file.size);
+                listItem.innerHTML = `${uploadedFile.file.name} (${fileSize}) - Remarks: ${remarks}`;
+                /*listItem.innerHTML = `${uploadedFile.file.name} (${fileSize})`;*/
+                selectedFileList.appendChild(listItem);
+            }
+        }
+
+
+    });
+
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        var fdsetid = '@tabshift';
+        var current_fs, next_fs, previous_fs;
+        var opacity;
+        var steps = $("fieldset").length;
+        if (fdsetid == 3) {
+            var fdset = "fieldset#" + "upload";
+            editFormContainer.style.display = 'none';
+            addFormContainer.style.display = 'block';
+            $("#1").hide();
+            $("#AddlDetails").addClass("active");
+            $(fdset).show();
+
+        }
+        else if (fdsetid == 12) {
+            var fdset = "fieldset#" + "uploaded";
+            editFormContainer.style.display = 'block';
+            addFormContainer.style.display = 'none';
+            $("#5").hide();
+            $("#AddlDetailsed").addClass("active");
+            $(fdset).show();
+        }
+        else {
+            var fdset = "fieldset#" + fdsetid + "";
+
+        }
+
+
+        //$("fieldset").hide();
+        //$(fdset).show();
+
+        $("#1").hide();
+        $(fdset).show();
+
+        $(".editButton").click(function () {
+            $("#1").toggle();
+        });
+
+        current = $(fdset).index() + 1;
+        setProgressBar(current);
+
+        if (fdsetid == 1) {
+            $("#BasicDetails").addClass("active");
+        }
+        else if (fdsetid == 2) {
+            $("#BasicDetails").addClass("active");
+            $("#AddlDetails").addClass("active");
+        } else if (fdsetid == 3) {
+            $("#BasicDetails").addClass("active");
+            $("#AddlDetails").addClass("active");
+            $("#Upload").addClass("active");
+
+        } else if (fdsetid == 4) {
+            $("#BasicDetails").addClass("active");
+            $("#AddlDetails").addClass("active");
+            $("#Upload").addClass("active");
+            $("#confirm").addClass("active");
+        }
+
+
+
+        $(".next").click(function () {
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+            if (fdsetid == 5) {
+                $("#BasicDetailsed").addClass("active");
+            }
+            else if (fdsetid == 6) {
+                $("#AddlDetailsed").addClass("active");
+            } else if (fdsetid == 7) {
+                $("#Uploaded").addClass("active");
+            } else if (fdsetid == 8) {
+                $("#confirmed").addClass("active");
+            }
+
+
+            // Validation
+            var isValid = true;
+            current_fs.find("input[required]").each(function () {
+                if ($(this).val() === "") {
+                    isValid = false;
+                    $(this).addClass("missing");
+                    $(this).next(".error-message").text("This field is required.").show();
+                } else {
+                    $(this).removeClass("missing");
+                    $(this).next(".error-message").hide();
+                }
+            });
+
+
+
+            var selectedValueX = $("#ProjEdit_Apptype").val();
+            var ProjEdit_HostTypeX = $("#ProjEdit_HostTypeID").val();
+
+            var ProjEdit_HostTypeXE = $("#Hostedtype").val();
+            var ddlAppTypeEditXE = $("#ddlAppTypeEdit").val();
+
+
+
+            if ((selectedValueX !== "0" && ProjEdit_HostTypeX !== "0") || (ProjEdit_HostTypeXE !== "0" && ddlAppTypeEditXE !== "0")) {
+                isValid = true;
+            }
+            else {
+                isValid = false;
+
+                Swal.fire({
+                    title: 'Something Went Wrong....!',
+                    text: 'App type or Hosting Type Not Selected .',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+
+                e.preventDefault();
+
+
+            }
+            
+
+            if (!isValid) {
+                return;
+            }
+
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+            next_fs.show();
+
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now) {
+                    opacity = 1 - now;
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    next_fs.css({ 'opacity': opacity });
+                },
+                duration: 500,
+                complete: function () {
+                    current_fs.hide();
+                    next_fs.show();
+                }
+            });
+
+
+            setProgressBar(++current);
+        });
+
+        $(".previous").click(function () {
+            current_fs = $(this).parent();
+            previous_fs = $(this).parent().prev();
+
+            $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+            previous_fs.show();
+
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now) {
+                    opacity = 1 - now;
+
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    previous_fs.css({ 'opacity': opacity });
+                },
+                duration: 300,
+                complete: function () {
+                    current_fs.hide();
+                    previous_fs.show();
+                }
+            });
+
+            setProgressBar(--current);
+        });
+        function animateProgressBar() {
+            $("#upload-progress-bar").animate({ width: "100%" }, {
+                duration: 50,
+                complete: function () {
+
+                }
+            });
+        }
+
+        $("#submitUpload").click(function () {
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now) {
+                    opacity = 1 - now;
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    next_fs.css({ 'opacity': opacity });
+                },
+                duration: 500,
+                complete: function () {
+                    current_fs.hide();
+                    next_fs.show();
+                }
+            });
+
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+            setProgressBar(++current);
+        });
+
+
+
+        $("#finaluploaded").click(function () {
+
+            var fdset = "fieldset#" + "9";
+            editFormContainer.style.display = 'block';
+            addFormContainer.style.display = 'none';
+            $("fieldset#6").hide();
+            $("fieldset#7").hide();
+            $("fieldset#uploaded").hide();
+
+            $(fdset).show();
+
+            animateProgressBar();
+
+
+        });
+
+        function setProgressBar(curStep) {
+            var percent = parseFloat(100 / steps) * curStep;
+            percent = percent.toFixed();
+            $(".progress-bar")
+                .css("width", percent + "%")
+        }
+
+
+        $(".submit").click(function () {
+            return false;
+        });
+    });
+
+</script>
+
+
+<br />
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Saved & Ready for Next Step',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+
+        </text>
+        TempData.Remove("SuccessMessage");
+    }
+</script>
+
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Something Went Wrong....!',
+                text: '@TempData["FailureMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+
+    }
+</script>
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+
+
+        $('#CurrentPslmId').val('0');
+        $('#IsActive').val('True');
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        var day = String(today.getDate()).padStart(2, '0');
+        var defaultCompletionDate = year + '-' + month + '-' + day;
+        $('#DateTimeOfUpdate').val(defaultCompletionDate);
+        $('#InitialRemark').val('New Project');
+        $('#InitiatedDate').val(defaultCompletionDate);
+        $('#IsWhitelisted').val('No');
+
+
+    });
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        // Wait for the document to be ready
+
+        function submitFormnew() {
+
+
+            var curPSMid = 0;
+
+            if (@(Model.ProjEdit != null ? "true" : "false")) {
+                curPSMid = @(Model.ProjEdit?.CurrentPslmId ?? 0);
+
+            }
+
+
+
+            $.ajax({
+
+                type: 'POST',
+                url: 'FwdProjConfirm',
+                data: { "projid": curPSMid },
+                datatype: "json",
+
+                success: function (response) {
+                    console.log('Request successful', response);
+                },
+                error: function (error) {
+                    console.error('Error occurred:', error);
+                }
+            });
+        }
+
+        $("#finalupload").click(function () {
+            submitFormnew();
+            var fdset = "fieldset#" + "4";
+            editFormContainer.style.display = 'none';
+            addFormContainer.style.display = 'block';
+            $(fdset).show();
+            $("fieldset#upload").hide();
+            $("fieldset#2").hide();
+            $("fieldset#1").hide();
+            animateProgressBar();
+        });
+
+        // Any other code that you need to run after the document is ready
+    });
+
+
+
+</script>
+
+
+<style>
+    .hidden-date {
+        display: none;
+    }
+
+    .validation-error {
+        display: none;
+    }
+</style>
+<style>
+    /* Reset all styles for the div and its descendants */
+    .strong-div, .strong-div * {
+        all: initial;
+    }
+
+    /* Apply custom styles to the div */
+    .strong-div {
+        border: 2px solid black;
+        padding: 10px;
+        background-color: lightgray;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+        $("#next").click(function (e) {
+            var selectedValuess = $("#ProjEdit_Apptype").val();
+            var ProjEdit_HostTypess = $("#ProjEdit_HostTypeID").val();
+
+
+            if (selectedValuess === "0" || ProjEdit_HostTypess === "0") {
+                Swal.fire({
+                    title: 'Something Went Wrong....!',
+                    text: 'App type or Hosting Type Not Selected .',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+
+                e.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+
+</script>
+
+
+
+
+

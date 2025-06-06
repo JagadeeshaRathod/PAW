@@ -1,0 +1,406 @@
+﻿@using swas.BAL.DTO;
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model CommonDTO
+
+<div class="accordion-body">
+
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-body">
+                    <td colspan="2">
+                      
+
+                        @{
+                            
+                            int psmid = 0;
+                           
+                            Model.Submitcde = ViewBag.SubmitCde;
+                            // Model.ProjMov.PsmId = ViewBag.PsmId ?? 0;
+                            // Model.ProjMov.ProjCode = ViewBag.PjIR;
+                            // int psmidtest = Model.ProjMov.PsmId;
+                            // int? dtpojid = Model.DataProjId;
+
+                            TempData["projpsmid"] = TempData["projpsmid"]; 
+                            TempData["projpsmided"] = TempData["projpsmided"];
+                            if (psmid !=0)
+                                Model.AttHisAdd.PsmId = psmid;
+
+                            TempData.Remove("TfrToNext");
+
+
+
+                            //if (TempData["ProjID"] != null && int.TryParse(TempData["ProjID"].ToString(), out projId))
+                            //{
+                            //    Model.DataProjId = projId;
+
+                            //}
+                        }
+
+                        @{
+                            if (Model.ProjEdit != null)
+                            {
+                                                @if (Model.ProjEdit.ProjCode != null)
+                                {
+                                    ////<h3 style="color: red;">Project Code is: @Model.ProjEdit.ProjCode</h3>
+                                }
+                            }
+                        }
+                       @*  @using(Html.BeginForm("Create", "Projects", FormMethod.Post, new { id = "ProjMoves", enctype = "multipart/form-data" }))
+                        {
+ *@
+
+
+                        <table id="fwduploaditems" class="table table-striped table-bordered" >
+
+
+                            @if (Model.Submitcde == false)
+                            {
+                               
+                               
+
+                            }
+                            
+
+                            <tr>
+    <td>
+        <!-- Your content here -->
+    </td>
+    <td>
+        ATT DOCU DESC
+        @Html.TextAreaFor(Model => Model.AttHisAdd.Reamarks, new { @class = "form-control", id = "Reamarksed", @oninput = "ValInData(this)" })
+
+      
+    </td>
+    <td colspan="2">
+        <p>Upload PDF file</p>
+        <input type="file" id="pdfFileInputed" name="uploadfile" class="form-control-file" accept=".pdf">
+    </td>
+</tr>
+<tr>
+    <td colspan="4">
+        <center>
+        <button type="submit" id="uploadButtoned" class="btn btn-primary" formnovalidate>Upload Documents</button>
+        </center>
+    </td>
+</tr>
+                        </table>
+                        @* } *@
+                        @*</form>*@
+                    </td>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-body" style="margin-left:0px">
+                    <td colspan="2">
+
+                        <table id="SoftwareTypesed" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Delete</th>
+                                    <th>Docu Desc</th>
+                                    <th>File Name</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Atthistory != null)
+                                {
+                                    @foreach (var history in Model.Atthistory)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a onclick="functionConfirm1('@history.AttId')" class="btn btn-secondary btn-ecomm"><i class="bx bx-trash"></i></a>
+                                                 
+                                                      
+                                            </td>
+                                            <td>
+                                               @*  <a download="@history.AttPath" href="~/uploads/@history.AttPath">
+                                                    @history.Reamarks
+                                                </a> *@
+                                                @history.Reamarks
+                                            </td>
+                                            <td>
+                                                @history.ActFileName
+                                            </td>
+                                            <td>@history.TimeStamp</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </td>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'New Entry Created',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+        </text>
+        TempData.Remove("SuccessMessage");
+        ViewBag.SubmitCde = true;
+    }
+</script>
+
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Something Went Wrong....!',
+                text: '@TempData["FailureMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+    }
+</script>
+
+
+<script>
+    function functionConfirm1(ProjectId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to delete?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/Projects/Delete',
+                    type: 'POST',
+                    data: { "id": ProjectId, "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    success: function (response) {
+                        //console.log(response);
+                        
+                        if (response) {
+                            if (response >= 1) {
+                                Swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Record Deleted successfully',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+
+                                var form = document.createElement('form');
+                                form.method = 'POST'; 
+                                form.action = '/Projects/Create'; 
+
+                                var idInput = document.createElement('input');
+                                idInput.type = 'hidden';
+                                idInput.name = 'id';
+                                idInput.value = response; 
+
+                                var tokenInput = document.createElement('input');
+                                tokenInput.type = 'hidden';
+                                tokenInput.name = '__RequestVerificationToken';
+                                tokenInput.value = $('input[name="__RequestVerificationToken"]').val(); 
+
+                                form.appendChild(idInput);
+                                form.appendChild(tokenInput);
+
+                                document.body.appendChild(form);
+                                form.submit();
+
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        var table = $('#SoftwareTypesed').DataTable();
+        table.destroy();
+
+
+
+        $('#ddlActions').on('change', function () {
+            var psmId = 0;
+            var ddlActions = $(this).val();
+            var ddlStages = $('#ddlStatus').val();
+           
+            psmId = '@Model.ProjMov.PsmId';
+               
+            var projId = psmId == 0 ? '@Model.DataProjId' : 0;
+
+
+            $.ajax({
+                url: '/Projects/ValidateAction',
+                type: 'POST',
+                data: {
+                    "psmid": psmId,
+                    "ActionId": ddlActions,
+                    "proId": projId,
+                    "ddlStag": ddlStages,
+
+                    "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    //console.log(response);
+                    if (response) {
+                        if (response === "Succeed") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Found Eligible for this action',
+                                showConfirmButton: false,
+                                timer: 600
+                            });
+                        } else {
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: response,
+                                showConfirmButton: true,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    CallbackFunction();
+                                }
+                            });
+
+
+                        }
+
+                    }
+
+                }
+            });
+
+
+       });
+
+
+
+
+
+
+$('#SoftwareTypesed').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
+        });
+
+        table.buttons().container()
+            .appendTo('#SoftwareTypes_wrapper .col-md-6:eq(0)');
+    });
+</script>
+
+
+
+<script>
+
+    const pdfFileInput = document.getElementById('pdfFileInputed');
+
+    pdfFileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+
+            
+              const maxSizeInBytes = 50 * 1024 * 1024; 
+            if (file.size > maxSizeInBytes) {
+                 $('#uploadButton').hide();
+                pdfFileInputed.value = '';
+
+                Swal.fire({
+                    title: 'File Size Exceeded',
+                    text: 'Please select a file smaller than 50MB.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const bytes = new Uint8Array(reader.result);
+                const pdfHeader = new Uint8Array([37, 80, 68, 70, 45]); // %PDF-
+                const isPDF = compareArrays(bytes.slice(0, 5), pdfHeader);
+                if (isPDF) {
+
+                    console.log('PDF file is valid. Proceed with upload.');
+                } else {
+
+                    Swal.fire({
+                        title: 'Invalid File ....!',
+                        text: 'Invalid PDF file. Please select a valid PDF file.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                     $('#uploadButton').hide();
+                    pdfFileInputed.value = '';
+                }
+            };
+
+
+            reader.readAsArrayBuffer(file);
+        }
+    });
+
+
+    function compareArrays(array1, array2) {
+        if (array1.length !== array2.length) {
+            return false;
+        }
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i] !== array2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+       
+        function checkConditions() {
+            var remarksLength = $('#Reamarksed').val().length;
+            var pdfFileInput = $('#pdfFileInputed')[0].files.length;
+
+            if (remarksLength > 1 && pdfFileInput > 0) {
+                $('#uploadButtoned').show();
+            } else {
+                $('#uploadButtoned').hide();
+            }
+        }
+
+        
+        $('#Reamarksed, #pdfFileInputed').on('input change', function () {
+            checkConditions();
+        });
+
+        $('#uploadButtoned').hide();
+    });
+</script>

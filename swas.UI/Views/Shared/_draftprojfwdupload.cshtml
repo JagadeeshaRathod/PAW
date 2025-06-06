@@ -1,0 +1,447 @@
+﻿@using swas.BAL.DTO;
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using swas.BAL.Helpers;
+@inject IHttpContextAccessor _httpContextAccessor;
+@model CommonDTO
+
+
+<style>
+   
+    .thead-gradient {
+        background: white !important;
+        color: #fff;
+    }
+
+    .table-3d {
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        border: 1px solid #ccc; /* Add border to create grey grid lines */
+    }
+
+        .table-3d th, .table-3d td {
+            border: 1px solid #ccc; /* Add border to table cells */
+        }
+
+        .table-3d:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8);
+            transform: translateY(-4px);
+        }
+
+
+    .container {
+        max-width: 100% !important;
+        margin-left: -33px !important;
+        padding-right: 141px !important;
+    }
+
+    label {
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        font-size: medium !important;
+    }
+
+    select, optgroup, textarea {
+        width: 100% !important;
+    }
+
+    .bx-trash:before {
+        content: "\eeb3";
+        color: white !important;
+    }
+    .black-text {
+    color: black;
+}
+
+</style>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .popup-content {
+        position: absolute;
+        top: 55%;
+        left: 55%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        width: 84% !important;
+        margin-left: 48px !important;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .control-label {
+        color: black;
+    }
+
+    .aj {
+        background-color: #044c92;
+        color: white !important;
+        text-align: center;
+    }
+</style>
+
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'New Entry Created',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+        </text>
+        TempData.Remove("SuccessMessage");
+        ViewBag.SubmitCde = true;
+    }
+</script>
+
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Something Went Wrong....!',
+                text: '@TempData["FailureMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+    }
+</script>
+
+
+<script>
+    function functionConfirm1(ProjectId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to delete?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/Projects/DeleteConfDft',
+                    type: 'POST',
+                    data: { "id": ProjectId, "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    success: function (response) {
+                        //console.log(response);
+
+                        if (response) {
+                            if (response >= 1) {
+                                var rowToRemove = $('#SoftwareTypes tbody').find('a[data-id="' + ProjectId + '"]').closest('tr');
+                                rowToRemove.remove();
+
+                                Swal.fire({
+                                   
+                                    icon: 'success',
+                                    title: 'Record Deleted successfully',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+
+                             
+
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+       
+         // populateddlfwdUnit();
+             
+          popRestddlfwdUnit(@Model.DataProjId);
+
+
+        populateStages();
+
+                 $('#ddlStages').on('change', function () {
+                    
+            var stageIds = $(this).val();
+
+            if (stageIds > 0) {
+                $('#ddlStatus').empty();
+                $('#ddlActions').empty();
+                getStatusByStage(stageIds);
+
+            } else {
+                $('#ddlStatus').empty();
+                $('#ddlActions').empty();
+            }
+        });
+
+        $('#ddlStatus').on('change', function () {
+            var selectedStatusId = $(this).val();
+            var selectedStageIds = $('#ddlStages').val();
+            if (selectedStatusId > 0) {
+                $('#ddlActions').empty();
+                EditActionsByStatus(selectedStatusId, selectedStageIds);
+            } else {
+                $('#ddlActions').empty();
+            }
+        });
+
+        ddlUnitId.selectedStatusId == @Model.ProjMov.ToUnitId;
+
+    
+       
+            
+
+
+
+        var table = $('#SoftwareTypes').DataTable();
+        table.destroy();
+
+        $('#SoftwareTypes').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
+        });
+
+        table.buttons().container()
+            .appendTo('#SoftwareTypes_wrapper .col-md-6:eq(0)');
+
+
+
+
+            
+    $('#ddlActions').on('change', function () {
+        var ddlActions = $(this).val();
+        var ddlStages = $('#ddlStatus').val();
+        var psmId = '@Model.ProjMov.PsmId';
+        var projId = psmId == 0 ? '@Model.DataProjId' : 0;
+  
+
+        $.ajax({
+            url: '/Projects/ValidateAction',
+            type: 'POST',
+            data: {
+                "psmid": psmId,
+                "ActionId": ddlActions,
+                "proId": projId,
+                "ddlStag": ddlStages,
+                  
+                "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+            },
+            success: function (response) {
+                //console.log(response);
+                if (response) {
+                    if (response === "Succeed") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Found Eligible for this action',
+                             showConfirmButton: false,
+                                        timer: 600
+                        });
+                    } else {
+                          
+
+                            $('#ddlStages').empty();
+                            $('#ddlStatus').empty();
+                            $('#ddlActions').empty();
+                            populateStages();
+                        Swal.fire({
+                            icon: 'error',
+                            title: response,
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                CallbackFunction(); 
+                            }
+                        });
+                                                  
+                   
+                    }
+                
+                }
+
+            }
+        });
+
+
+
+    });
+
+
+
+
+    });
+</script>
+
+
+
+<script>
+
+    const pdfFileInput = document.getElementById('pdfFileInput');
+
+    pdfFileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+
+
+            const maxSizeInBytes = 50 * 1024 * 1024; 
+            if (file.size > maxSizeInBytes) {
+                 $('#uploadButton').hide();
+                pdfFileInput.value = '';
+                Swal.fire({
+                    title: 'File Size Exceeded',
+                    text: 'Please select a file smaller than 50MB.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+
+            
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const bytes = new Uint8Array(reader.result);
+                const pdfHeader = new Uint8Array([37, 80, 68, 70, 45]); 
+                const isPDF = compareArrays(bytes.slice(0, 5), pdfHeader);
+                if (isPDF) {
+
+                    console.log('PDF file is valid. Proceed with upload.');
+                } else {
+
+                    Swal.fire({
+                        title: 'Invalid File ....!',
+                        text: 'Invalid PDF file. Please select a valid PDF file.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                     $('#uploadButton').hide();
+                    pdfFileInput.value = ''; 
+                }
+            };
+
+
+            reader.readAsArrayBuffer(file);
+        }
+    });
+
+
+    function compareArrays(array1, array2) {
+        if (array1.length !== array2.length) {
+            return false;
+        }
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i] !== array2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    $(document).ready(function () {
+        $('.dropdownsearch').select2();
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+       
+        function submitFormnew(PsmId, event) {
+            
+            event.preventDefault();
+            var curPSMid = 0;
+
+            $.ajax({
+                type: 'POST',
+                url: '/Projects/FwdProjConfirm',
+                data: { "projid": PsmId },
+                datatype: "json",
+                success: function (response) {
+                     Swal.fire({
+                title: '** Fwd ** ',
+                text: '..Proj...Fwd',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(function () {
+            
+            window.location.href = '/Projects/ProjDetails';
+        });
+        },
+    error: function (error) {
+        console.error('Error occurred:', error);
+    }
+    });
+        }
+
+       
+        $("#uploadfinal").click(function (event) {
+
+            
+            submitFormnew(@Model.ProjMov.PsmId, event);
+
+             event.preventDefault();
+            var fdset = "fieldset#" + "4";
+
+            $(fdset).show();
+            $("fieldset#upload").hide();
+            $("fieldset#2").hide();
+            $("fieldset#1").hide();
+            animateProgressBar();
+        });
+    });
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        function checkConditions() {
+            var remarksLength = $('#AttHisAdd_Reamarks').val().length;
+            var pdfFileInput = $('#pdfFileInput')[0].files.length;
+
+            if (remarksLength > 1 && pdfFileInput > 0) {
+                $('#uploadButton').show();
+            } else {
+                $('#uploadButton').hide();
+            }
+        }
+
+
+        $('#AttHisAdd_Reamarks, #pdfFileInput').on('input change', function () {
+            checkConditions();
+        });
+
+        $('#uploadButton').hide();
+    });
+</script>

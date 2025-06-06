@@ -1,0 +1,252 @@
+﻿@*View Created by Sub Maj M Sanal Kumar on :  04 Aug 23
+   Reviewd by  Sub Maj M Sanal Kumar on :  06 Aug 23
+*@
+
+@using swas.BAL.Helpers
+@using swas.BAL.Repository
+@using swas.DAL
+@using swas.DAL.Models
+@using swas.BAL.Interfaces
+@model tbl_Projects
+
+@{
+    ViewBag.Title = "Projects List";
+    
+}
+@{
+    var today = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+}
+
+@using (Html.BeginForm("Create", "Projects", FormMethod.Post, new { id = "addNewForm"}))
+{
+
+    <table id="MyFormSubmit" class="table table-striped table-bordered">
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.ProjName)
+                @Html.EditorFor(model => model.ProjName, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.InitiatedDate)
+                @Html.TextBoxFor(model => model.InitiatedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" , max = today })
+
+
+               
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.CompletionDate)
+                @Html.EditorFor(model => model.CompletionDate, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", type = "date" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.IsWhitelisted)
+                @Html.EditorFor(model => model.IsWhitelisted, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.InitialRemark)
+                @Html.EditorFor(model => model.InitialRemark, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.StakeHolderId)
+                @Html.DropDownListFor(model => model.StakeHolderId, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { id = "ddlStakeHolderId", @class = "form-control" })
+
+                @Html.HiddenFor(model => model.CurrentPslmId, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+
+                @Html.HiddenFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+
+                @Html.EditorFor(model => model.DateTimeOfUpdate, new { htmlAttributes = new { @class = "hidden-date form-control", type = "date" } })
+            </div>
+
+        </tr>
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.Comments)
+                @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.AimScope)
+                @Html.EditorFor(model => model.AimScope, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.HQandITinfraReqd)
+                @Html.EditorFor(model => model.HQandITinfraReqd, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.Hostedon)
+                @Html.EditorFor(model => model.Hostedon, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.ContentofSWApp)
+                @Html.EditorFor(model => model.ContentofSWApp, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.ReqmtJustification)
+                @Html.EditorFor(model => model.ReqmtJustification, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.UsabilityofProposedAppln)
+                @Html.EditorFor(model => model.UsabilityofProposedAppln, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.DetlsofUserBase)
+                @Html.EditorFor(model => model.DetlsofUserBase, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.EnvisagedCost)
+                @Html.EditorFor(model => model.EnvisagedCost, new { htmlAttributes = new { @class = "form-control", required = "required", type = "number" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.NWBandWidthReqmt)
+                @Html.EditorFor(model => model.NWBandWidthReqmt, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.MajTimeLines)
+                @Html.EditorFor(model => model.MajTimeLines, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.TechStackProposed)
+                @Html.EditorFor(model => model.TechStackProposed, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.DataSecurity_backup)
+                @Html.EditorFor(model => model.DataSecurity_backup, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.TypeofSW)
+                @Html.EditorFor(model => model.TypeofSW, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.BeingDevpInhouse)
+                @Html.EditorFor(model => model.BeingDevpInhouse, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                @Html.LabelFor(model => model.EndorsmentbyHeadof)
+                @Html.EditorFor(model => model.EndorsmentbyHeadof, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </tr>
+        <tr>
+           <div class="col-sm-3">
+                <br>
+                @Html.Label("Upload Document")
+                <input type="file" name="uploadfile" class="form-control-file">
+            </div>
+        </tr>
+
+        <tr>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </tr>
+    </table>
+}
+
+
+
+ 
+ <script src="~/DeveloperJs/ddlSanal.js"></script>
+
+
+ 
+<script>
+       $(document).ready(function () {
+     
+        populateddlStakeHolder();
+        $('#CurrentPslmId').val('0');
+        $('#IsActive').val('True');
+       
+
+
+        // Get today's date
+        var today = new Date();
+
+        // Format today's date as "yyyy-MM-dd"
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        var day = String(today.getDate()).padStart(2, '0');
+
+        var defaultCompletionDate = year + '-' + month + '-' + day;
+
+       
+        $('#DateTimeOfUpdate').val(defaultCompletionDate);
+        $('#InitialRemark').val('New Project');
+        $('#InitiatedDate').val(defaultCompletionDate);
+        $('#IsWhitelisted').val('No');
+        
+        $('#MyFormSubmit').DataTable();
+
+
+
+        $('#cancelButton').on('click', function () {
+            showAddNewForms();
+        });
+
+        function showAddNewForms() {
+       
+    $('#addNewFormContainer').addClass('hidden');
+    $('#addNewFormContainer').hide(); 
+
+}
+
+});
+
+   
+</script>
+
+<style>
+    .hidden-date  {
+        display: none;
+    } 
+</style>
+

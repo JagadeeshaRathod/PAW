@@ -1,0 +1,110 @@
+﻿@*View Created by Sub Maj M Sanal Kumar on :  02 Aug 23
+Reviewd by Hav Mani on : 
+*@
+
+@using swas.DAL.Models
+@model List<tbl_mStages>
+
+@{
+    ViewBag.Title = "Stages List";
+}
+
+
+
+<style>
+    .underline-h5 {
+        padding: 0.5rem;
+        width: 100%;
+        margin: -16px auto; /* Center the box */
+        text-align: center;
+        border-color: #03c1fc;
+        /*box-shadow: 2px 6px 5px -3px #062b50;*/
+        background-color: #0cafff;
+        color: white;
+        font-family: Arial;
+        font-size: 15px;
+        margin-bottom: 0.5rem;
+        height: -1px;
+    }
+     .s-no-column {
+        min-width: 40px;
+        max-width: 90px;
+        width: 10vw;
+    }
+
+</style>
+<button type="button" id="AddButon" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#StageAdd" style="margin-left: 91%;">
+    Add New Stage
+</button>
+@*<button id="addNewButton" class="btn btn-primary"><a href="/Actions/Create">Add New</a></button>*@
+
+<div class="card radius-10 w-100">
+    <div class="card-body">
+
+        <table id="stagesTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="s-no-column">Stage ID</th>
+                    
+                    <th>Stage</th>                    
+                    <th>Is Active</th>
+                    <th>Edit/Delete By</th>
+                    <th>Edit/Delete Date</th>
+                    <th>Updated By User ID</th>
+                    <th>Date of Update</th>
+                    @*<th>Delete</th>*@
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var stage in Model)
+                {
+                    if(stage.IsActive==true)
+                    {
+                        <tr>
+                            <td class="srno">@stage.StagesId</td>
+                            <td>@stage.Stages</td>
+                            <td>@stage.IsActive</td>
+                            <td>@stage.EditDeleteBy</td>
+                            <td>@stage.EditDeleteDate?.ToString("dd-MM-yyyy")</td>
+                            <td>@stage.UpdatedByUserId</td>
+                            <td>@stage.DateTimeOfUpdate?.ToString("dd-MM-yyyy")</td>
+                          @*  <td>
+                                <a asp-action="EditStage" asp-route-id="@stage.StagesId" class="btn btn-secondary btn-ecomm"><i class='bx bx-edit'></i></a>
+                                <a data-id="@stage.StagesId" data-url="@Url.Action("Create", "Stages")" class="btn btn-secondary btn-ecomm delete-btn"><i class='bx bx-trash'></i></a>
+                            </td>*@
+
+                        </tr>
+                    }
+                    
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="modal fade" id="StageAdd" tabindex="-1" aria-labelledby="ProjectAddLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                @* <h5 class="modal-title" id="UnitAddLabel">Add Action</h5>*@
+                <h5 class="text-center mb-4 underline-h5" style="text-align: center; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;height: 33px;">
+                    <span>
+                        New Stage Page
+                    </span>
+                </h5>
+            </div>
+            <div class="modal-body">
+
+                @Html.Partial("_CreateStage", new tbl_mStages())
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="~/developerjs/stage.js"></script>

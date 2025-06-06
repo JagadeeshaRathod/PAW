@@ -1,0 +1,832 @@
+﻿@*View Created by Sub Maj M Sanal Kumar on :  02 Aug 23
+    Reviewd by Hav Mani on : 02 Aug 23
+*@
+@using Microsoft.AspNetCore.Identity
+@using swas.BAL.DTO
+@using swas.BAL.Helpers;
+@using swas.DAL.Models
+@model MailBox
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+@{
+    Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+
+    ViewBag.Title = "Projects List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int snoinbox = 0;
+    int snosent = 0;
+    int snodraft = 0;
+    int snocompleted = 0;
+}
+
+<style>
+    .red-text {
+        color: red;
+    }
+
+</style>
+
+<style>
+
+    .tabs__head {
+        list-style: none;
+        padding: 0;
+        display: flex;
+    }
+
+        .tabs__head li {
+            margin-right: 10px;
+        }
+
+        .tabs__head a {
+            text-decoration: none;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            background-color: #fff; /* Set the default background color */
+        }
+
+            .tabs__head a.active-link {
+                background-color: white; /* Set the active background color to white */
+                border-bottom: 20px solid #dee2e6; /* Adjust this as needed */
+            }
+
+    .tabs__content__item {
+        display: none;
+    }
+
+        .tabs__content__item.active-tab {
+            display: block;
+        }
+
+</style>
+
+<style>
+    .tabs__content__item {
+        overflow: auto; /* Add this style to enable scrolling */
+        max-height: 700px; /* Set a maximum height for the table to make the scrollbar appear when the content exceeds this height */
+    }
+
+        /* Optional: Add styling for the scrollbar */
+        .tabs__content__item::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tabs__content__item::-webkit-scrollbar-thumb {
+            background-color: #888;
+        }
+
+    .FontSize{
+        font-size:15px;
+    }
+
+    .btn-Fwd{
+        height: 1.5rem;
+        margin-top: -1.5rem;
+
+        padding-top:0rem
+    }
+
+    .btn-FwdHistory{
+        height: 1.5rem;
+        margin-top: -1.2rem;
+        padding-top: 0rem
+    }
+</style>
+
+<link href="~/css/timeline.css" rel="stylesheet" />
+<div class="tabs" id="tabs">
+    <ul class="tabs__head">
+
+        <li>
+            <a class="active-link" href="#" data-tab="inbox">
+
+
+                <img src="~/assets/images/inbox.png" width="20px;" height="20px;" />&nbsp;Inbox
+            </a>
+        </li>
+        <li><a href="#" data-tab="sent">@*<span class="fa fa-edit"></span>*@<img src="~/assets/images/sentmail.png" width="20px;" height="20px;" />&nbsp;Sent</a></li>
+        <li><a href="#" data-tab="completed">@*<span class="fa fa-camera"></span>*@<img src="~/assets/images/completed.png" width="20px;" height="20px;" />&nbsp;Completed</a></li>
+        <li><a href="#" data-tab="draft"><img src="~/assets/images/draft.png" width="20px;" height="20px;" />&nbsp;Draft</a></li>
+        <li class="red-text" id="blinking-li">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            Inbox -->> click on project name for Add Comments, Attach file and Fwd to Stakeholders/Units
+        </li>
+
+    </ul>
+
+    @{
+        snoinbox = 0;
+    }
+
+
+    <div class="tabs__content">
+        <div class="tabs__content__item active-tab" id="inbox" style="height:100%; ">
+            <div class="content" style="height:100%;">
+                <div class="card radius-10 w-100" style="height:100%;">
+                    <div class="card-body" style="height:100%; overflow-y: scroll;">
+
+                        <table id="Inbox" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Ser No</th>
+                                    <th style="width:20%">Proj Name</th>
+                                    <th>Sponsor</th>
+                                    @*   <th>From</th>
+                                    <th>To</th> *@
+                                    <th>From Unit (User Name/ Domain Id)</th>
+                                    <th>To Unit Name</th>
+                                    <th>TimeStamp</th>
+                                    <th>Stage</th>
+                                    <th>SubStage</th>
+                                    <th>Action</th>
+                                    @* <th>TotalDays</th> *@
+
+                                    <th>Project Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var project in Model.InBox)
+                                {
+                                    if (project.IsRead == true)
+                                    {
+                                        <tr>
+
+
+                                            <td>
+                                                <span class="d-none" id="SpnCurrentProjId">@project.ProjId</span>
+                                                <span class="d-none" id="SpnCurrentpsmId">@project.PsmIds</span>
+                                                <span class="d-none" id="SpnStakeHolderId">@project.StakeHolderId</span>
+                                                <span class="d-none" id="SpnTimeStampId">@project.TimeStamp</span>
+                                                <span class="d-none" id="SpnTimeStampId">@project.StageId</span>
+                                                <span class="d-none" id="SpnprojectIsProcess">@project.IsProcess</span>
+                                                @{
+                                                    snoinbox++;
+                                                }
+                                                @snoinbox
+                                            </td>
+
+
+                                            <td style="word-wrap: break-word; word-break: break-all;">
+                                                <a data-proj-name="@project.ProjName" data-proj-id="@project.ProjId" href="/Projects/ProjHistory?EncyID=@project.EncyID">
+                                                    @project.ProjName
+                                                </a>
+                                            </td>
+                                            <td>@project.Sponsor</td>
+                                            <td>@project.FromUnitName</td>
+                                            <td>@project.ToUnitName</td>
+                                            <td>@project.TimeStamp</td>
+                                            <td>@project.Status</td>
+                                            <td>@project.Stage</td>
+                                            <td>@project.Action</td>
+
+
+                                            @*   <td>
+                                    @project.TotalDays
+
+                                    </td> *@
+
+
+                                            <td>
+
+                                                @if (project.StageId == 1 && project.IsProcess == false && Convert.ToInt32(ViewBag.unitid) == 1)
+                                                {
+                                                    <a href="javascript:void(0);" class="processDetail" data-id="@project.EncyPsmID">
+                                                        <img src="/assets/images/icons/process1.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                                                    </a>
+                                                    <button type="button" class="btn btn-success btn-Obsn ml-3">Obsn</button>
+                                                }
+                                                else
+
+                                                {
+                                                    <button type="button" class="btn btn-success btn-Fwd ml-3">Fwd</button>
+                                                }
+                                                <button type="button" class="btn btn-success btn-FwdHistory ml-3" title="History"><i class="fa-solid fa-timeline"></i></button>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="table-primary">
+
+
+                                            <td>
+                                                <span class="d-none" id="SpnCurrentProjId">@project.ProjId</span>
+                                                <span class="d-none" id="SpnCurrentpsmId">@project.PsmIds</span>
+                                                <span class="d-none" id="SpnStakeHolderId">@project.StakeHolderId</span>
+                                                <span class="d-none" id="SpnTimeStampId">@project.TimeStamp</span>
+                                                <span class="d-none" id="SpnTimeStampId">@project.StageId</span>
+                                                <span class="d-none" id="SpnprojectIsProcess">@project.IsProcess</span>
+                                                @{
+                                                    snoinbox++;
+                                                }
+                                                @snoinbox
+
+                                            </td>
+                                            <td>
+
+                                                <a data-proj-name="@project.ProjName" data-proj-id="@project.ProjId" href="/Projects/ProjHistory?EncyID=@project.EncyID">
+                                                    @project.ProjName
+                                                </a>
+                                            </td>
+
+                                            <td>@project.Sponsor</td>
+                                            <td>@project.FromUnitName</td>
+                                            <td>@project.ToUnitName</td>
+                                            <td>@project.TimeStamp</td>
+                                            <td>@project.Status</td>
+                                            <td>@project.Stage</td>
+                                            <td>@project.Action</td>
+
+                                            @*  <td>
+                                    @project.TotalDays
+
+                                    </td> *@
+
+
+                                            <td>
+
+                                                @if (project.StageId == 1 && project.IsProcess == false && Convert.ToInt32(ViewBag.unitid) == 1)
+                                                {
+                                                    <a href="javascript:void(0);" class="processDetail" data-id="@project.EncyPsmID">
+                                                        <img src="/assets/images/icons/process1.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                                                    </a>
+                                                    <button type="button" class="btn btn-success btn-Obsn ml-3">Obsn</button>
+                                                }
+                                                else
+
+                                                {
+                                                    <button type="button" class="btn btn-success btn-Fwd ml-3">Fwd</button>
+                                                }
+                                                <button type="button" class="btn btn-success btn-FwdHistory ml-3" title="History"><i class="fa-solid fa-timeline"></i></button>
+
+                                            </td>
+                                        </tr>
+
+                                    }
+
+
+                                }
+                            </tbody>
+
+                        </table>
+
+
+
+                        @*
+                        <td>@project.Comments</td>
+                        <td>
+                        @project.InitialRemark
+
+                        </td>
+                        *@
+
+
+
+
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+        <!--Sent Items-->
+        @{
+            snosent = 0;
+        }
+
+
+        <div class="tabs__content__item" id="sent" style="height:100%; ">
+            <div class="content" style="height:100%;">
+                <div class="card radius-10 w-100" style="height:100%;">
+                    <div class="card-body" style="height:100%; overflow-y: scroll;">
+                        <table id="Sents" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Ser No</th>
+                                    <th>Proj Name</th>
+                                    <th>Sponsor</th>
+                                    @*  <th>From</th>
+                                    <th>To</th> *@
+                                    <th>From Unit (User Name/ Domain Id)</th>
+                                    <th>To Unit Name</th>
+                                    <th>TimeStamp</th>
+                                    <th>Stage</th>
+                                    <th>SubStage</th>
+                                    <th>Action</th>
+                                    <th>Project Action</th>
+                                    @*  <th>TotalDays</th> *@
+
+
+
+                                </tr>
+                            </thead>
+
+                            <tbody class="FontSize">
+                                @foreach (var project in Model.SendItems.OrderByDescending(i => i.TimeStamp).ToList())
+                                {
+                                    <tr>
+
+
+                                        <td>
+                                            <span class="d-none" id="SpnCurrentProjId">@project.ProjId</span>
+                                            <span class="d-none" id="SpnCurrentpsmId">@project.PsmIds</span>
+                                            <span class="d-none" id="SpnStakeHolderId">@project.StakeHolderId</span>
+                                            <span class="d-none" id="SpnTimeStampId">@project.TimeStamp</span>
+                                            <span class="d-none" id="SpnprojectIsProcess">@project.IsProcess</span>
+                                            <span class="d-none" id="SpnprojectStageId">@project.StageId</span>
+                                            @{
+                                                snosent++;
+                                            }
+                                            @snosent
+                                        </td>
+
+
+                                        <td>
+                                            <a data-proj-name="@project.ProjName" data-proj-id="@project.ProjId" href="/Projects/ProjHistory?EncyID=@project.EncyID">
+                                                @project.ProjName
+                                            </a>
+                                        </td>
+                                        <td>@project.Sponsor</td>
+                                        <td>@project.FromUnitName</td>
+                                        <td>@project.ToUnitName</td>
+                                        <td>@project.TimeStamp</td>
+                                        <td>@project.Stage</td>
+                                        <td>@project.Status</td>
+                                        <td>@project.Action</td>
+
+                                        @*  <td>
+                                    @project.TotalDays
+
+                                    </td> *@
+
+                                        <td>
+                                            @if (project.PsmIds == project.undopsmId)
+                                            {
+                                                <button type="button" class="btn btn-success btn-Undo ml-2">Undo </button>
+                                            }
+
+                                            <button type="button" class="btn btn-success btn-FwdHistory" title="History"><i class="fa-solid fa-timeline"></i></button>
+
+                                        </td>
+
+                                    </tr>
+
+                                }
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Completed Items-->
+
+
+        <div class="tabs__content__item" id="completed" style="height:100%; ">
+            <div class="content" style="height:100%;">
+                <div class="card radius-10 w-100" style="height:100%;">
+                    <div class="card-body" style="height:100%; overflow-y: scroll;">
+
+                        <table id="Completed" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Ser No</th>
+                                    <th>Proj Name</th>
+                                    <th>Sponsor Dte</th>
+                                    <th>Completed By</th>
+                                    <th>Completed On</th>
+                                    <th>Status</th>
+                                    <th>Project Action</th>
+                                    
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var project in Model.CompletedItems)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @{
+                                                snocompleted++;
+                                            }
+                                            @snocompleted
+                                        </td>
+                                        <span class="d-none" id="SpnCurrentProjId">@project.ProjId</span>
+                                        <td>
+                                            <a data-proj-name="@project.ProjName" data-proj-id="@project.ProjId" href="/Projects/ProjHistory?dataProjId=@project.ProjId">
+                                                @project.ProjName
+                                            </a>
+                                        </td>
+                                        <td>@project.StakeHolder</td>
+                                        <td>@project.FwdBy</td>
+                                        <td>@project.DateTimeOfUpdate?.ToString("dd-MM-yyyy")</td>
+
+                                      
+                                        <td>
+                                            @project.Status
+                                        </td>
+                                        <td>@project.Action</td>
+                                        
+                                    </tr>
+
+                                }
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- end completed items -->
+        <!----Draft---->
+
+        <div class="tabs__content__item" id="draft" style="height:100%; ">
+            <div class="content" style="height:100%;">
+                <div class="card radius-10 w-100" style="height:100%;">
+                    <div class="card-body" style="height:100%; overflow-y: scroll;">
+
+                        <table id="Draft" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Ser No</th>
+                                    <th>Proj ID</th>
+                                    <th>Proj Name</th>
+
+                                    <th>Recd From</th>
+
+                                    <th>Recd On</th>
+
+                                    <th>Fwd To</th>
+                                    <th>Fwd On</th>
+
+                                    <th>Stage</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                    <th>Comments</th>
+                                    <th>Remarks</th>
+                                    @*  <th>Days in Inbox</th> *@
+                                    <th>Att</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var project in Model.Draft)
+                                {
+                                    <tr>
+
+                                        <td>
+                                            @{
+                                                snodraft++;
+                                            }
+                                            @snodraft
+                                        </td>
+                                        <td>@project.ProjId</td>
+                                        <td>
+
+                                            @project.ProjName
+                                        </td>
+                                        <td>@project.RecdFmUser</td>
+                                        <td>@project.EditDeleteDate?.ToString("dd-MM-yyyy")</td>
+
+                                        <td>@project.FwdtoUser</td>
+                                        <td>@project.FwdtoDate?.ToString("dd-MM-yyyy")</td>
+
+                                        <td>@project.Stages</td>
+                                        <td>
+                                            @project.Status
+                                        </td>
+                                        <td>
+                                            @project.Action
+
+                                        </td>
+                                        <td>
+                                            @project.Comments
+
+                                        </td>
+                                        <td>
+                                            @project.AdRemarks
+
+                                        </td>
+                                        @*   <td>
+                                    @project.TotalDays
+
+                                    </td> *@
+                                        <td>
+
+                                            @if (project.AttCnt > 0)
+                                            {
+
+                                                <a href="javascript:void(0);" class="anchorDetail" data-id="@project.CurrentPslmId">
+                                                    <img src="/assets/images/icons/attachemnts_clip.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                                                </a>
+
+
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (project.IsSubmited == false)
+                                            {
+
+                                                <center>
+
+
+                                                    <a href="@Url.Action("Create", "Projects", new { id = project.EncyID })">
+                                                        <div data-project-id="@project.EncyID" id="ProjDetailId-@project.ProjId">
+                                                            <img src="/assets/images/icons/edit.png" alt="Icon" style="width: 35px; height: 30px; margin-right: 0px;">
+
+
+                                                        </div>
+                                                    </a>
+
+
+                                                </center>
+                                            }
+                                            @*  <div class="ProjDetailUndo" data-project-id="@project.EncyID" id="ProjDetailId-@project.ProjId">
+                                        <img src="/assets/images/icons/undo.png" alt="Icon" style="width: 25px; height: 20px; margin-right: 0px;">
+                                        </div>*@
+
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---END-DRAFT-->
+
+
+
+
+
+    </div>
+
+
+
+</div>
+<div class="modal fade" id="ProjFwd" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Project Fwd</h5>
+                <span class="d-none" id="spanCurrentPslmId">0</span>
+                <span class="d-none" id="spanFwdCurrentPslmId">0</span> 
+                <span class="d-none" id="spanFwdProjectId">0</span>
+                <span class="d-none" id="SpnFwdStakeHolderId">0</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        
+                        <div class="card">
+                            <div class="modal-header"><h5 class="card-title Fwdtitle">Projects Move Details</h5></div>
+                            <div class="card-body">
+                                
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 ProjectsFwd ">
+                                        <label for="inputEmail4">Stage</label>
+                                        <select class="form-control requiredField" style="width: 100%;" tabindex="-1"
+                                                name="fwdoffrs" required id="ddlfwdStage">
+                                            <option value="0">Select Stage</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label for="SubStage">Sub Stage</label>
+                                        <select class="form-control requiredField" style="width: 100%;" tabindex="-1"
+                                                name="fwdoffrs" required id="ddlfwdSubStage">
+                                            <option value="0">Select Sub Stage</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label for="SubStage">Action</label>
+                                        <select class="form-control requiredField" style="width: 100%;" tabindex="-1"
+                                                name="fwdoffrs" required id="ddlfwdAction">
+                                            <option value="0">Select Action</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label for="SubStage">Fwd To</label>
+                                        <select class="form-control requiredField" style="width: 100%;" tabindex="-1"
+                                                name="fwdoffrs" required id="ddlfwdFwdTo">
+                                            <option value="0">Select Fwd To</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label for="SubStage">Remarks</label>
+                                        <textarea class="form-control requiredField" id="txtRemarksfwd" style="width: 100%;"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label>Date Of Fwd:</label>
+                                        <input id="TimeStampToProjfwd" type="datetime-local" class="datePicker  form-control requiredField" />
+                                    </div>
+                                    <div class="form-group col-md-6 Attmenthistory d-none">
+                                        <label for="SubStage">Attach Document Description</label>
+                                        <textarea class="form-control requiredFieldAttch" id="Reamarks"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-6 Attmenthistory d-none">
+                                        <label for="SubStage">Upload Pdf File</label>
+                                        <input class="form-control requiredFieldAttch" type="file" id="pdfFileInput">
+                                     </div>
+                                     <div class="form-group col-md-12 Attmenthistory d-none text-center">
+                                       
+                                            <button class="btn btn-warning" type="button" id="btnAttchMultiforpsmid">Upload File</button>
+                                        
+                                     </div>
+
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div class="col-md-12 Attmenthistory d-none">
+                          <div class="card">
+                            <div class="modal-header"><h5 class="card-title">Projects Move Att Details</h5></div>
+                            <div class="card-body">
+                                <table class="table table-striped table-bordered">
+
+
+                                    <thead>
+                                        <tr>
+
+
+                                            <th>Delete</th>
+
+                                            <th>Docu Desc</th>
+                                            <th>File Name</th>
+                                            <th>Timestamp</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="DetailBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 mt-4 text-center">
+                        <input type="button" id="btnFwdNext" value="Fwd Next For Attch" class="btn btn-primary btn-lg ProjectsFwd" />
+                        <input type="button" id="btnFwdConfirm" value="Confirm" class="btn btn-primary btn-lg Attmenthistory d-none" />
+                    </div>
+               
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade" id="ProjFwdHistory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+               
+                <h4 class="modal-title" id="lblHistory">Project Fwd History</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body ml-lg-5">
+
+                <div class="timeline" id="projectmovfistory">
+                  
+
+                </div>
+            </div>
+
+        </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+</div>
+
+
+<script src="~/developerjs/mtable.js"></script>
+<script src="~/developerjs/atthistory.js"></script>
+<script src="~/developerjs/projectdetails.js"></script>
+
+<script src="~/developerjs/fwdproject.js"></script>
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+        $(document).on('click', '.pdf', function () {
+            $('#AttHistoryView').modal('show');
+        });
+    });
+</script>
+
+
+<script>
+    const containerTabs = document.getElementById("tabs");
+
+    const getInfoTabs = container => {
+        return [...container.querySelectorAll(".tabs__content__item")];
+    };
+
+    const getLinksTab = container => {
+        return [...container.querySelectorAll("a[data-tab]")];
+    };
+
+    const activateTab = (tabId) => {
+        const tabsInfo = getInfoTabs(containerTabs);
+
+        tabsInfo.forEach(tab => {
+            const isActive = tab.getAttribute("id") === tabId;
+            tab.classList.toggle("active-tab", isActive);
+        });
+    };
+
+    const activateLink = (link) => {
+        const linksTab = getLinksTab(containerTabs);
+        linksTab.forEach(tabLink => {
+            tabLink.classList.toggle("active-link", tabLink === link);
+        });
+    };
+
+    const handleTabClick = event => {
+        const clickedElement = event.target;
+        if (clickedElement.tagName === "A" && clickedElement.hasAttribute("data-tab")) {
+            event.preventDefault();
+            const tabId = clickedElement.getAttribute("data-tab");
+            activateTab(tabId);
+
+            activateLink(clickedElement);
+
+
+
+        }
+    };
+
+    containerTabs.addEventListener("click", handleTabClick);
+</script>
+
+
+
+<script>
+    const containerTabss = document.getElementById("tabs");
+
+    const getInfoTabs = container => {
+        return [...container.querySelectorAll(".tabs__content__item")];
+    };
+
+    const getLinksTab = container => {
+        return [...container.querySelectorAll("a[data-tab]")];
+    };
+
+    const activateTab = (tabId) => {
+        const tabsInfo = getInfoTabs(containerTabss);
+
+        tabsInfo.forEach(tab => {
+            const isActive = tab.getAttribute("id") === tabId;
+            tab.classList.toggle("active-tab", isActive);
+        });
+    };
+
+    const activateLink = (link) => {
+        const linksTab = getLinksTab(containerTabss);
+        linksTab.forEach(tabLink => {
+            tabLink.classList.remove("active-link");
+        });
+        link.classList.add("active-link");
+    };
+
+    const handleTabClick = event => {
+        const clickedElement = event.target;
+        if (clickedElement.tagName === "A" && clickedElement.hasAttribute("data-tab")) {
+            event.preventDefault();
+            const tabId = clickedElement.getAttribute("data-tab");
+            activateTab(tabId);
+
+            activateLink(clickedElement);
+        }
+    };
+
+    containerTabss.addEventListener("click", handleTabClick);
+</script>

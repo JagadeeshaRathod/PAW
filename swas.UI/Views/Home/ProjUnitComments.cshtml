@@ -1,0 +1,859 @@
+﻿@model swas.DAL.Models.StkComment
+@using swas.BAL.DTO
+@using swas.BAL.Helpers
+@using swas.DAL.Models
+
+
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+
+    ViewData["Title"] = "Proj Comments";
+    int sno = 0;
+    Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+
+}
+@{
+    var projdetails = ViewBag.projdetails;
+
+
+    var proj = ViewBag.Projects;
+
+
+
+
+}
+
+<style>
+
+    /* Add 3D effect styles for the buttons */
+    .table-button {
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Example shadow effect */
+        transition: transform 0.3s;
+    }
+
+    .table-but
+    
+    {
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Example shadow effect */
+        transition: transform 0.3s;
+    }
+
+    .table-button:hover {
+        transform: translateY(-3px);
+        background-color: blue; /* Example hover effect for 3D appearance */
+    }
+
+    .required-indicator {
+        color: red;
+        font-size: 18px;
+    }
+
+
+
+    .modal-content {
+        height: 800px !important;
+        width: 1000px !important;
+    }
+
+    .underline-h5 {
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0 auto; /* Center the box */
+        text-align: center;
+        border-color: #03c1fc;
+        /*box-shadow: 2px 6px 5px -3px #062b50;*/
+        background-color: #0cafff;
+        color: white;
+        font-family: Arial;
+        font-size: 15px;
+        margin-bottom: 0.5rem;
+        height: -1px;
+    }
+
+
+    .underline-h7 {
+        background: #0793f7;
+        margin-bottom: 0px;
+        text-align: left;
+        color: white;
+        font-size: 14px;
+        height: 35px;
+        padding-top: 4px;
+        font-weight: 100;
+    }
+
+    .row {
+        display: flex; /* Make the row a flex container */
+        align-items: stretch; /* Align child elements to have equal height */
+    }
+
+    .col-lg-6 {
+        flex: 1; /* Distribute the available space equally between the two columns */
+        margin-right: 10px; /* Add some space between the columns (adjust as needed) */
+    }
+
+
+    .cancel-button {
+        background-color: #F44336; /* Red color */
+        border: none;
+        color: #000; /* Black text color */
+        padding: 5px 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow effect */
+        transition: transform 0.3s;
+    }
+
+        .cancel-button:hover {
+            transform: translateY(-3px);
+            background-color: darkred; /* Darker red color on hover */
+        }
+
+
+    .projecthead {
+        background: #044c92;
+        margin-bottom: 0px;
+        text-align: center;
+        margin-top: -14px;
+        margin-left: -15px;
+        width: 104%;
+        color: white;
+        height: 35px;
+        padding-top: 4px;
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        font-weight: bold;
+    }
+
+    .blog-comment-container {
+        width: 60%;
+        margin: 20px auto;
+    }
+
+    .comment-box {
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        margin-left: 6px;
+        margin-right: 6px;
+        margin-top: 6px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .comment-meta {
+        font-size: 14px;
+        color: #777777;
+    }
+
+    .comment-content {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .pdf-link img {
+        width: 24px;
+        height: 24px;
+    }
+
+
+    .new-proj-table {
+        width: 100%;
+    }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-scrollbar {
+        -webkit-overflow-scrolling: auto;
+        padding-right: 15px;
+    }
+
+    .projecthead {
+        background-color: #3498db;
+        color: #ffffff;
+        padding: 10px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+</style>
+
+<style>
+    .blog-comment-container {
+        width: 60%;
+        margin: 20px auto;
+    }
+
+    .comment-box {
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        margin-left: 6px;
+        margin-right: 6px;
+        margin-top: 6px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        font-weight: bold;
+    }
+
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .comment-meta {
+        font-size: 14px;
+        color: #777777;
+        font-weight: bold;
+    }
+
+    .comment-content {
+        font-size: 16px;
+        line-height: 1.6;
+        font-weight: bold;
+    }
+
+    .pdf-link img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .attachment-icon {
+        width: 4px;
+        height: 4px;
+        margin-right: 0px;
+        /* Add any additional styling you need for the attachment icon */
+    }
+
+</style>
+
+<div class="row">
+
+    <div id="AddStatusDetails" class="col-lg-12 col-md-12 col-sm-12">
+        <h5 class="text-center mb-4 underline-h5" style="text-align: center; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;">
+            <span>
+                Add Comments <button type="button" class="btn btn-danger cancel-button" style="width:15px; position: absolute; top: 0; right: 0;" id="CancelUpdate">X</button>
+            </span>
+        </h5>
+
+        <div class="row">
+
+            <!-- Proj Details -->
+            <div class="col-12 col-lg-12 col-xl-4 d-flex" style="border-radius: 15px;margin-top: -17px;">
+                <div class="card radius-14 w-100">
+                    <div class="card-body">
+                        <div class="projecthead" id="projectDetails">
+                            Proj Details <img src="~/assets/images/icons/pdfimg.png" onclick="PrintDiv()" alt="Pdf Download" width="35" height="25">
+                        </div>
+                        <table class="new-proj-table">
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sponsor Details -->
+            <div class="col-12 col-lg-12 col-xl-4 d-flex" style="border-radius: 15px;margin-top: -17px;">
+                <div class="card radius-14 w-100">
+                    <div class="card-body">
+                        <div class="projecthead" id="ProjDetails1">
+                            Tech Details
+                        </div>
+                        <table class="new-proj-table" style="width: 100%; height:150px;">
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Details -->
+            <div class="col-12 col-lg-12 col-xl-4 d-flex" style="border-radius: 15px;margin-top: -17px;">
+                <div class="card radius-14 w-100">
+                    <div class="card-body">
+                        <div class="projecthead" id="ProjDetails2">
+                            Other Details
+                        </div>
+                        <table class="new-proj-table">
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="card radius-12" style="height: 550px; overflow-y: auto;">
+                    <div class="text-with-icon underline-h7">
+                        <span style="font-size: 20px;">&#128172;</span>
+                        <h7 class="text-center mb-4 underline-h7" style="text-align:left; text-decoration-color:revert; color:antiquewhite">
+                            Comments For Status Of Project
+                        </h7>
+                    </div>
+
+                    <form class="form-group" asp-action="UpdateUnitStatus" id="StatusUpdateForm" enctype="multipart/form-data">
+                        <div class="container mt-1">
+                            <div class="row justify-content-center">
+                                <div class="col-md-10 form-container">
+                                    @*<h6 class="text-center mb-4" id="stakeholderInfo">*@
+
+                                    <div class="col-md-auto">
+
+                                        <input id="StakeholdertextId" type="hidden" name="SearchText" />
+                                    </div>
+
+                                    <div class="col-md-auto">
+
+                                        <input id="ProjtextId" type="hidden" class="SearchText" />
+                                    </div>
+
+                                    <div class="col-md-auto">
+
+                                        <input id="PsmToProj" type="hidden" class="SearchText" />
+                                    </div>
+                                    @*</h6>*@
+                                    <div class="needs-validation" novalidate>
+                                        <div class="row">
+                                            <div>
+                                                <!-- First Part: Comments -->
+                                                <div class="form-group">
+                                                    <label asp-for="Comments"><b>Comment</b> <span class="required-indicator">*</span></label>
+                                                    <textarea asp-for="Comments" style="width: 100%; height: 240px;" class="form-control" rows="4" required></textarea>
+                                                    <div class="invalid-feedback">Please provide the Comments</div>
+                                                    <span asp-validation-for="Comments" class="text-danger"></span> <!-- Validation message -->
+                                                </div>
+                                                @*<div class="form-group">
+                                                <label asp-for="StkStatusId" class="control-label"><b>Status</b> <span class="text-danger"><font style="color:red;"><b>*</b></font></span></label>
+                                                <select asp-for="StkStatusId" class="form-control" id="ddlStatus" required>
+                                                <option value="">Select a Status</option>
+                                                @foreach (var status in ViewBag.Stk_Status)
+                                                {
+                                                <option value="@status.StkStatusId">@status.Status</option>
+                                                }
+                                                </select>
+                                                <div class="invalid-feedback">Please select a Status.</div>
+                                                </div>*@
+                                                <div class="form-group">
+                                                    <label asp-for ="StkStatusId" class="control-label"><b>Status</b> <span class="text-danger"><font style="color:red;"><b>*</b></font></span></label>
+                                                    <select asp-for="StkStatusId" class="form-control" id="ddlStatus" required>
+                                                        <option value="">Select a Status</option>
+                                                        @if (ViewBag.Stk_Status != null)
+                                                        {
+                                                            <option value="@ViewBag.Stk_Status.StkStatusId">@ViewBag.Stk_Status.Status</option>
+                                                        }
+                                                    </select>
+                                                    <div class="invalid-feedback">Please select a Status.</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pdfFile"><b>Upload PDF</b></label>
+                                                <input type="file" id="pdfFile" name="PdfFile" accept=".pdf" class="form-control" />
+                                                <div class="invalid-feedback">Please upload a PDF file.</div>
+                                            </div>
+                                            <div class="form-group text-left    ">
+                                                <button type="submit" class="btn btn-primary" id="StatusUpdate">Update</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="card radius-12" style="height: 550px; overflow-y: auto;">
+                    <div class="text-with-icon underline-h7">
+                        <span style="font-size: 20px;">&#128172;</span>
+                        <h7 class="text-center mb-4 underline-h7" style="text-align:left; font-weight:bold; font-size:16px; text-decoration-color:revert; color:antiquewhite">
+                            Comments With Status
+                        </h7>
+                    </div>
+                    <!-- Chat-like display for comments -->
+                    <div class="card radius-12">
+
+                        <div class="chat-messages" id="ChatBox" style="overflow-y:auto">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<!----Table for Stakeholder Status Change----->
+
+<div id="IndexTableContainer" class="card-body">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+            <table id="IndexTable" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th>Ser No</th>
+                        @*  <th>Att</th> *@
+                        <th>Project</th>
+                        <th>Stakeholder</th>
+                        <th>Held With</th>
+                        <th>Comment</th>
+                        <th>Updated on</th>
+                        <th>Add Comment</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var project in ViewBag.projects)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    sno++;
+                                } @sno
+                            </td>
+                            @*    <td>
+                        @if (project.AttCnt > 0)
+                        {
+                        <a href="javascript:void(0);" class="anchorDetail" data-id="@project.CurrentPslmId">
+                        <img src="/assets/images/icons/attachemnts_clip.png" alt="Icon" class="attachment-icon">
+                        </a>
+                        }
+                        </td> *@
+                            <td>@project.ProjName</td>
+                            <td>@project.StakeHolder</td>
+                            <td>@project.FwdtoUser</td>
+                            <td>@project.Comments</td>
+                            <td>@project.DateTimeOfUpdate?.ToString("dd-MM-yyyy")</td>
+
+                            @foreach (var th in ViewBag.stakeholders)
+                            {
+                                if (th.UnitName == Logins.Unit)
+                                {
+                                    dynamic query = ViewBag.queryes;
+
+                                    <td class="d-flex justify-content-center">
+                                        <button type ="button" class="btn  table-button project-details-btn" data-bs-toggle="modal" data-bs-target="#UnitAdd" data-proj-id="@project.ProjId" data-psm-id="@project.CurrentPslmId" data-stakeholder-id="@th.unitid" data-stakeholder-name="@th.UnitName"
+                                                data-proj-namess="@project.ProjName" data-aim-scope="@project.AimScope" data-usabilityOf-appln="@project.InitialRemark" data-req-justi="@project.ReqmtJustification" data-major-timeline="@project.FwdtoUser" data-namof-sponser="@project.IsWhitelisted" data-initiated-date="@project.InitiatedDate" data-initiated-by="@project.StakeHolder" data-hosttype="@project.Hostedon">
+
+                                            <img src="~/assets/images/icons/comment.png" alt="Comment Icon" class="comment-icon" style="height:31px">
+                                        </button>
+                                    </td>
+
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function handlePdfClick(pdfFileName) {
+        alert(pdfFileName);
+        $.ajax({
+            type: "POST",
+            url: "/Home/WaterMark3",
+            data: { id: pdfFileName },
+            success: function (result) {
+
+                console.log("PDF click handled successfully");
+            },
+            error: function (error) {
+
+                console.error("Error handling PDF click", error);
+            }
+        });
+    }
+</script>
+
+
+<script>
+
+    const pdfFileInput = document.getElementById('pdfFile');
+
+    pdfFileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+
+
+            const maxSizeInBytes = 10 * 1024 * 1024;
+            if (file.size > maxSizeInBytes) {
+                $('#uploadButton').hide();
+                pdfFileInput.value = '';
+                Swal.fire({
+                    title: 'File Size Exceeded',
+                    text: 'Please select a file smaller than 10MB.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const bytes = new Uint8Array(reader.result);
+                const pdfHeader = new Uint8Array([37, 80, 68, 70, 45]);
+                const isPDF = compareArrays(bytes.slice(0, 5), pdfHeader);
+                if (isPDF) {
+
+                    console.log('PDF file is valid. Proceed with upload.');
+                } else {
+                    Swal.fire({
+                        title: 'Invalid File ....!',
+                        text: 'Invalid PDF file. Please select a valid PDF file.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+
+                    pdfFileInput.value = '';
+                }
+            };
+
+
+            reader.readAsArrayBuffer(file);
+        }
+    });
+
+    function compareArrays(array1, array2) {
+        if (array1.length !== array2.length) {
+            return false;
+        }
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i] !== array2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+@*
+    <script>
+
+    function handlePdfClick(var pdfFileName) {
+
+    $.ajax({
+    type: "POST",
+    url: "/Home/WaterMark3",
+    data: { id: pdfFileName },
+    success: function (result) {
+    // Handle the success response if needed
+    console.log("PDF click handled successfully");
+    },
+    error: function (error) {
+    // Handle the error response if needed
+    console.error("Error handling PDF click", error);
+    }
+    });
+
+    </script>
+    *@
+
+<script>
+
+    function redirectToNewPage() {
+
+    }
+    $(document).ready(function () {
+
+
+
+
+        $('.table-button').on('click', function () {
+            var $button = $(this);
+            var stakeHolderId = $button.data('stakeholder-id');
+            var projId = $button.data('proj-id');
+            var psmId = $button.data('psm-id');
+
+            $('#StakeholdertextId').val(stakeHolderId);
+            $('#ProjtextId').val(projId);
+            $('#PsmToProj').val(psmId);
+
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetUnitComments", "Home")',
+                data: {
+                    stakeholderId: stakeHolderId,
+                    psmId: psmId,
+                    projId: projId
+                },
+                //contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                success: function (data) {
+
+           
+                    var commentContainer = '<div style="background-color: #f0f0f0;">';
+
+                    for (var i = 0; i < data.length; i++) {
+                        var date = new Date(data[i].date);
+                        var formattedDate = ("0" + date.getDate()).slice(-2) + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear();
+
+                        commentContainer += '<div class="comment-box" style="text-align: justify;">';
+                        commentContainer += '<div class="comment-header">';
+                        commentContainer += '<div>';
+                        commentContainer += '<span style="font-family: Arial; font-weight: bold; color: #0793f7;">' + data[i].stakeholderName + '</span>';
+                        commentContainer += '<span style="margin-left: 10px;" class="comment-meta">' + formattedDate + '</span>';
+                        commentContainer += '</div>';
+                        commentContainer += '<div>';
+                        commentContainer += '<span class="comment-meta">' + data[i].statusName + '</span>';
+                        commentContainer += '<span class="pdf-link">';
+
+
+                        if (data[i].state !== null) {
+
+                            commentContainer += '<a href="/Home/WaterMark3?id=' + data[i].state + '" target="_blank">';
+                            commentContainer += '&nbsp;&nbsp; &nbsp;&nbsp;<img src="/assets/images/icons/pdfimg.png" alt="PDF icon" style="width: 24px; height: 24px;">';
+                            commentContainer += '</a>';
+                        }
+
+
+                        commentContainer += '</span>';
+                        commentContainer += '</div>';
+                        commentContainer += '</div>';
+                        commentContainer += '<div class="comment-content">' + data[i].comments + '</div>';
+                        commentContainer += '</div>';
+                    }
+
+                    commentContainer += '</div>'; // Close the container
+                    $('#ChatBox').empty().html(commentContainer);
+                    $('#AddStatusDetails').show();
+
+                    // Hide IndexTable container
+                    $('#IndexTableContainer').hide();
+                },
+                error: function () {
+                    alert('Error fetching comments.');
+                }
+            });
+        });
+
+        $('#AddStatusDetails').hide();
+
+        $('#CancelUpdate').click(function () {
+            $('#AddStatusDetails').hide();
+
+            // Show IndexTable container
+            $('#IndexTableContainer').show();
+        });
+    });
+</script>
+
+
+
+
+
+<!------------start handle the button click ------------>
+
+<script>
+    $(document).ready(function () {
+        // Handle click event on elements with id starting with "commentDiv_"
+        $('[id^="commentDiv_"]').click(function () {
+            // Extract the index from the id attribute
+            alert("Hy buddy");
+            var index = $(this).attr('id').replace('commentDiv_', '');
+            handleDivClick(data[index].comments);
+        });
+    });
+
+    function handleDivClick(comments) {
+        // Your handling logic here
+        console.log('Div clicked with comments:', comments);
+        // You can perform additional actions here
+    }
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#StatusUpdate').click(function () {
+            var status = $('#ddlStatus').val();
+            var comments = $('#Comments').val();
+            var stakeholderId = $('#StakeholdertextId').val();
+            var projId = $('#ProjtextId').val();
+            var psmId = $('#PsmToProj').val();
+            //var pdfFile = $('#pdfFile')[0].files[0];
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("UpdateUnitStatus", "Home")',
+                data: {
+                    StakeholderId: stakeholderId,
+                    ProjId: projId,
+                    PsmID: psmId,
+                    StatusId: status,
+                    Comment: comments,
+                    //PsmID: pdfFile
+                },
+                success: function (data) {
+                    // Handle success response from the server
+                    $('#IndexTable').html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log(xhr.responseText); // Log the detailed error message
+                    alert('Error fetching comments. See console for details.')
+                }
+            });
+        });
+    });
+</script>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var projectDetailsBtns = document.querySelectorAll('.project-details-btn');
+
+        projectDetailsBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var projectDetailsDiv = document.getElementById('projectDetails');
+                var projectDetailsDiv1 = document.getElementById('ProjDetails1');
+                var projectDetailsDiv2 = document.getElementById('ProjDetails2');
+
+                // Get data from the clicked button
+                var projName = btn.getAttribute('data-proj-namess') || '';
+                var aimScope = btn.getAttribute('data-aim-scope') || '';
+                var Initiateddate = btn.getAttribute('data-initiated-date') || '';
+                var newbandwidth = btn.getAttribute('data-band-with') || '';
+                var hostingtype = btn.getAttribute('data-hosting-type') || '';
+                var reqjustification = btn.getAttribute('data-req-justi') || '';
+                var conceptofsw = btn.getAttribute('data-concept-sw') || '';
+                var initiatedBy = btn.getAttribute('data-initiated-by') || '';
+                var hosttype = btn.getAttribute('data-hosttype') || '';
+
+                // Update the content of the projectheading div
+                projectDetailsDiv.innerHTML = `
+                                            Proj Details
+                                            <table class="new-proj-table" style=width: 100%;height: 150px;>
+                                                <tr>
+                                                    <td style="color: black;">Proj Name</td>
+                                                    <td style="color: black;">${projName}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: black;">Aim & Scope</td>
+                                                            <td class="long-text" style="color: black;">${aimScope}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: black;">Initiated Date</td>
+                                                    <td style="color: black;">${Initiateddate}</td>
+                                                </tr>
+                                                <!-- Add more rows as needed -->
+                                            </table>
+                                        `;
+
+                projectDetailsDiv1.innerHTML = `
+                                            Tech Details
+                                            <table class="new-proj-table">
+                                                <tr>
+                                                    <td style="color: black;">New Band With</td>
+                                                    <td style="color: black;">${newbandwidth}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: black;">Hosting Type</td>
+                                                    <td style="color: black;">${hostingtype}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: black;">Request Justification</td>
+                                                            <td class="long-text" style="color: black;">${reqjustification}</td>
+                                                </tr>
+                                                <!-- Add more rows as needed -->
+                                            </table>
+                                        `;
+                projectDetailsDiv2.innerHTML = `
+                                            Other Details
+                                            <table class="new-proj-table" style=width: 100%;height: 150px;>
+                                                <tr>
+                                                    <td style="color: black;">Concept Of S/W</td>
+                                                    <td style="color: black;">${conceptofsw}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: black;">Initiated By</td>
+                                                    <td style="color: black;">${initiatedBy}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color: black;">Host Type</td>
+                                                    <td style="color: black;">${hosttype}</td>
+                                                </tr>
+                                                <!-- Add more rows as needed -->
+                                            </table>
+                                        `;
+
+            });
+        });
+    });
+
+
+</script>
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Saved & Ready for Next Step',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+
+        </text>
+        TempData.Remove("SuccessMessage");
+    }
+</script>
+
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Something Went Wrong....!',
+                text: '@TempData["FailureMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+
+    }
+</script>

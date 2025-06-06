@@ -1,0 +1,172 @@
+﻿@using swas.DAL.Models
+@model List<tbl_Projects>
+
+
+
+@{
+    ViewData["Title"] = "Search Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int sno = 0;
+}
+
+
+
+@using (Html.BeginForm("Index", "Search", FormMethod.Get))
+{
+
+}
+
+
+
+<style>
+
+    .underline-h5 {
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0 auto; /* Center the box */
+        text-align: center;
+        border-color: #03c1fc;
+        /*box-shadow: 2px 6px 5px -3px #062b50;*/
+        background-color: #0cafff;
+        color: white;
+        font-family: Arial;
+        font-size: 15px;
+        margin-bottom: 0.5rem;
+        height: -1px;
+    }
+
+</style>
+
+<div>
+    <h5 class="text-center mb-4 underline-h5" style="text-align: center; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;height: 33px;">
+        <span>
+            Edit Projects Details
+        </span>
+    </h5>
+</div>
+
+
+
+
+<div class="card-body">
+
+    <table id="Soft" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>S/No</th>
+                <th>Project Name</th>
+                <th>Initiated On</th>
+
+                <th>AimScope</th>
+                <th>Comment</th>
+
+
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @foreach (var pro in Model)
+            {
+                <tr>
+                    <td>
+                        @{
+                            sno++;
+                        }
+                        @sno
+                    </td>
+                    <td>
+                        <a class="editButton" data-proj-name="@pro.ProjName" data-proj-id="@pro.ProjId" href="/ProjEdit/EditWithHistory?EncyId=@pro.EncyID">
+                            @pro.ProjName
+                        </a>
+                    </td>
+
+                    <td>@pro.InitiatedDate?.ToString("dd-MM-yyyy")</td>
+
+
+                    <td>@pro.AimScope</td>
+                    <td>@pro.Comments</td>
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+
+</div>
+
+
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Project Detl Edited...',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+
+        </text>
+        TempData.Remove("SuccessMessage");
+    }
+</script>
+
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Something Went Wrong....!',
+                text: '@TempData["FailureMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+
+    }
+</script>
+
+
+@*
+<script>
+
+    $(document).ready(function () {
+        $('.editButton').on('click', function () {
+
+            var projId = $(this).data('proj-id');
+
+            var projName = $(this).data('proj-name');
+
+            $('#projName').val(projName);
+            $('#ProjtextId').val(projId);
+
+
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("EditWithHistory","ProjEdit")',
+                data: {
+                    projName: projName,
+
+                    projId: projId
+                },
+                success: function (data) {
+
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                }
+            });
+        });
+    });
+
+</script>
+ *@

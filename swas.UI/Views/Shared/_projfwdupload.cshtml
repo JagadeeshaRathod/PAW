@@ -1,0 +1,356 @@
+﻿@using swas.BAL.DTO;
+@using swas.BAL.Helpers;
+@model Projmove
+
+
+@{
+
+  
+
+    //int? DataProjId = ViewBag.DataProjId as int?;
+
+
+}
+
+<style>
+
+    .thead-gradient {
+        background: white !important;
+        color: #fff;
+    }
+
+    .table-3d {
+        background-color: #fff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        /*border: 1px solid #ccc; */
+    }
+
+        .table-3d th, .table-3d td {
+            /*border: 1px solid #ccc;*/
+        }
+
+        .table-3d:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.8);
+            transform: translateY(-6px);
+        }
+
+
+    .container {
+        max-width: 100% !important;
+        margin-left: -33px !important;
+        padding-right: 141px !important;
+    }
+
+    label {
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        font-size: medium !important;
+    }
+
+    select, optgroup, textarea {
+        width: 100%;
+    }
+
+    .bx-trash:before {
+        content: "\eeb3";
+        color: white !important;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1001; /* Set a higher z-index for the popup */
+    }
+
+    .popup-content {
+        position: absolute;
+        top: 55%;
+        left: 55%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        width: 75% !important;
+        margin-left: 48px !important;
+        z-index: 1002; /* Set a higher z-index for the popup content */
+    }
+
+
+    .control-label {
+        color: black;
+    }
+
+    .underline-h5 {
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0 auto; /* Center the box */
+        text-align: center;
+        border-color: #03c1fc;
+        /*box-shadow: 2px 6px 5px -3px #062b50;*/
+        background-color: #0cafff;
+        color: white;
+        font-family: Arial;
+        font-size: 15px;
+        margin-bottom: 0.5rem;
+        height: -1px;
+    }
+
+    .underline-h6 {
+        background-color: #044c92;
+        color: white !important;
+        text-align: center;
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0 auto; /* Center the box */
+        text-align: center;
+        font-family: Arial;
+        font-size: 15px;
+        margin-bottom: 0.5rem;
+        height: -1px;
+    }
+
+
+    .btn-close {
+        background-color: red;
+        color: black;
+        border: none;
+        font-size: 20px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    /* Custom styles for label alignment and input width */
+    .form-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 10px; /* Adjust the margin as needed */
+    }
+
+        .form-group label {
+            text-align: left;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        /* Adjust width as needed */
+        .form-group select,
+        .form-group textarea,
+        .form-group input[type="file"] {
+            flex-grow: 1;
+            width: calc(100% - 15px); /* Adjust the width as needed */
+        }
+
+    .form-control {
+        margin-left: 10px; /* Adjust the margin as needed */
+    }
+
+        .form-control label {
+            margin-left: 10px; /* Adjust the margin as needed */
+        }
+</style>
+
+
+
+<div class="accordion accordion-flush" id="accordionFlushExample">
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+
+            <button class="btn btn-secondary" type="button">
+                
+                 <a href="javascript:void(0);" onclick="history.go(-1);" style="color: white;">Close</a>
+               @*  <a href="javascript:void(0);" onclick="window.history.back();" style="color: white;">Close</a>
+                <a href="javascript:void(0);" onclick="event.preventDefault(); window.history.back();" style="color: white;">Close</a> *@
+
+             
+
+            </button>
+            <button class="btn btn-danger" type="button">
+                
+                <img src="/assets/images/icons/pdfimg.png" onclick="PrintDiv()" alt="Pdf Download" width="35" height="25">
+            </button>
+
+        </h2>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    const pdfFileInput = document.getElementById('pdfFileInput');
+
+    pdfFileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+
+
+            const maxSizeInBytes = 10 * 1024 * 1024;
+            if (file.size > maxSizeInBytes) {
+                $('#uploadButton').hide();
+                pdfFileInput.value = '';
+                Swal.fire({
+                    title: 'File Size Exceeded',
+                    text: 'Please select a file smaller than 10MB.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const bytes = new Uint8Array(reader.result);
+                const pdfHeader = new Uint8Array([37, 80, 68, 70, 45]); // %PDF-
+                const isPDF = compareArrays(bytes.slice(0, 5), pdfHeader);
+                if (isPDF) {
+
+                    console.log('PDF file is valid. Proceed with upload.');
+                } else {
+
+                    Swal.fire({
+                        title: 'Invalid File ....!',
+                        text: 'Invalid PDF file. Please select a valid PDF file.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    $('#uploadButton').hide();
+                    pdfFileInput.value = '';
+                }
+            };
+
+
+            reader.readAsArrayBuffer(file);
+        }
+    });
+
+
+    function compareArrays(array1, array2) {
+        if (array1.length !== array2.length) {
+            return false;
+        }
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i] !== array2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+
+
+
+<script>
+
+    const pdfFileInput = document.getElementById('pdfFileInput');
+
+    pdfFileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+            // Read the first few bytes of the file as a Uint8Array
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const bytes = new Uint8Array(reader.result);
+                const pdfHeader = new Uint8Array([37, 80, 68, 70, 45]); // %PDF-
+                const isPDF = compareArrays(bytes.slice(0, 5), pdfHeader);
+                if (isPDF) {
+
+                    console.log('PDF file is valid. Proceed with upload.');
+                } else {
+                    pdfFileInput.value = '';
+                    Swal.fire({
+                        title: 'Invalid File ....!',
+                        text: 'Invalid PDF file. Please select a valid PDF file.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    // Reset the input
+                }
+            };
+
+
+            reader.readAsArrayBuffer(file);
+        }
+    });
+
+
+    function compareArrays(array1, array2) {
+        const pdfFileInputs = document.getElementById('pdfFileInput');
+        if (array1.length !== array2.length) {
+            pdfFileInputs.value = '';
+            return false;
+        }
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i] !== array2[i]) {
+                pdfFileInputs.value = '';
+                return false;
+            }
+        }
+        return true;
+    }
+
+    $(document).ready(function () {
+        $('.dropdownsearch').select2();
+    });
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        function checkConditions() {
+            var remarksLength = $('#AttHisAdd_Reamarks').val().length;
+            var pdfFileInput = $('#pdfFileInput')[0].files.length;
+
+            if (remarksLength > 1 && pdfFileInput > 0) {
+                $('#uploadButton').prop('disabled', false);
+            } else {
+                $('#uploadButton').prop('disabled', true);
+            }
+        }
+
+        $('#upload').click(function () {
+            var documentDescription = $('#pdfFileInput').val();
+            if (documentDescription.trim() === "") {
+                Swal.fire({
+                    title: 'Missing Upload File  ....!',
+                    text: 'Please upload a file first.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+
+                return false; // Prevent form submission
+            }
+        });
+
+        $('#AttHisAdd_Reamarks, #pdfFileInput').on('input change', function () {
+            checkConditions();
+        });
+
+        $('#uploadButton').prop('disabled', true);
+    });
+
+</script>

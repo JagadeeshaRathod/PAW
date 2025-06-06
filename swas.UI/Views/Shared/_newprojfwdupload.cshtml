@@ -1,0 +1,159 @@
+﻿@using swas.BAL.DTO;
+@using Microsoft.AspNetCore.Mvc.Rendering;
+@using swas.DAL.Models;
+@model tbl_Projects
+
+
+<style>
+
+    .header-container {
+        background-color: #044c92; /* Change this to your preferred color */
+        padding: 15px;
+        text-align: center;
+        
+    }
+    .h1  {
+        font-size: 05px !important;       
+        font-color: #FFFFFF !important;
+
+    }
+
+</style>
+
+<div class="accordion-body">
+
+    <div class="row">
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-body">
+                    <div class="header-container">
+                        <h1 style="color: #FFFFFF; font-size: 24px;">Please Upload Docus</h1>
+                    </div>
+
+                        <table id="fwduploaditems" class="table table-striped table-bordered">
+                            <tr>
+                                <td>
+                                    <!-- Your content here -->
+                                </td>
+                                <td>
+                                    ATT DOCU DESC
+                                <input type="text" class="form-control requiredField" id="Reamarks" />
+                                <div class="invalid-feedback">
+                                    ATT DOCU DESC Required
+                                </div>
+                                </td>
+                                <td colspan="2">
+                                    <p>Upload PDF file (Maximum size: 10MB)</p>
+                                <input type="file" id="pdfFileInput" name="uploadfile" class="form-control-file requiredField" accept=".pdf" @* onchange="checkFileSize(this)" *@>
+                                <div class="invalid-feedback">
+                                    Upload PDF file Required
+                                </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <center>
+                                        <button type="button" id="uploadButton" class="btn btn-primary" formnovalidate>Upload Documents</button>
+                                    </center>
+                                </td>
+                            </tr>
+                        </table>
+                        @* } *@
+                        @*</form>*@
+                    
+                  
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-body" style="margin-left:0px">
+                    <div class="header-container">
+                        <h1 style="color: white; font-size: 24px;">Details of Uploaded Docus</h1>
+                    </div>
+                    
+
+                        <table id="SoftwareTypes" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Delete</th>
+                                    <th>Docu Desc</th>
+                                    <th>File Name</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                        <tbody id="DetailBody">
+                              
+                            </tbody>
+                        </table>
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    const pdfFileInput = document.getElementById('pdfFileInput');
+
+    pdfFileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+
+        if (file) {
+
+
+            const maxSizeInBytes = 10 * 1024 * 1024;
+            if (file.size > maxSizeInBytes) {
+                
+                pdfFileInput.value = '';
+                Swal.fire({
+                    title: 'File Size Exceeded',
+                    text: 'Please select a file smaller than 10MB.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                const bytes = new Uint8Array(reader.result);
+                const pdfHeader = new Uint8Array([37, 80, 68, 70, 45]); // %PDF-
+                const isPDF = compareArrays(bytes.slice(0, 5), pdfHeader);
+                if (isPDF) {
+
+                    console.log('PDF file is valid. Proceed with upload.');
+                } else {
+
+                    Swal.fire({
+                        title: 'Invalid File ....!',
+                        text: 'Invalid PDF file. Please select a valid PDF file.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    
+                    pdfFileInput.value = '';
+                }
+            };
+
+
+            reader.readAsArrayBuffer(file);
+        }
+    });
+
+
+    function compareArrays(array1, array2) {
+        if (array1.length !== array2.length) {
+            return false;
+        }
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i] !== array2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+</script>

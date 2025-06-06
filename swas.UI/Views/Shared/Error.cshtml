@@ -1,0 +1,18 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Network Failed.</h1>
+<h2 class="text-danger">Network Error detected.....</h2>
+
+@if (Model != null && Model.ShowRequestId)
+{
+    <p>
+        <strong><code>@Model.RequestId</code></strong>
+    </p>
+}
+<h3>Please Contact Administrator</h3>
+<p>
+ 
+</p>

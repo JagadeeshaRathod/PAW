@@ -1,0 +1,132 @@
+﻿@using swas.BAL.DTO
+@model List<ProjHistory>
+@{
+    int snoa = 0;
+}
+
+<style type="text/css">
+    #htmlTopdf td {
+        width: 10%;
+        text-align: center;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    #htmlTopdf tr {
+        width: 100%;
+        border: 1px solid;
+        border-collapse: collapse;
+    }
+
+    #htmlTopdf th {
+        width: 10%;
+        text-align: center;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    .table-striped
+    {
+        border: 1px solid white !important;
+    }
+</style>
+    <div class="card bi-ui-radios-30 w-100" >
+        <div class="card-body">
+            <table id="HistroyProcess" style=" border-collapse:collapse; border:white;" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Ser No</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Fwd Fm</th>
+                        <th>Fwd To</th>
+                        <th>Remarks</th>
+                        <th>Comment</th>
+                        <th>Current Stake Holder</th>
+                        <th>#Att</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var history in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @{
+                                    snoa++;
+                                }
+                                @snoa
+                            </td>
+                            <td>@history.TimeStamp</td>
+                            <td>@history.Status</td>
+                            <td>@history.FromStakeHolder</td>
+                            <td>@history.CurrentStakeHolder</td>
+
+                            @*<td>@history.Stages</td>*@
+                            <td>
+                                @history.Remarks
+                            </td>
+                            <td>@history.Comment</td>
+
+                            <td>@history.CurrentStakeHolder</td>
+                            @*  <td>@history.InitiatedBy</td> *@
+                            <td>
+                                @if (history.AttCnt > 0)
+                                {
+
+                                    <a href="javascript:void(0);" class="anchorDetail" data-id="@history.PsmId">
+                                        <img src="/assets/images/icons/attachemnts_clip.png" alt="Icon" style="width: 31px; height: 29px; margin-right: 0px;">
+                                    </a>
+
+
+                                }
+                                else
+                                {
+
+                                }
+
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <div class="card bi-ui-radios-30 w-100">
+        <div class="card-body">
+            <table id="tableset" style="border-collapse:collapse;" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Ser No</th>
+                        <th>Stakeholder</th>
+                        <th>Date</th>
+                        <th>Comment</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var history in ViewBag.CommentByStakeholderList)
+                    {
+                    if (@history.Comment.Length > 0)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    snoa++;
+                                }
+                                @snoa
+                            </td>
+                            <td>@history.stakeholder</td>
+                            <td>@history.DateTimeOfUpdate.ToString("dd-MM-yyyy")</td>
+                            <td>@history.Comment</td>
+                            <td>@history.Action</td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>

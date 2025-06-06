@@ -1,0 +1,158 @@
+﻿@model swas.DAL.Models.StkComment
+
+@{
+    ViewBag.Title = "Project Details";
+
+    int sno = 0;
+
+    //if (Model.Projmove == null)
+    // {
+    //     Model.Projmove = new Projmove(); // Initialize Projmove if it's null
+    // }
+
+    //Model.Projmove.Submitcde = false;
+    //ViewBag.SubmitCde = ViewBag.SubmitCde;
+    int? DataProjId = ViewBag.DataProjId as int?;
+    
+}
+
+
+@{
+    if (@ViewBag.ProjDetl != null)
+    {
+        <div class="row">
+
+            <!--Proj Details-->
+            <div class="col-12 col-lg-12 col-xl-4 d-flex">
+
+                <div class="card radius-10 w-100">
+                    <div class="card-body">
+                        <div class="projectheading">
+                            Proj Details    <img src="~/assets/images/icons/pdfimg.png" onclick="PrintDiv()" alt="Pdf Download" width="35" height="25">
+
+                        </div>
+                        <table class="new-proj-table" style="width: 100%;" id="ProjDetls">
+                            <tr>
+                                <td>Proj Name</td>
+                                <td>
+                                    @ViewBag.ProjDetl.ProjName
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Aim & Scope</td>
+                                <td>@ViewBag.ProjDetl.AimScope</td>
+
+                            </tr>
+                            <tr>
+                                <td>Usability of Proposed Appln</td>
+                                <td>@ViewBag.ProjDetl.UsabilityofProposedAppln</td>
+
+                            </tr>
+                            <tr>
+                                <td>Major Timeline..?</td>
+                                <td>@ViewBag.ProjDetl.MajTimeLines</td>
+
+                            </tr>
+                            <tr>
+                                <td>Name of Sponsor</td>
+                                <td>@* @Model.FirstOrDefault()?.InitiatedBy *@</td>
+
+
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!--Sponsor Details-->
+            <div class="col-12 col-lg-12 col-xl-4 d-flex">
+
+                <div class="card radius-10 w-100">
+                    <div class="card-body">
+
+                        <div class="projectheading">
+                            Tech Details
+                        </div>
+                        <table class="new-proj-table" style="width: 100%;" id="Prodels1">
+                            <tr>
+                                <td>Proposed Tech Stack</td>
+                                <td>@ViewBag.ProjDetl.TechStackProposed</td>
+
+                            </tr>
+                            <tr>
+                                <td>Type of Software</td>
+                                <td>@ViewBag.ProjDetl.TypeofSW</td>
+                                <tr>
+                                    <td>NW Bandwidth Reqmt</td>
+                                <td>@ViewBag.ProjDetl.NWBandWidthReqmt</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Hosted On</td>
+                                <td>@ViewBag.ProjDetl.Hostedon</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Deployment Type</td>
+                                <td>@ViewBag.ProjDetl.Deplytype</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Being Devp In House..?</td>
+                                <td>@ViewBag.ProjDetl.BeingDevpInhouse</td>
+
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!--Tech Details-->
+            <div class="col-12 col-lg-12 col-xl-4 d-flex">
+
+                <div class="card radius-10 w-100">
+                    <div class="card-body">
+
+                        <div class="projectheading">
+                            Other Details
+                        </div>
+                        <table class="new-proj-table" style="text-align:center; width: 100%;" id="Projdetls2">
+                            <tr>
+                                <td>Envisaged Cost</td>
+                                <td>@ViewBag.ProjDetl.EnvisagedCost</td>
+
+                            </tr>
+                            <tr>
+                                <td>Content of SW Appln</td>
+                                <td>@ViewBag.ProjDetl.ContentofSWApp</td>
+
+                            </tr>
+                            <tr>
+                                <td>Usability of Propsed Appln</td>
+                                <td>@ViewBag.ProjDetl.UsabilityofProposedAppln</td>
+
+                            </tr>
+                            <tr>
+                                <td>Reqmt Justification</td>
+                                <td>@ViewBag.ProjDetl.ReqmtJustification</td>
+
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    
+    }
+    }
+    

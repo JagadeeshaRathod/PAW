@@ -1,0 +1,474 @@
+select a.Apptype,b.AppDesc,  count(*) as total from Projects a
+left join  mAppType b on a.Apptype=b.Apptype where b.AppDesc is not null
+group by a.Apptype,b.AppDesc
+
+
+select * into mHostType    from mAppType
+
+--update Projects set HostTypeID=1 where ProjId=28
+--select * from Projects
+
+--select * from ProjStakeHolderMov where PsmId=182
+
+
+
+***************STYLE*****************************
+
+<style>
+    .multiselect {
+        width: 200px;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+        }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px solid #ccc;
+        max-height: 150px;
+        overflow: auto;
+    }
+
+        #checkboxes ul {
+            padding: 0;
+        }
+
+            #checkboxes ul li {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                background-color: #f9f9f9; /* Set background color to match your row background */
+                border: 1px solid #ccc; /* Set border to match your row border */
+            }
+
+                #checkboxes ul li input {
+                    margin-right: 5px;
+                }
+
+    .lni-radio-button {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-radio {
+        text-align: center;
+        margin: 0 4px;
+    }
+
+        .custom-radio input[type="radio"] {
+            display: none;
+        }
+
+        .custom-radio .radio-label {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: #FFF;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .custom-radio input[type="radio"]:checked + .radio-label {
+            background-color: #dee2e6;
+            font-display: block;
+            color: black;
+        }
+
+    .search-container {
+        padding: 0px;
+        border-radius: 1px solid skyblue;
+        border-radius: 15px;
+        background-color: #f0f0f0;
+        margin-top: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    body {
+        font-family: arial;
+    }
+
+
+    .hidden {
+        display: none;
+    }
+
+    .card {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+
+
+    .form-group {
+        display: flex;
+        align-items: center;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="text"] {
+        flex: 0;
+        padding: 5px;
+        border: 2px solid #ccc;
+        border-radius: 0px;
+    }
+
+
+    .datePicker {
+        flex: 2;
+    }
+
+
+
+    #ProjDetails {
+        background-color: #f0f0f0;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        display: none;
+    }
+
+    #searchFormStackHolder {
+        justify-content: left;
+    }
+
+   
+    .dropdown {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    a {
+        color: black;
+    }
+
+    .dropdown dd,
+    .dropdown dt {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .dropdown ul {
+        margin: -1px 0 0 0;
+    }
+
+    .dropdown dd {
+        position: relative;
+    }
+
+    .dropdown a,
+    .dropdown a:visited {
+        color: black;
+        text-decoration: none;
+        outline: none;
+        font-size: 12px;
+    }
+
+    .dropdown dt a {
+        background-color: white;
+        display: block;
+        min-height: 42px;
+        line-height: 14px;
+        overflow: hidden;
+        border: 0;
+        width: 199px;
+        padding: 5px;
+        border: 2px solid #ccc;
+        border-radius: 0px;
+    }
+    
+    
+
+        .dropdown dt a span,
+        .multiSel span {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0 3px 2px 0;
+        }
+
+    .dropdown dd ul {
+        
+        overflow: auto;
+        border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+        background-color: white;
+        border: 3px;
+        color: black;
+        display: none;
+        left: 0px;
+        padding: 5px;
+        top: 1px;
+        width: 100%;
+        list-style: none;
+        height: 100px;
+        overflow: scroll;
+    }
+
+    .dropdown span.value {
+        display: none;
+    }
+
+    /*.dropdown dd ul li a {
+        padding: px;
+        display: block;
+    }*/
+
+        .dropdown dd ul li a:hover {
+            background-color: #dee2e6;
+        }
+
+</style>
+
+
+***********END STYLE********************
+
+****************View CODE FOR STACKHOLDER MULTICHEKING DROPDOWN******************
+
+
+<div id="searchStackholder" class="search-container">
+    <form class="form-group" asp-action="SearchstackResluts" id="searchFormStackHolder">
+        <div class="card-body">
+            <div class="row justify-content-center">
+                <div class="col-md-auto">
+                    <dl class="dropdown">
+                        <dt>
+                            <a href="#">
+                                <span class="hida">Select StackHolder</span>
+                                <p class="multiSel"></p>
+                            </a>
+                        </dt>
+                        <dd>
+                            <div class="mutliSelect">
+                                <ul>
+                                    @if (ViewBag.stack != null)
+                                    {
+                                        @foreach (var item in ViewBag.stack)
+                                        {
+                                            <li>
+                                                <input type="checkbox" value="@item" name="selectedStacks" />
+                                                @item
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>No data available</p>
+                                    }
+                                </ul>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <label>From Date:</label>&nbsp;
+                <input id="InitiatedDate" type="text" class="datePicker" required />
+            </div>
+            <div class="col-md-auto">
+                <label>To Date:</label>&nbsp;
+                <input id="ToDate" type="text" class="datePicker" required />
+            </div>
+        </div>
+        <div class="col-md-auto" style="text-align: center">
+            <button type="button" class="btn btn-primary btn-sm" id="searchButton">Search</button>
+        </div>
+    </form>
+</div>
+
+
+
+*****************************END OF MULTICHEKING View DROPDOWN******************
+
+********************************MULTICHEKING DROPDOWN SCRIPT******************
+
+<script>
+
+
+    $(".dropdown dt a").on('click', function () {
+        $(".dropdown dd ul").slideToggle('fast');
+    });
+
+    $(".dropdown dd ul li a").on('click', function () {
+        $(".dropdown dd ul").hide();
+    });
+
+    function getSelectedValue(id) {
+        return $("#" + id).find("dt a span.value").html();
+    }
+
+    $(document).bind('click', function (e) {
+        var $clicked = $(e.target);
+        if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+    });
+
+    $('.mutliSelect input[type="checkbox"]').on('click', function () {
+
+        var title = $(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),
+            title = $(this).val() + ",";
+
+        if ($(this).is(':checked')) {
+            var html = '<span title="' + title + '">' + title + '</span>';
+            $('.multiSel').append(html);
+            $(".hida").hide();
+        } else {
+            $('span[title="' + title + '"]').remove();
+            var ret = $(".hida");
+            $('.dropdown dt a').append(ret);
+
+        }
+    });
+
+
+
+</script>
+
+*******************END OF MULTICHEKING DROPDOWN SCRIPT************************************
+
+*************************Ajex COde FOR Multiple DROPDOWN***************************
+<script>
+    $(document).ready(function () {
+        $('#searchButton').click(function () {
+            var selectedStackHolders = [];
+            $('input[name="selectedStacks"]:checked').each(function () {
+                selectedStackHolders.push($(this).val());
+            });
+             
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchstackResluts", "Search")', // Replace "ControllerName" with your actual controller name
+                data: {
+                    searchStackHolder: selectedStackHolders,
+          
+                },
+                success: function (data) {
+                    // Handle the response here
+                    $('#searchStackHolderResults').empty().html(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+
+***************************END OF Ajex*****************************************
+
+
+*******************************CONTROLLER******************************************
+
+public async Task <IActionResult> SearchstackResluts( string[] searchStackHolder)
+        {
+            var dateTime = DateTime.Now;
+            try
+            {
+                Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContext.Session, "User");
+
+                if (Logins.IsNotNull())
+                {
+                    int? stakeholderId = Logins.unitid;
+
+                    var projects = await(from a in _context.Projects
+                                         join b in _context.ProjStakeHolderMov on a.CurrentPslmId equals b.PsmId into bs
+                                         from e in bs.DefaultIfEmpty()
+                                         join d in _context.mStatus on e.StatusId equals d.StatusId into ds
+                                         from eWithStatus in ds.DefaultIfEmpty()
+                                         join c in _context.tbl_mUnitBranch on a.StakeHolderId equals c.unitid into cs
+                                         from eWithUnit in cs.DefaultIfEmpty()
+
+
+                                         join g in _context.tbl_mUnitBranch on e.CurrentStakeHolderId equals g.unitid into csh
+                                         from curstk in csh.DefaultIfEmpty()
+
+                                         join f in _context.Comment on a.CurrentPslmId equals f.PsmId into fs
+                                         from eWithComment in fs.DefaultIfEmpty()
+                                         where a.IsActive && !a.IsDeleted 
+                                         orderby e.TimeStamp descending
+                                         select new tbl_Projects
+                                         {
+                                             ProjId = a.ProjId,
+                                             ProjName = a.ProjName,
+                                             StakeHolderId = a.StakeHolderId,
+                                             CurrentPslmId = a.CurrentPslmId,
+                                             InitiatedDate = a.InitiatedDate,
+                                             CompletionDate = a.CompletionDate,
+                                             IsWhitelisted = a.IsWhitelisted,
+                                             InitialRemark = a.InitialRemark,
+                                             IsDeleted = a.IsDeleted,
+                                             IsActive = a.IsActive,
+                                             EditDeleteBy = a.EditDeleteBy,
+                                             EditDeleteDate = a.EditDeleteDate,
+                                             UpdatedByUserId = a.UpdatedByUserId,
+                                             DateTimeOfUpdate = e.DateTimeOfUpdate,
+                                             CurrentStakeHolderId = a.CurrentStakeHolderId,
+                                             StakeHolder = eWithUnit.UnitName,
+                                             FwdtoUser = curstk.UnitName,
+                                             Status = eWithStatus.Status,
+                                             Comments = eWithComment.Comment,
+                                             ActionCde = e.ActionCde,
+                                             AimScope = a.AimScope,
+                                             AttCnt = 0
+                                         }).ToListAsync();
+
+                    //if (!string.IsNullOrEmpty(searchStackHolder))
+                    //{
+                    //    projectsQuery.Where(p => p.StackHolder.Contains(searchStackHolder))
+                    //        .ToList();
+                    //}
+
+                    //ViewBag.projectsQuerystack = projectsQueryStack;
+
+
+                    return View("CurrentSearch");
+                }
+                else
+                {
+                    return Redirect("/Identity/Account/Login");
+                }
+            }
+            catch (Exception ex)
+            {
+                swas.BAL.Utility.Error.ExceptionHandle(ex.Message);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+******************************************END OF CONTROLLER*******************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

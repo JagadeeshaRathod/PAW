@@ -1,0 +1,105 @@
+﻿@*@model swas.DAL.Models.tbl_mStatus
+
+@{
+    ViewData["Title"] = "Edit Stage";
+
+}
+
+<div>
+    <div class="container mt-1">
+        <div class="row justify-content-center">
+            <div class="container-fluid">
+                <form asp-action="Edit" asp-controller="Status" method="post">
+                    <input type="hidden" asp-for="StatusId" />
+                    <div class="row">
+                
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Status"><b>Status Name</b> <span class="required-indicator"><font style="color:red;"><b>*</b></font></span></label>
+                                <input asp-for="Status" class="form-control" required onkeyup="ValInData(this)" value="@Model.Status" />
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                                <div class="invalid-feedback">Please provide a Status name.</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Statseq"><b>StatSeq</b> <span class="required-indicator"><font style="color:red;"><b>*</b></font></span></label>
+                            <input asp-for="Statseq" class="form-control" id="statseq" required onkeyup="ValInData(this)" value="@Model.Statseq" />
+                            <div class="invalid-feedback">Please provide the Status Seq </div>
+                            <span asp-validation-for="Statseq" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center" style="margin-top: 2rem;">
+
+                            <button type="submit" data-id="@Model.StatusId" data-name="@Model.Status" class="btn btn-primary btnupdate" style="margin-top:1rem;">Update</button>
+
+                            <button class="btn btn-secondary" type="button" style="margin-top: 1rem;">
+                                <a href="/Status/Index" style="color: white;">Close</a>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+}
+
+    <script src="~/developerjs/stage.js"></script>*@
+
+
+@model swas.DAL.Models.tbl_mStatus
+
+@{
+    ViewData["Title"] = "Edit Sub Stage";
+
+}
+
+<div>
+    <div class="container mt-1">
+        <div class="row justify-content-center">
+            <div class="container-fluid">
+                <form asp-action="Edit" asp-controller="Stauts" method="post">
+                    <input type="hidden" asp-for="StatusId" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Status"><b>Stage Name</b> <span class="required-indicator"><font style="color:red;"><b>*</b></font></span></label>
+                                <input asp-for="Status" class="form-control" required onkeyup="ValInData(this)" value="@Model.Status" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center" style="margin-top: 2rem;">
+
+                            <button type="submit" data-id="@Model.StatusId" data-name="@Model.Status" class="btn btn-primary btnupdate" style="margin-top:1rem;">Update</button>
+
+                            <button class="btn btn-secondary" type="button" style="margin-top: 1rem;">
+                                <a href="/Status/Create" style="color: white;">Close</a>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+
+    <script src="~/developerjs/Status.js"></script>

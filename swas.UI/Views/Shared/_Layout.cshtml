@@ -1,0 +1,2591 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using swas.BAL.DTO
+@using swas.BAL.Helpers
+@using Microsoft.AspNetCore.Authorization
+
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+
+    TempData["Tabshift"] = 0;
+    Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+
+}
+@{
+
+    bool isAdmin = User.Identity.IsAuthenticated && User.IsInRole("Dte");
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>@ViewData["Title"] - PAW</title>
+<!-- loader-->
+<script>
+
+
+
+</script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<head>
+
+    <style>
+        .header {
+            background-color: blue; /* Replace with your desired header color */
+            color: blue; /* Replace with your desired text color for the header */
+        }
+
+        .footer {
+            background-color: #044c92; /* Replace with your desired footer color */
+            color: #044c92; /* Replace with your desired text color for the footer */
+        }
+
+        .wrapper .page-content {
+            margin-top: 0px !important;
+        }
+    </style>
+    <style>
+
+        .loader-container {
+            position: relative;
+            display: table-cell;
+            vertical-align: middle;
+            z-index: 12;
+            text-align: center;
+        }
+
+            .loader-container img {
+                width: 60px;
+            }
+
+        .loader {
+            vertical-align: top;
+        }
+
+
+        .loader {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            vertical-align: middle;
+            background-color: rgba(255, 255, 255, 0.75);
+            position: fixed;
+            display: table;
+            width: 100%;
+            top: 0;
+            height: 100%;
+            min-height: 100%;
+            z-index: 99999;
+            left: 0;
+        }
+
+        .loader-container {
+            position: relative;
+            display: table-cell;
+            vertical-align: middle;
+            z-index: 12;
+            text-align: center;
+        }
+
+            .loader-container img {
+                width: 60px;
+            }
+
+        .loader {
+            vertical-align: top;
+        }
+
+
+        .sidebar .nav-link {
+            position: relative;
+            display: inline-block;
+        }
+
+        .badge3 {
+            position: absolute;
+            top: -5px;
+            right: -33px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 12px;
+            line-height: 1;
+            text-align: center;
+            min-width: 20px;
+        }
+
+        .badge5 {
+            position: absolute;
+            top: 0px;
+            right: 18px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 12px;
+            line-height: 1;
+            text-align: center;
+            min-width: 20px;
+        }
+
+        .srno {
+            width: 33.625px;
+        }
+
+        body {
+            font-weight: bold;
+        }
+
+        .new-badge-icon {
+            color: red; /* Badge color */
+            font-size: 10px; /* Adjust size as needed */
+        }
+
+        .custom-modal-size {
+            max-width: 100%; /* Set the modal width to 80% of the screen */
+            width: 95%; /* Ensure it scales responsively */
+            margin: auto; /* Center horizontally */
+            
+        }
+
+            .custom-modal-size .modal-content {
+                height: 65vh; /* Ensure the content adjusts dynamically */
+                overflow-y: auto; /* Add vertical scrolling for long content */
+                overflow-x: hidden; /* Prevent horizontal overflow */
+                margin-left: 248px;
+            }
+
+        .modal-dialog {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Vertically center the modal */
+            margin: 0; /* Remove default margins for better centering */
+        }
+
+       
+
+    </style>
+    <style>
+
+
+        .new-badge {
+            display: inline-block;
+            animation: bounce 1s infinite;
+        }
+
+        /* .btn-add-comment{
+            margin-left: 535px;
+        } */
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            flex-grow: 1;
+            text-align: center; /* This centers the heading within the available space */
+        }
+    </style>
+
+    <link rel="stylesheet" href="~/" asp-append-version="true" />
+
+
+    <!-- CSS Files -->
+
+
+    <link href="~/css/select2.min.css" rel="stylesheet" />
+
+    <link href="~/assets/css/icons.css" rel="stylesheet">
+    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet">
+    <!--data Table-->
+    <link rel="stylesheet" href="~/assets/dataTable/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/dataTable/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/assets/dataTable/css/buttons.bootstrap4.min.css">
+
+    <link rel="stylesheet" href="~/assets/dataTable/css/all.min.css">
+    <link href="~/assets/dataTable/css/searchbuilder.datatables.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/all.min.css" rel="stylesheet" />
+    @* <link href="~/assets/dataTable/css/bootstrap.css" rel="stylesheet" /> *@
+    <link href="~/assets/dataTable/css/jquery.datatables.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/responsive.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/datatables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/assets/dataTable/css/datatables.datetime.min.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/css/bootstrap-extended.css" rel="stylesheet">
+    <link href="~/assets/css/style.css" rel="stylesheet">
+    <link href="~/css/main.css" rel="stylesheet" />
+
+
+    <script language="JavaScript" type="text/javascript" src="~/assets/js/jquery.min.js"></script>
+
+    <script language="JavaScript" type="text/javascript" src="~/assets/js/bootstrap.bundle.min.js"></script>
+
+    <!--plugins-->
+
+    <link href="~/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <script language="JavaScript" type="text/javascript" src="~/assets/plugins/chartjs/chart.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/plugins/metismenu/js/metisMenu.min.js"></script>
+
+    <!-- Main JS-->
+    <script language="JavaScript" type="text/javascript" src="~/assets/js/main.js"></script>
+    <!-- dataTable-->
+
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/jquery.dataTables.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.bootstrap4.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.buttons.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.bootstrap4.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/jszip.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/pdfmake.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/vfs_fonts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.html5.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.print.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/buttons.colVis.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/dataTables.responsive.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/assets/dataTable/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/assets/dataTable/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/assets/dataTable/js/pdfmake.min.js"></script>
+    <script src="~/assets/dataTable/js/datatables.datetime.min.js"></script>
+    <script src="~/assets/dataTable/js/datatables.searchbuilder.min.js"></script>
+    <script src="~/assets/dataTable/js/fnmultifilter.js"></script>
+    <link href="~/css/sweetalert2.min.css" rel="stylesheet">
+    <script src="~/assets/datatable/js/select2.min.js"></script>
+    <script src="~/font-awesome/js/all.min.js"></script>
+    <script src="~/font-awesome/js/fontawesome.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/js/sweetalert2.all.min.js"></script>
+
+
+    <script src="~/DeveloperJs/ddlSanal.js"></script>
+    <script src="~/developerjs/comman.js"></script>
+    <script src="~/developerjs/notification.js"></script>
+
+    <script>
+        function ValInData(input) {
+
+            var regex = /[^a-zA-Z0-9 ]/g;
+            input.value = input.value.replace(regex, "");
+        }
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            var table = $('#Software').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                                <style type="text/css">
+                                                                    table {
+                                                                              width: 100%;
+                                                                              border-collapse: collapse;
+                                                                              margin-bottom: 20px;
+                                                                          }
+
+                                                                          .table > thead {
+                                                                              vertical-align: bottom;
+                                                                              background-color: red;
+                                                                          }
+
+                                                                          th, td {
+                                                                              padding: 8px;
+                                                                              border: 1px solid #ddd;
+                                                                              text-align: center;
+                                                                          }
+
+                                                                          th {
+                                                                              background-color: #f2f2f2;
+                                                                              color: black;
+                                                                          }
+                                                                      </style>
+                                                                          `;
+
+                var table = $('#Software').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#SoftwareType1').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                                       <style type="text/css">
+                                                                            table {
+                                                                                width: 100%;
+                                                                                border-collapse: collapse;
+                                                                                margin-bottom: 20px;
+                                                                            }
+
+                                                                            .table > thead {
+                                                                                vertical-align: bottom;
+                                                                                background-color: red;
+                                                                            }
+
+                                                                            th, td {
+                                                                                padding: 8px;
+                                                                                border: 1px solid #ddd;
+                                                                                text-align: center;
+                                                                            }
+
+                                                                            th {
+                                                                                background-color: #f2f2f2;
+                                                                                color: black;
+                                                                            }
+                                                                        </style>
+                                                                    `;
+
+                var table = $('#SoftwareType1').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#mapunit').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                                               <style type="text/css">
+                                                                                    table {
+                                                                                        width: 100%;
+                                                                                        border-collapse: collapse;
+                                                                                        margin-bottom: 20px;
+                                                                                    }
+
+                                                                                    .table > thead {
+                                                                                        vertical-align: bottom;
+                                                                                        background-color: red;
+                                                                                    }
+
+                                                                                    th, td {
+                                                                                        padding: 8px;
+                                                                                        border: 1px solid #ddd;
+                                                                                        text-align: center;
+                                                                                    }
+
+                                                                                    th {
+                                                                                        background-color: #f2f2f2;
+                                                                                        color: black;
+                                                                                    }
+                                                                                </style>
+                                                                            `;
+
+                var table = $('#mapunit').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#SoftwareType').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                                 <style type="text/css">
+                                                                     table {
+                                                                         width: 100%;
+                                                                         border-collapse: collapse;
+                                                                         margin-bottom: 20px;
+                                                                     }
+
+                                                                     .table > thead {
+                                                                         vertical-align: bottom;
+                                                                         background-color: red;
+                                                                     }
+
+                                                                     th, td {
+                                                                         padding: 8px;
+                                                                         border: 1px solid #ddd;
+                                                                         text-align: center;
+                                                                     }
+
+                                                                     th {
+                                                                         background-color: #f2f2f2;
+                                                                         color: black;
+                                                                     }
+                                                                 </style>
+                                                             `;
+
+                //var table = $('#SoftwareType').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#Inbox1').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                                         <style type="text/css">
+                                                                             table {
+                                                                                 width: 100%;
+                                                                                 border-collapse: collapse;
+                                                                                 margin-bottom: 20px;
+                                                                             }
+
+                                                                             .table > thead {
+                                                                                 vertical-align: bottom;
+                                                                                 background-color: red;
+                                                                             }
+
+                                                                             th, td {
+                                                                                 padding: 8px;
+                                                                                 border: 1px solid #ddd;
+                                                                                 text-align: center;
+                                                                             }
+
+                                                                             th {
+                                                                                 background-color: #f2f2f2;
+                                                                                 color: black;
+                                                                             }
+                                                                         </style>
+                                                                     `;
+
+                var table = $('#Inbox1').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#SoftwareType3').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                            <style type="text/css">
+                                                                table {
+                                                                    width: 100%;
+                                                                    border-collapse: collapse;
+                                                                    margin-bottom: 20px;
+                                                                }
+
+                                                                .table > thead {
+                                                                    vertical-align: bottom;
+                                                                    background-color: red;
+                                                                }
+
+                                                                th, td {
+                                                                    padding: 8px;
+                                                                    border: 1px solid #ddd;
+                                                                    text-align: center;
+                                                                }
+
+                                                                th {
+                                                                    background-color: #f2f2f2;
+                                                                    color: black;
+                                                                }
+                                                            </style>
+                                                        `;
+
+                var table = $('#SoftwareType3').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#Inbox').DataTable({
+                lengthChange: true,
+                order: [[1, 'desc']]
+                                        dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                                       <style type="text/css">
+                                                                           table {
+                                                                               width: 100%;
+                                                                               border-collapse: collapse;
+                                                                               margin-bottom: 20px;
+                                                                           }
+
+                                                                           .table > thead {
+                                                                               vertical-align: bottom;
+                                                                               background-color: red;
+                                                                           }
+
+                                                                           th, td {
+                                                                               padding: 8px;
+                                                                               border: 1px solid #ddd;
+                                                                               text-align: center;
+                                                                           }
+
+                                                                           th {
+                                                                          background-color: #f2f2f2;
+                                                                                      color: black;
+                                                                                  }
+                                                                              </style>
+                                                                          `;
+
+                var table = $('#Inbox').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#Sents').DataTable({
+                lengthChange: true,
+                order: [[1, 'desc']]
+                                        dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                             <style type="text/css">
+                                                                  table {
+                                                                      width: 100%;
+                                                                      border-collapse: collapse;
+                                                                      margin-bottom: 20px;
+                                                                  }
+
+                                                                 .table > thead {
+                                                                     vertical-align: bottom;
+                                                                     background-color: red;
+                                                                 }
+
+                                                                 th, td {
+                                                                     padding: 8px;
+                                                                     border: 1px solid #ddd;
+                                                                     text-align: center;
+                                                                 }
+
+                                                                 th {
+                                                                     background-color: #f2f2f2;
+                                                                     color: black;
+                                                                 }
+                                                             </style>
+                                                               `;
+
+                var table = $('#Sents').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#IndexTable').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                               <style type="text/css">
+                                                                   table {
+                                                                       width: 100%;
+                                                                       border-collapse: collapse;
+                                                                       margin-bottom: 20px;
+                                                                   }
+
+                                                                   .table > thead {
+                                                                       vertical-align: bottom;
+                                                                       background-color: red;
+                                                                   }
+
+                                                                   th, td {
+                                                                       padding: 8px;
+                                                                       border: 1px solid #ddd;
+                                                                       text-align: center;
+                                                                   }
+
+                                                                   th {
+                                                                       background-color: #f2f2f2;
+                                                                       color: black;
+                                                                   }
+                                                               </style>
+                                                           `;
+
+                var table = $('#IndexTable').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#SoftwareType5').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            //var buttonContainer = table.buttons().container();
+            //var searchBuilderContainer = table.searchBuilder.container();
+            //buttonContainer.insertBefore(table.table().container());
+            //searchBuilderContainer.insertBefore(table.table().container());
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                                  <style type="text/css">
+                                                                      table {
+                                                                          width: 100%;
+                                                                          border-collapse: collapse;
+                                                                          margin-bottom: 20px;
+                                                                      }
+
+                                                                      .table > thead {
+                                                                          vertical-align: bottom;
+                                                                          background-color: red;
+                                                                      }
+
+                                                                      th, td {
+                                                                          padding: 8px;
+                                                                          border: 1px solid #ddd;
+                                                                          text-align: center;
+                                                                      }
+
+                                                                      th {
+                                                                          background-color: #f2f2f2;
+                                                                          color: black;
+                                                                      }
+                                                                  </style>
+                                                              `;
+
+                var table = $('#SoftwareType5').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#SentProjDetails').DataTable({
+
+
+            });
+
+            var buttonContainer = table.buttons().container();
+
+            buttonContainer.insertBefore(table.table().container());
+
+
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#Soft').DataTable({
+                lengthChange: true,
+                dom: 'lBfrtip',
+                buttons: [
+                    'copy',
+                    'excel',
+                    'csv',
+                    {
+                        text: 'PDF',
+                        extend: 'pdfHtml5',
+                        action: function (e, dt, node, config) {
+                            PdfDiv();
+                        }
+                    },
+                ],
+                searchBuilder: {
+                    conditions: {
+                        num: {
+                            'MultipleOf': {
+                                conditionName: 'Multiple Of',
+                                init: function (that, fn, preDefined = null) {
+                                    var el = $('<input/>').on('input', function () { fn(that, this) });
+
+                                    if (preDefined !== null) {
+                                        $(el).val(preDefined[0]);
+                                    }
+
+                                    return el;
+                                },
+                                inputValue: function (el) {
+                                    return $(el[0]).val();
+                                },
+                                isInputValid: function (el, that) {
+                                    return $(el[0]).val().length !== 0;
+                                },
+                                search: function (value, comparison) {
+                                    return value % comparison === 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+            function PdfDiv() {
+                var popupWin = window.open('', '_blank', 'top=100,width=900,height=500,location=no');
+                popupWin.document.open();
+
+                var tableStyles = `
+                                                         <style type="text/css">
+                                                             table {
+                                                                 width: 100%;
+                                                                 border-collapse: collapse;
+                                                                 margin-bottom: 20px;
+                                                             }
+
+                                                             .table > thead {
+                                                                 vertical-align: bottom;
+                                                                 background-color: red;
+                                                             }
+
+                                                             th, td {
+                                                                 padding: 8px;
+                                                                 border: 1px solid #ddd;
+                                                                 text-align: center;
+                                                             }
+
+                                                             th {
+                                                                 background-color: #f2f2f2;
+                                                                 color: black;
+                                                             }
+                                                         </style>
+                                                     `;
+
+                var table = $('#Soft').DataTable();
+
+                var filteredData = table.rows({ search: 'applied' }).data().toArray();
+
+                var tableHTML = '<table>';
+
+                tableHTML += '<thead>';
+                tableHTML += '<tr>';
+                table.columns().header().each(function (header) {
+                    tableHTML += '<th>' + header.innerHTML + '</th>';
+                });
+                tableHTML += '</tr>';
+                tableHTML += '</thead>';
+
+                tableHTML += '<tbody>';
+                for (var i = 0; i < filteredData.length; i++) {
+                    tableHTML += '<tr>';
+                    for (var j = 0; j < filteredData[i].length; j++) {
+                        tableHTML += '<td>' + filteredData[i][j] + '</td>';
+                    }
+                    tableHTML += '</tr>';
+                }
+                tableHTML += '</tbody>';
+
+                tableHTML += '</table>';
+
+                var watermarkText = '@(TempData["ipadd"])';
+
+                popupWin.document.write('<html><head>'
+                    + tableStyles + '</head><body onload="window.print()">'
+                    + tableHTML + '<div style="transform: rotate(-45deg);z-index:10000;opacity: 0.3;color: BLACK; position:fixed;top: auto; left: 6%; top: 39%;color: #8e9191;font-size: 80px; font-weight: 500px;display: grid;justify-content: center;align-content: center;">'
+                    + watermarkText + '</div></body></html>');
+
+                popupWin.document.close();
+            }
+        });
+    </script>
+
+
+
+
+
+</head>
+
+
+<body class="sidebar-collapsed sidebar-hover">
+    <div class="wrapper">
+        <div id="loading1" class="loader d-none">
+            <div class="loader-container">
+                @*<img src="/images/loads.gif" width="600px" height="200px">*@
+                <img src="/assets/images/loadsss.gif" height="100">
+                <div>
+                    <h4 style="margin-top: -20px;">Loading...</h4>
+                    <span>Please wait... This may take few seconds...</span>
+                </div>
+            </div>
+        </div>
+        <span id="isclaneder">@Logins.cla</span>
+
+        @if (Logins != null && Logins.Role == "Dte")
+        {
+            <!--start sidebar -->
+            <aside class="sidebar-wrapper" data-simplebar="true">
+                <div class="sidebar-header" style="background-color:#044c92 !important">
+                    <div>
+                        <img src="~/assets/images/icons/armylogo.png" class="logo-icon" alt="logo icon">
+                    </div>
+                    <div>
+                        <h4 class="logo-text">PAW</h4>
+                    </div>
+                    <div class="toggle-icon ms-auto">
+                        <ion-icon name="menu-sharp" id=" menusharp"></ion-icon>
+                        <img src="~/assets/images/menu-sharp.256x172.png" style="width: 16px;" />
+                    </div>
+
+                </div>
+                <!--navigation-->
+
+
+                <ul class="metismenu sidebar-menu" style="font-weight: bold;" id="menu">
+
+                    <li>
+                        <div class="parent-icon">
+                            <ion-icon name="home-sharp" id="iconname"></ion-icon>
+                        </div>
+                        <a href="/Home/Index">
+                            <div class="menu-title" style="margin-left: 0px !important;">
+                                Dashboard :  @Logins.Unit
+                            </div>
+
+                        </a>
+                    </li>
+
+                    @* <li>
+                <a href="/Home/UnitDashbard">
+                <div class="icon-container">
+                <img src="/assets/images/icons/backtounit.jpg" alt="Icon">
+                <ion-icon name="ellipse-outline"></ion-icon>
+                <span class="icon-name">My DashBoard</span>
+                </div>
+                </a>
+                </li>*@
+
+                    <li>
+                        <a href="/Projects/Create">
+                            <div class="icon-container">
+
+                                <ion-icon name="ellipse-outline"></ion-icon>
+                                <span class="icon-name">Add New Project</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/Projects/ProjDetails">
+                            <div class="inbox-container" style="margin-left : 46px !important">
+
+                                <div class="icon-container" style="margin-left:-43px;">
+
+                                    <ion-icon name="ellipse-outline"></ion-icon>
+                                    <span class="icon-name">Inbox</span>
+                                    <span id="InboxCount" class="badge3 d-none InboxCount">0</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="/Projects/ProjComments" @*onclick="createNotification(event)"*@>
+                            <div class="icon-container">
+
+                                <ion-icon name="ellipse-outline"></ion-icon>
+                                @* <span class="icon-name">Proj Comments</span> *@
+                                <span class="icon-name">Stakeholder Comments</span>
+                                @*  <span class="inbox-alertsub1"></span>*@
+                                <span id="ProjectCommentCount" class="badge5 d-none ProjectCommentCount">0</span>
+                            </div>
+                        </a>
+                    </li>
+
+
+
+
+                    <li>
+                        <a href="/Search/GetProjLogview">
+                            <div class="icon-container">
+
+                                <ion-icon name="ellipse-outline"></ion-icon>
+                                @* <span class="icon-name">Proj Log</span> *@
+                                <span class="icon-name">Movement Log</span>
+                            </div>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Home/ProjectWiseReport">
+                            <div class="icon-container">
+
+                                <ion-icon name="ellipse-outline"></ion-icon>
+                                @* <span class="icon-name">Project Wise Status</span> *@
+                                <span class="icon-name">Stage Wise Status</span>
+                            </div>
+
+                        </a>
+                    </li>
+                    @* <li>
+                        <a href="/Home/AllProjectDetails">
+                            <div class="icon-container">
+
+                                <ion-icon name="ellipse-outline"></ion-icon>
+                                <span class="icon-name">Project Details</span>
+                            </div>
+
+                        </a>
+                    </li> *@
+
+
+                    @* <a href="/Chat/Index" @*onclick="createNotification(event)"*@
+                    @*  <li>
+                <a href="/Chat/Index">
+                <div class="icon-container">
+
+                <ion-icon name="ellipse-outline"></ion-icon>
+                <span class="icon-name">Inter-User Msg</span>
+                <span id="InterUserMsgCount" class="badge3 d-none InterUserMsgCount">0</span>
+                </div>
+                </a>
+                </li> *@
+
+                    <li>
+                        <a href="/Chat/Index">
+                            <div class="inbox-container" style="margin-left : 46px !important">
+
+                                @*  <div class="icon-container" style="margin-left:-43px;">
+                            <ion-icon name="ellipse-outline"></ion-icon>
+                            <span class="icon-name">Inter-User Msg</span>
+                            <span id="InterUserMsgCount" class="badge3 d-none InterUserMsgCount">
+                            <ion-icon name="ellipse" class="new-badge-icon"></ion-icon>
+                            </span>
+                            </div> *@
+
+                                <div class="icon-container" style="margin-left: -43px;">
+                                    <ion-icon name="ellipse-outline"></ion-icon>
+                                    <span class="icon-name mr-3">Chat</span>
+                                    <span id="InterUserMsgCount" class="badge3 d-none InterUserMsgCount mt-1">
+                                        <ion-icon name="ellipse" class="new-badge-icon"></ion-icon>
+                                        <span class="new-text">new</span>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </a>
+                    </li>
+
+                    @* <li>
+                <a href="/Chat/Index">
+                <div class="inbox-container" style="margin-left: 46px; position: relative;">
+                <div class="icon-container" style="margin-left: -43px; display: flex; align-items: center;">
+                <ion-icon name="ellipse-outline" style="font-size: 24px; color: #007bff;"></ion-icon>
+                <span class="icon-name" style="margin-left: 10px; font-weight: bold; font-size: 16px;">Inter-User Msg</span>
+
+                <!-- New Badge -->
+                <span class="new-badge" style="margin-left: 10px; padding: 5px 10px; background-color: #ff4757; color: white; border-radius: 12px; font-size: 14px; font-weight: bold; text-transform: uppercase; animation: bounce 1s infinite;">
+                New
+                </span>
+                </div>
+                </div>
+                </a>
+                </li> *@
+                    @*  <li>
+                <a href="/Chat/Index">
+                <div class="inbox-container" style="margin-left : 46px !important">
+
+                <div class="icon-container" style="margin-left:-43px;">
+
+                <ion-icon name="ellipse-outline"></ion-icon>
+                <span class="icon-name">Inter-User Msg</span>
+                <span id="InterUserMsgCount" class="new-badge d-none InterUserMsgCount" style="margin-left: 10px; padding: 5px 10px; background-color: #ff4757; color: white; border-radius: 12px; font-size: 14px; font-weight: bold; text-transform: uppercase; animation: bounce 1s infinite;" >0</span>
+                </div>
+                </div>
+                </a>
+                </li> *@
+
+
+
+                    @if (Logins != null && Logins.Role == "Dte" && Logins.unitid == 1)
+                    {
+
+
+                        <li class="dropdown">
+                            <div class="icon-container" style="margin-top: 10px; margin-left: 13px;">
+
+                                <ion-icon name="ellipse-outline"></ion-icon>
+                                <span class="icon-name">User Setting</span>
+                            </div>
+                            <ul class="dropdown-menu">
+                                <li class="selected">
+                                    <a href="/Actions/Index">
+                                        <div class="icon-container">
+
+                                            <ion-icon name="ellipse-outline"></ion-icon>
+                                            <span class="icon-name">View Actions</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="selected">
+                                    <a href="/UnitDtls/AddOrEdit">
+                                        <div class="icon-container">
+
+                                            <ion-icon name="ellipse-outline"></ion-icon>
+                                            <span class="icon-name">View Units</span>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="selected">
+                                    <a href="/Stages/Create">
+                                        <div class="icon-container">
+                                            @* <img src="/assets/images/icons/stakeholder.png" alt="Icon">*@
+
+                                            <ion-icon name="ellipse-outline"></ion-icon>
+                                            <span class="icon-name">View Stage</span>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="selected">
+                                    <a href="/ActionException/Index">
+                                        <div class="icon-container">
+
+                                            <ion-icon name="ellipse-outline"></ion-icon>
+                                            <span class="icon-name">View Action Exceptions</span>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="selected">
+                                    <a href="/Identity/Account/Register" target="_new">
+                                        <div class="icon-container">
+
+                                            <ion-icon name="ellipse-outline"></ion-icon>
+                                            <span class="icon-name">Register New User</span>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="selected">
+                                    <a href="/Account/GetsAllUsers">
+                                        <div class="icon-container">
+
+                                            <ion-icon name="ellipse-outline"></ion-icon>
+                                            <span class="icon-name">View Users</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+
+                        </li>
+
+                        <li>
+
+                        </li>
+
+                    }
+
+                    @if (Logins != null && Logins.Role == "Dte" && Logins.unitid == 4)
+                    {
+
+                        <li>
+                            <a href="/Projects/ProjectMovement">
+                                <div class="icon-container">
+
+                                    <ion-icon name="ellipse-outline"></ion-icon>
+                                    <span class="icon-name">Edit Project Movement</span>
+                                </div>
+
+                            </a>
+                        </li>
+
+                    }
+
+                </ul>
+
+                <!--end navigation-->
+
+                <div class="sidebar-footer">
+                </div>
+            </aside>
+
+            <!--end sidebar -->
+            <!--start top header-->
+            <header class="top-header" style="color:#044c92">
+                <nav class="navbar navbar-expand gap-3">
+                    <div class="mobile-menu-button">
+                        <ion-icon name="menu-sharp"></ion-icon>
+                    </div>
+                    <p class="headertext">
+                        <h1 style="color:white;margin-left:30%">Portal for Appl Whitelisting (PAW)</h1>
+                    </p>
+
+
+                    <div class="top-navbar-right ms-auto">
+
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item dropdown">
+                                <span class="d-none" id="IpAddress">@Logins.IpAddress</span>
+                                <span class="d-none" id="SpnCurrentUserStackholderID">@Logins.unitid</span>
+
+
+                                <div class="text-white mr-2">
+                                    Welcome :  @Logins.UserName.ToLower() 
+                                    <div class="text-white mr-2 text-capitalize">@Logins.Rank @Logins.Offr_Name</div>
+                                    <span class="spnOffr_Name d-none">@Logins.Offr_Name</span>
+                            </li>
+                            <li class="nav-item dropdown dropdown-user-setting">
+
+
+
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="user-setting" style="margin-right:100px;">
+                        <a href="/Account/Logout">
+                            <img src="~/assets/images/icons/logout.png" class="user-img" alt="">
+                        </a>
+                    </div>
+                </nav>
+
+
+            </header>
+
+
+        }
+
+
+        <!--end top header-->
+        <!-- unit level users menu start  -->
+        @if (Logins != null && Logins.Role == "Unit")
+        {
+
+            <!--start sidebar -->
+            <aside class="sidebar-wrapper" data-simplebar="true">
+                <div class="sidebar-header">
+                    <div>
+                        <img src="~/assets/images/icons/armylogo.png" class="logo-icon" alt="logo icon">
+                    </div>
+                    <div>
+                        <h4 class="logo-text">PAW</h4>
+                    </div>
+                    <div class="toggle-icon ms-auto">
+                        <ion-icon name="menu-sharp"></ion-icon>
+                        <img src="~/assets/images/menu-sharp.256x172.png" style="width: 16px;" />
+                    </div>
+
+                </div>
+                <!--navigation-->
+
+
+                <ul class="metismenu sidebar-menu" id="menu">
+
+
+                    <li>
+                        <div class="parent-icon">
+                            <ion-icon name="home-sharp"></ion-icon>
+                        </div>
+                        <a href="/Home/Index">
+                            <div class="menu-title" style="margin-left: 0px !important;">
+                                Dashboard : @Logins.Unit
+                            </div>
+
+                        </a>
+
+
+
+                    </li>
+
+                    @if (isAdmin)
+                    {
+
+                        <li>
+                            <a href="/Home/StkHDashbard">
+                                <div class="icon-container" style="margin-right:-10px ;letter-spacing: -0.5px !important">
+                                    <img src="/assets/images/icons/admin.jpg" alt="Icon">
+                                    <ion-icon name="ellipse-outline"></ion-icon>
+                                    <span class="icon-name">Stakeholder DashBoard</span>
+                                </div>
+                            </a>
+                        </li>
+
+
+                    }
+                    @if (Logins.Iamuserid != null)
+                    {
+
+                        <li>
+                            <a href="/Projects/Create">
+                                <div class="icon-container">
+
+                                    <ion-icon name="ellipse-outlinProj Commentse"></ion-icon>
+                                    <span class="icon-name">Add New Project</span>
+                                </div>
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="/Projects/ProjDetails">
+                                <div class="inbox-container" style="margin-left : 46px !important">
+
+                                    <div class="icon-container" style="margin-left:-43px;">
+
+                                        <ion-icon name="ellipse-outline"></ion-icon>
+                                        <span class="icon-name">Inbox</span>
+                                        <span id="InboxCount" class="badge3 d-none InboxCount">0</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="/Projects/ProjComments" @*onclick="createNotification(event)"*@>
+                                <div class="icon-container">
+
+                                    <ion-icon name="ellipse-outline"></ion-icon>
+                                    @* <span class="icon-name">Proj Comments</span> *@
+                                    <span class="icon-name">Stakeholder Comments</span>
+                                    @*  <span class="inbox-alertsub1"></span>*@
+                                    <span id="ProjectCommentCount" class="badge5 d-none ProjectCommentCount">0</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/Actions/ActionSeqView">
+                                <div class="icon-container">
+
+                                    <ion-icon name="ellipse-outline"></ion-icon>
+                                    <span class="icon-name"> How to Move Proj</span>
+
+
+                                </div>
+                            </a>
+                        </li>
+
+                    }
+                    else
+                    {
+
+                        <li>
+                            <a href="/Identity/Account/Register" target="_new">
+                                <div class="icon-container">
+
+                                    <ion-icon name="ellipse-outline"></ion-icon>
+                                    <span class="icon-name">Register New User</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a href="/Home/ProjectWiseReport">
+                            <div class="icon-container">
+
+                                <ion-icon name="ellipse-outline"></ion-icon>
+                                @* <span class="icon-name">Project Wise Status</span> *@
+                                <span class="icon-name">Stage Wise Status</span>
+                            </div>
+
+                        </a>
+                    </li>
+
+                @*     <li>
+                        <a href="/Home/AllProjectDetails">
+                            <div class="icon-container">
+
+                                <ion-icon name="ellipse-outline"></ion-icon>
+                                <span class="icon-name">Project Details</span>
+                            </div>
+
+                        </a>
+                    </li> *@
+
+                    @* <a href="/Chat/Index" @*onclick="createNotification(event)"*@
+                    @* <li>
+                <a href="/Chat/Index" >
+                <div class="icon-container">
+
+                <ion-icon name="ellipse-outline"></ion-icon>
+                <span class="icon-name">Inter-User Msg</span>
+                <span id="InterUserMsgCount" class="badge3 d-none InterUserMsgCount">0</span>
+                </div>
+                </a>
+                </li> *@
+
+
+                    <li>
+                        <a href="/Chat/Index">
+                            <div class="inbox-container" style="margin-left : 46px !important">
+                                <div class="icon-container" style="margin-left: -43px;">
+                                    <ion-icon name="ellipse-outline"></ion-icon>
+                                    @* <span class="icon-name mr-3">Inter-User Msg</span> *@
+                                    <span class="icon-name mr-3">Chat</span>
+                                    <span id="InterUserMsgCount" class="badge3 d-none InterUserMsgCount mt-1">
+                                        <ion-icon name="ellipse" class="new-badge-icon"></ion-icon>
+                                        <span class="new-text">new</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+
+                </ul>
+
+                <!--end navigation-->
+
+                <div class="sidebar-footer">
+                </div>
+
+            </aside>
+
+            <!--end sidebar -->
+            <!--start top header-->
+            <header class="top-header">
+                <nav class="navbar navbar-expand gap-3">
+                    <div class="mobile-menu-button">
+                        <ion-icon name="menu-sharp"></ion-icon>
+                    </div>
+                    <p class="headertext">
+                        <h1 style="margin-left: 350px; color:white">Portal for Appl Whitelisting (PAW)</h1>
+
+                    </p>
+
+
+                    <div class="top-navbar-right ms-auto">
+
+                        <ul class="navbar-nav align-items-center">
+
+                            <li class="nav-item dropdown">
+                                <span class="d-none" id="IpAddress">@Logins.IpAddress</span>
+                                <div class="text-white mr-2">
+                                    Welcome :  @Logins.UserName.ToLower()
+                                    <div class="text-white mr-2 text-capitalize">@Logins.Rank @Logins.Offr_Name</div>
+                                    <span class="spnOffr_Name d-none">@Logins.Offr_Name</span>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="user-setting" style="margin-right:100px;">
+                        <a href="/Account/Logout">
+                            <img src="~/assets/images/icons/logout.png" class="user-img" alt="">
+                        </a>
+                    </div>
+                </nav>
+
+
+            </header>
+
+        }
+
+
+
+        <div class="page-content-wrapper">
+            @if (Logins != null)
+            {
+                <div class="switcher-body" style="visibility: hidden;">
+                    <button class="btn btn-primary btn-switcher shadow-sm" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                        <ion-icon name="color-palette-sharp" class="me-0"></ion-icon>
+                    </button>
+                    <div class="offcanvas offcanvas-end shadow border-start-0 p-2" data-bs-scroll="true" data-bs-backdrop="false"
+                         tabindex="-1" id="offcanvasScrolling">
+                        <div class="offcanvas-header border-bottom">
+                            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Theme Customizer</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <h6 class="mb-0">Theme Variation</h6>
+                            <hr>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="LightTheme" value="option1">
+                                <label class="form-check-label" for="LightTheme">Light</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="DarkTheme" value="option2">
+                                <label class="form-check-label" for="DarkTheme">Dark</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="SemiDark" value="option3"
+                                       checked>
+                                <label class="form-check-label" for="SemiDark">Semi Dark</label>
+                            </div>
+                            <hr />
+                            <h6 class="mb-0">Header Colors</h6>
+                            <hr />
+                            <div class="header-colors-indigators">
+                                <div class="row row-cols-auto g-3">
+                                    <div class="col">
+                                        <div class="indigator headercolor1" id="headercolor1"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="indigator headercolor2" id="headercolor2"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="indigator headercolor3" id="headercolor3"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="indigator headercolor4" id="headercolor4"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="indigator headercolor5" id="headercolor5"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="indigator headercolor6" id="headercolor6"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="indigator headercolor7" id="headercolor7"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="indigator headercolor8" id="headercolor8"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- start page content-->
+            <div class="page-content">
+
+                @RenderBody()
+            </div>
+
+        </div>
+        @*</main>
+        </div>*@
+        <!--start footer-->
+        @if (Logins != null)
+        {
+            <footer class="footer" style="position: fixed;margin-bottom: 0px;">
+                <div class="footer-text">
+                    Copyright &copy; Developed by ASDC, DGIS
+                </div>
+                <div style="text-align: right;margin-top: -24px !important;">
+                    <span id="dailyCounter"></span>
+                    <span id="monthlyCounter"></span>
+                    <span id="totalCounter"></span>
+                </div>
+            </footer>
+        }
+        <!--end footer-->
+        <!--Start Back To Top Button-->
+        <a href="javaScript:;" class="back-to-top">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+        </a> 
+        <!--End Back To Top Button-->
+        <!--start switcher-->
+        <!--end switcher-->
+        <!--start overlay-->
+        <div class="overlay nav-toggle-icon"></div>
+        <!--end overlay-->
+
+    </div>
+
+    <button id="btnid" class="hidden">@Logins.unitid</button>
+    <div class="modal fade" id="ProjCommentModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl custom-modal-size">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title btn-add-comment" id="addComment">Project Name:</h5>
+                    <span class="d-none" id="ProjectcommentForStackHolderprojId"></span>
+                    <span class="d-none" id="ProjectcommentForStackHolderPsmId"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card radius-12">
+                                <div class="text-with-icon underline-h7">
+                                    <span style="font-size: 20px;">&#128172;</span>
+                                    <h7 class="text-center mb-4 underline-h7" style="text-align:left; font-size:16px; font-weight:bold; text-decoration-color:revert; color:antiquewhite">
+                                        Add Comments for Project
+                                    </h7>
+                                </div>
+
+
+                                <div class="container mt-1">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-10 form-container">
+
+
+
+                                            <div class="" id="projectcommentforstackholder">
+                                                <div class="row">
+                                                    <div id="">
+                                                        <!-- First Part: Comments -->
+                                                        <div class="form-group">
+                                                            <label id="Comm"><b>Comment</b> <span class="required-indicator">*</span></label>
+                                                            <textarea id="Comments" style="width: 100%; height: 240px;" class="form-control requiredField" rows="4"></textarea>
+                                                            <div class="invalid-feedback">Please provide the Comments</div>
+
+                                                        </div>
+                                                        <div class="form-group">
+
+
+
+                                                            <label class="control-label"><b>Status</b> <span class="text-danger"><font style="color:red;"><b>*</b></font></span></label>
+                                                            <select class="form-control requiredField" id="ddlStatus">
+                                                                <option value="">Select a Status</option>
+
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Select Status Required
+                                                            </div>
+
+                                                            <div class="invalid-feedback">Please select a Status.</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label"><b>Date of Post:</b></label>
+                                                        <input id="CommentDateFwd" type="date" class="datePicker  form-control requiredField" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="pdfFile"><b>Upload PDF</b></label>
+                                                        <input type="file" id="uploadfile" name="uploadfile" accept=".pdf" class="form-control" />
+                                                        @* <div class="invalid-feedback">Please upload a PDF file.</div> *@
+                                                    </div>
+                                                    <div class="form-group text-left">
+                                                        <button type="button" class="btn btn-primary" id="btnStatusUpdate">Send</button>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*  </form> *@
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.Partial("_ProjectComments");
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+</body>
+
+
+<!-- JavaScript code -->
+
+<script>
+    var pad = "00";
+    var datef2 = new Date();
+
+
+    var months = "" + (datef2.getMonth() + 1);
+    var days = "" + datef2.getDate();
+    var monthsans = pad.substring(0, pad.length - months.length) + months;
+    var dayans = pad.substring(0, pad.length - days.length) + days;
+    var year = datef2.getFullYear();
+    var hh = pad.substring(0, pad.length - `${datef2.getHours()}`.length) + `${datef2.getHours()}`;
+    var mm = pad.substring(0, pad.length - `${datef2.getMinutes()}`.length) + `${datef2.getMinutes()}`;
+    var ss = `${datef2.getSeconds()}`;
+
+    // Today's date and time in the required formats
+    var todayDate = `${year}-${monthsans}-${dayans}`;
+    var todayDateTime = `${year}-${monthsans}-${dayans}T${hh}:${mm}`;
+
+    $(document).ready(function () {
+        var claValue = @Logins.cla; 
+
+           if (claValue == 2) {
+            $('#CommentDateFwd').attr('type', 'datetime-local');
+            $('#CommentDateFwd').attr('max', todayDateTime);
+            $('#CommentDateFwd').prop('disabled', false); // Allow user input
+        } else {
+            $('#CommentDateFwd').attr('type', 'date');
+            $('#CommentDateFwd').val(todayDate); // Set today's date
+            $('#CommentDateFwd').prop('disabled', true); // Freeze input
+        }
+
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Fetch Daily Counter
+        $.get('/Home/getCountertoday', function (data) {
+            // Update the DOM with fetched data
+            $('#dailyCounter').text('Visitors Today: ' + data.today);
+            $('#monthlyCounter').text('Monthly: ' + data.currentMonth);
+            $('#totalCounter').text('Total Visitors: ' + data.total);// Make sure 'today' matches the property name in HitCounterDaily
+        });
+    });
+</script>
+
+<script>
+
+    function createNotification(event) {
+        event.preventDefault();
+
+
+        var stakeHolderId = document.getElementById('btnid').innerText;
+
+
+        fetch(`/Home/GetNotification?stakeHolderId=${stakeHolderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+        })
+            .then(response => {
+                if (response.ok) {
+
+                    console.log('Notification data retrieved successfully');
+
+
+                    window.location.href = event.target.href;
+                } else {
+
+                    console.error('Failed to retrieve notification data');
+                }
+            })
+            .catch(error => {
+
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $("#loading").hide();
+        $(document).ajaxStart(function () {
+            $("#loading").show();
+        }).ajaxStop(function () {
+            $("#loading").hide();
+        }).ajaxError(function () {
+            $("#loading").hide();
+        });
+
+    });
+
+
+
+</script>
+
+<script>
+
+    document.getElementById('menusharp').onclick = function () {
+        document.body.classList.toggle('sidebar-collapsed');
+    };
+
+    document.querySelector('.sidebar-wrapper').onmouseenter = function () {
+        document.body.classList.add('sidebar-hover');
+    };
+
+    document.querySelector('.sidebar-wrapper').onmouseleave = function () {
+        document.body.classList.remove('sidebar-hover');
+    };
+
+</script>
+
+<script>
+
+    @* $(document).ready(function () {
+        $('.dropdown').hover(
+            function () {
+                $(this).children('.dropdown-menu').slideDown(200);
+            },
+            function () {
+                $(this).children('.dropdown-menu').slideUp(200);
+            }
+        );
+    }); *@
+
+      let hideTimeout;
+
+    $('.dropdown').hover(
+        function () {
+            // On hover in: clear any pending hide and show dropdown
+            clearTimeout(hideTimeout);
+            $(this).children('.dropdown-menu').stop(true, true).slideDown(200);
+        },
+        function () {
+            // On hover out: delay hide to prevent flicker
+            const $menu = $(this).children('.dropdown-menu');
+            hideTimeout = setTimeout(function () {
+                $menu.stop(true, true).slideUp(200);
+            }, 200); // You can adjust this delay as needed
+        }
+    );
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        var currentPageUrl = window.location.pathname;
+
+
+        $(".dropdown-menu li").removeClass("selected");
+
+
+        $(".dropdown-menu li a[href='" + currentPageUrl + "']").parent().addClass("selected");
+
+
+        $(".dropdown-menu.selected").addClass("visible");
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var claValue = @Logins.cla; // Get the value of Logins.cla
+
+        if (claValue == 2) {
+            $('#fromDate').attr('type', 'date').removeAttr('max').removeAttr('min');
+            $('#toDate').attr('type', 'date').removeAttr('max').removeAttr('min');
+        } else {
+            $('#fromDate').attr('type', 'date').removeAttr('max').removeAttr('min');
+            $('#toDate').attr('type', 'date').removeAttr('max').removeAttr('min');
+        }
+    });
+
+</script>
+
+<script src="~/DeveloperJs/Dashboard.js"></script>
+<script src="~/DeveloperJs/Account.js"></script>
+<script src="~/developerjs/projectstkholdercomments.js"></script>
+<script src="~/developerjs/ProjectstckholdercommentforProjHistory.js"></script>
+
+@RenderSection("scripts", required: false)
+
+</html>
+
+

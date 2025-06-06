@@ -1,0 +1,181 @@
+﻿@model swas.DAL.Models.StkComment
+
+@{
+    ViewData["Title"] = "Create New Action";
+}
+
+
+<head>
+    <style>
+
+
+        /* Style for required field indicator */
+        .required-indicator {
+            color: red;
+            font-size: 18px;
+        }
+
+
+
+        .modal-content {
+            height: 800px !important;
+            width: 1000px !important;
+        }
+
+        .underline-h5 {
+            padding: 0.5rem;
+            width: 36rem;
+            margin: 0 auto; /* Center the box */
+            text-align: center;
+            border-color: #03c1fc;
+            box-shadow: 2px 6px 10px -3px #062b50;
+            background-color: #0cafff;
+            color: white;
+            font-family: Arial;
+            font-size: 24px;
+            margin-bottom: 0.5rem;
+        }
+
+        .underline-h7 {
+            background: #0793f7;
+            margin-bottom: 0px;
+            text-align: left;
+            color: white;
+            font-size: 14px;
+            height: 35px;
+            padding-top: 4px;
+            font-weight: 100;
+        }
+
+    </style>
+</head>
+
+    @if (ViewBag.query != null)
+
+{
+
+    <div class="card radius-10 w-100">
+        <h5 class="text-center mb-4 underline-h5" style="text-align: center; color: antiquewhite; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;">
+            <span>
+                STAKEHOLDER COMMENTS FOR NEW PROJECT
+            </span>
+        </h5>
+        <div class="card-body" style="height: 600px; overflow-y: auto;">
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card radius-12">
+                        <form class="form-group" asp-action="UpdateStatus" id="StatusUpdateForm" enctype="multipart/form-data">
+                            <div class="container mt-1">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-10 form-container">
+                                        @*<h6 class="text-center mb-4" id="stakeholderInfo">*@
+
+                                        <div class="col-md-auto">
+
+                                            <input id="StakeholdertextId" type="hidden" name="SearchText" />
+                                        </div>
+
+                                        <div class="col-md-auto">
+
+                                            <input id="ProjtextId" type="hidden" class="SearchText" />
+                                        </div>
+
+                                        <div class="col-md-auto">
+
+                                            <input id="PsmToProj" type="hidden" class="SearchText" />
+                                        </div>
+                                        @*</h6>*@
+                                        <div class="needs-validation" novalidate>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <!-- First Part: Comments -->
+                                                    <div class="form-group">
+                                                        <label asp-for="Comments"><b>Comment</b> <span class="required-indicator">*</span></label>
+                                                        <textarea asp-for="Comments" style="width: 822px;" class="form-control" rows="4" required></textarea>
+                                                        <div class="invalid-feedback">Please provide the Comments</div>
+                                                        <span asp-validation-for="Comments" class="text-danger"></span> <!-- Validation message -->
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="StkStatusId" class="control-label"><b>Status</b> <span class="text-danger"><font style="color:red;"><b>*</b></font></span></label>
+                                                        <select asp-for="StkStatusId" class="form-control  dropdownsearch" id="ddlStatus" required>
+                                                            <option value="">Select a Status</option>
+                                                            @foreach (var status in ViewBag.Stk_Status)
+                                                            {
+                                                                <option value="@status.StkStatusId">@status.Status</option>
+                                                            }
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select a Status.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group text-left    ">
+                                                    <button type="submit" class="btn btn-primary" id="StatusUpdate">Update</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+
+                    @foreach (var stakeholderName in ViewBag.query)
+                    {
+
+                        @if (stakeholderName.PsmId == Model.PsmId)
+                        {
+                            <div style="display:flex;">
+                                <div style="width:250px">
+                                    @stakeholderName.StakeholderName :
+                                    @stakeholderName.Date  :
+                                </div>
+                                <div style="margin-left:120px">
+                                    <h6 class="text-center mb-4" style="text-align:left" id="stakeholderInfo">
+                                        <span> @stakeholderName.Comments &nbsp; ( @stakeholderName.StatusName) </span><br />
+                                    </h6>
+                                </div>
+                                <div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+
+                            <h1>No File</h1>
+                        }
+                    }
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+}
+
+
+<script src="~/DeveloperJs/Home.js"></script>
+ 
+<script>
+    $(document).ready(function () {
+        $('.dropdownsearch').select2();
+    });
+
+</script>
+
+
+
+
+
+

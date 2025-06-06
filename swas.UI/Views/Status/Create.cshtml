@@ -1,0 +1,105 @@
+﻿@*View Created by Sub Maj M Sanal Kumar on :  02 Aug 23
+Reviewd by Hav Mani on :
+*@
+
+@using swas.DAL.Models
+@model List<tbl_mStatus>
+
+@{
+    ViewBag.Title = "Sub Stages List";
+}
+
+
+
+<style>
+    .underline-h5 {
+        padding: 0.5rem;
+        width: 100%;
+        margin: -16px auto; /* Center the box */
+        text-align: center;
+        border-color: #03c1fc;
+        /*box-shadow: 2px 6px 5px -3px #062b50;*/
+        background-color: #0cafff;
+        color: white;
+        font-family: Arial;
+        font-size: 15px;
+        margin-bottom: 0.5rem;
+        height: -1px;
+    }
+</style>
+<button type="button" id="AddButon" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#SubStageAdd" style="margin-left: 91%;">
+    Add New Sub Stage
+</button>
+@*<button id="addNewButton" class="btn btn-primary"><a href="/Actions/Create">Add New</a></button>*@
+
+<div class="card radius-10 w-100">
+    <div class="card-body">
+
+        <table id="SoftwareType" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Sub Stage ID</th>
+                    <th>Sub Stage</th>
+                    <th>Is Active</th>
+                    <th>Edit/Delete By</th>
+                    <th>Edit/Delete Date</th>
+                    <th>Updated By User ID</th>
+                    <th>Date of Update</th>
+                    @*<th>Delete</th>*@
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Substage in Model)
+                {
+                    if (Substage.IsActive == true)
+                    {
+                        <tr>
+                            <td>@Substage.StatusId</td>
+                            <td>@Substage.Status</td>
+                            <td>@Substage.IsActive</td>
+                            <td>@Substage.EditDeleteBy</td>
+                            <td>@Substage.EditDeleteDate?.ToString("dd-MM-yyyy")</td>
+                            <td>@Substage.UpdatedByUserId</td>
+                            <td>@Substage.DateTimeOfUpdate?.ToString("dd-MM-yyyy")</td>
+                            @*  <td>
+                    <a asp-action="EditStage" asp-route-id="@stage.StagesId" class="btn btn-secondary btn-ecomm"><i class='bx bx-edit'></i></a>
+                    <a data-id="@stage.StagesId" data-url="@Url.Action("Create", "Stages")" class="btn btn-secondary btn-ecomm delete-btn"><i class='bx bx-trash'></i></a>
+                    </td>*@
+
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="modal fade" id="SubStageAdd" tabindex="-1" aria-labelledby="ProjectAddLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                @* <h5 class="modal-title" id="UnitAddLabel">Add Action</h5>*@
+                <h5 class="text-center mb-4 underline-h5" style="text-align: center; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); position: relative;height: 33px;">
+                    <span>
+                        New Sub Stage Page
+                    </span>
+                </h5>
+            </div>
+            <div class="modal-body">
+
+                @Html.Partial("_CreateStatus", new tbl_mStatus())
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="~/developerjs/stage.js"></script>
+
+<script src="~/developerjs/status.js"></script>

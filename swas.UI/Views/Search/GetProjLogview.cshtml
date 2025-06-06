@@ -1,0 +1,144 @@
+﻿@using swas.BAL.DTO
+@model List<ProjLogView>
+
+
+@{
+    ViewData["Title"] = "Search Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int sno = 1;
+}
+
+
+
+
+<div id="searchContainer" class="search-container">
+    <form class="form-group" asp-action="GetProjLogview" method="post" id="searchFormProjName">
+       
+        <div class="row justify-content-center">
+            <div class="col-md-auto">
+                <label>From Date:</label>&nbsp;
+                <input name="fromDate" id="fromDate" type="date" class="datePicker" value="@TempData["fromDate"]" />
+            </div>
+            <div class="col-md-auto">
+                <label>To Date:</label>&nbsp;
+                <input name="toDate" id="toDate" type="date" class="datePicker" value="@TempData["toDate"]" />
+            </div>
+        </div>
+        
+        <div class="col-md-auto" style="text-align:center">
+            <button type="button" class="btn btn-primary btn-sm" id="SearchData">Search</button>
+        </div>
+    </form>
+</div>
+
+
+
+<div id="tableProjContainer">
+    <div class="card radius-10 w-100">
+        <div class="card-body" style="overflow:scroll">
+
+            <table id="SoftwareType" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th>S/No</th>
+                        <th>Proj Name</th>
+                        <th>Sponsor </th>
+                        <th>Stage</th>
+                        <th>Sub Stage</th>
+                        <th>Action</th>
+                        <th>User ID</th>
+                        <th>TimeStamp</th>
+                        <th>Fwd By</th>
+                        <th>Fwd To</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+
+                <tbody id="searchtableProj">
+                     @foreach (var item in Model)
+                            {
+                    <tr>
+                            <td>@sno</td>
+                        <td>@item.ProjName</td>
+                        <td>@item.UnitName</td>
+                        <td>@item.Stages</td>
+                        <td>@item.Status</td>
+                        <td>@item.Actions</td>
+                        <td>@item.ActionByUser</td>
+                            
+                        <td>@item.TimeStamp</td>
+                        <td>@item.FwdBy</td>
+                        <td>@item.FwdTo</td>
+                        <td>@item.AddRemarks</td>
+                        
+
+                        </tr>
+                        sno++;
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var todaysDate = new Date();
+        if ($("#fromDate").val() == "") {
+            $("#fromDate").val(DateFormateyyy_mm_dd(todaysDate));
+            $("#toDate").val(DateFormateyyy_mm_dd(todaysDate));
+        }
+       
+
+        $('#SearchData').click(function (event) {
+
+
+            var fromTimeStamp = $('#fromDate').val();
+            var toTimeStamp = $('#toDate').val();
+
+            if (fromTimeStamp > toTimeStamp) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'From Date must be less than To Date',
+                    text: 'Enter a date value',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+                $('#toDate').val('');
+
+                event.preventDefault();
+            }
+
+            else if (fromTimeStamp === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid From Date',
+                    text: 'Enter a date value',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+                $('#toDate').val('');
+
+                event.preventDefault();
+            }
+            else if (toTimeStamp === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid To Date',
+                    text: 'Enter a date value',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK'
+                });
+                $('#toDate').val('');
+
+                event.preventDefault();
+            }
+            else {
+                $('#searchFormProjName').submit();
+            }
+           
+        });
+    });
+</script>

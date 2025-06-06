@@ -1,0 +1,79 @@
+﻿@using swas.DAL.Models
+
+@model List<tbl_Projects>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Projects List</title>
+
+    <style>
+        .add-new-btn {
+            float: right;
+            margin-top: -30px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Projects List</h2>
+        <div class="add-new-btn">
+            <button onclick="location.href='@Url.Action("Create", "Projects")'">Add New</button>
+        </div>
+        <table id="projectTable" class="display">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                    <th>Stakeholder ID</th>
+                    <th>Current Pslm ID</th>
+                    <th>Initiated Date</th>
+                    <th>Completion Date</th>
+                    <th>Whitelisted</th>
+                    <th>Initial Remark</th>
+                    <th>Is Deleted</th>
+                    <th>Is Active</th>
+                    <th>Edit/Delete By</th>
+                    <th>Edit/Delete Date</th>
+                    <th>Updated By User ID</th>
+                    <th>Date of Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var project in Model)
+                {
+                    <tr>
+                        <td>@project.ProjId</td>
+                        <td>@project.ProjName</td>
+                        <td>@project.StakeHolderId</td>
+                        <td>@project.CurrentPslmId</td>
+                        <td>@project.InitiatedDate?.ToString("dd-MM-yyyy")</td>
+                        <td>@project.CompletionDate?.ToString("dd-MM-yyyy")</td>
+                        <td>@project.IsWhitelisted</td>
+                        <td>@project.InitialRemark</td>
+                        <td>@project.IsDeleted</td>
+                        <td>@project.IsActive</td>
+                        <td>@project.EditDeleteBy</td>
+                        <td>@project.EditDeleteDate?.ToString("dd-MM-yyyy")</td>
+                        <td>@project.UpdatedByUserId</td>
+                        <td>@project.DateTimeOfUpdate?.ToString("dd-MM-yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#projectTable').DataTable();
+        });
+    </script>
+</body>
+</html>

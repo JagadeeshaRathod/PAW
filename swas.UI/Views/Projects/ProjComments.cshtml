@@ -1,0 +1,101 @@
+﻿@using swas.DAL.Models
+@{
+
+    ViewData["Title"] = "Proj Comments";
+    int sno = 0;
+}
+<style>
+    .bold-text {
+        font-weight: bold;
+        font-size: medium;
+    }
+
+    .custom-modal-size {
+        max-width: 100%; /* Set the modal width to 80% of the screen */
+        width: 95%;
+        /* height: 10%; Adjust height if necessary */
+        margin: auto;
+    }
+
+        .custom-modal-size .modal-content {
+            height: 100%; /* Ensure the content fills the modal */
+            overflow: auto; /* Add scrolling for long content */
+        }
+
+    .modal-dialog {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh; /* Full height */
+    }
+
+    .s-no-column {
+        min-width: 40px;
+        max-width: 60px;
+        width: 5vw;
+    }
+
+</style>
+<!----Table for Stakeholder Status Change----->
+
+<div class="card-body">
+    <div class="card radius-10 w-100">
+        <div class="card-body">
+
+            <table id="Comment" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th class="noExport d-none"></th>
+                        <th class="s-no-column">Ser No</th>
+                        <th>Project Name</th>
+                        <th>Stakeholder</th>
+                        <th>Recd on</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+
+                <tbody id="DetailBody">
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    // JavaScript to reset the date when the modal closes
+    $('#ProjCommentModal').on('hidden.bs.modal', function (e) {
+        $('#CommentDateFwd').val('');
+    });
+</script>
+
+<script src="~/developerjs/mtable.js"></script>
+<script src="~/developerjs/projectstkholdercomments.js"></script>
+<script src="~/developerjs/NewProject.js"></script>
+@*<script src="~/developerjs/commanfordatatable.js"></script>*@
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const datePicker = document.getElementById('CommentDateFwd');
+        if (datePicker) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+            datePicker.max = formattedDate;
+        }
+    });
+</script>

@@ -1,0 +1,62 @@
+﻿@model swas.DAL.Models.tbl_mStages
+@using swas.BAL.DTO
+@using swas.BAL.Helpers
+@using Microsoft.AspNetCore.Identity
+
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Create New Stage";
+
+    Login Logins = SessionHelper.GetObjectFromJson<Login>(HttpContextAccessor.HttpContext.Session, "User");
+
+}
+
+
+<div>
+    <div class="container mt-1">
+        <div class="row justify-content-center">
+            <div class="container-fluid">
+                <form asp-action="CreateStage" method="post" class="needs-validation" novalidate onsubmit="return validateForm()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            
+                            <div class="form-group">
+                                <label asp-for="Stages"><b>Stage Name</b> <span class="required-indicator"><font style="color:red;"><b>*</b></font></span></label>
+                                <input asp-for="Stages" class="form-control" required onkeyup="ValInData(this)" />
+                                <span asp-validation-for="Stages" class="text-danger"></span>
+                            </div>
+                         
+                        </div>
+                       
+
+                        <div class="form-group">
+                            <div class="text-center" style="margin-top: 2rem;">
+                                <button type="submit" class="btn btn-primary" style="margin-right: 23px">Create</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+<script>
+    function validateForm() {
+        var form = document.querySelector('form.needs-validation');
+        if (form.checkValidity() === false) {
+            event.preventDefault(); 
+            event.stopPropagation(); 
+        }
+        form.classList.add('was-validated'); 
+        return form.checkValidity(); 
+    }
+</script>

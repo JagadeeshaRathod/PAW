@@ -1,0 +1,190 @@
+﻿@using swas.BAL.DTO
+@model Users
+@{
+    ViewData["Title"] = "User Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .container-fluid {
+        padding: 20px;
+    }
+
+    .card {
+        max-width: 95%;
+        margin: 0 auto;
+    }
+
+    .table {
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .flag-toggle-btn .flag-status {
+        padding: 8px 12px;
+        display: inline-block;
+        text-align: center;
+        background: linear-gradient(to right, green 50%, red 50%);
+        color: white;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .icon-image {
+        width: 30px;
+        height: 30px;
+    }
+
+    .d-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+</style>
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header" style="background-color: #044c92;">
+                    <h3 class="text-center font-weight-light my-1 text-white">Existing Users</h3>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" id="watermarkText" value="@ViewBag.Watermark" />
+                    <div class="d-flex justify-content-between mb-3">
+                      <div>
+                         <button type="hidden" class="btn btn-primary btn-sm" style="display:none;">Add Condition</button>
+                        </div>
+
+                        <div>
+                            <input type="text" id="searchBox" class="form-control form-control-sm" placeholder="Search...">
+                        </div>
+                    </div>
+                    <table id="SoftwareXX" class="table table-striped table-bordered w-100">
+                        <thead>
+                            <tr>
+                                <th>S/No</th>
+                                <th>@Html.DisplayNameFor(model => model.UserName)</th>
+                                <th>@Html.DisplayNameFor(model => model.RoleName)</th>
+                                <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                                <th>Flag</th>
+                                @{
+                                    int rowNo = 0;
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in (IEnumerable<swas.BAL.DTO.Users>)@ViewBag.data)
+                            {
+                                <tr>
+                                    <td>@(++rowNo)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.RoleName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                                    <td>
+                                        <a href="@Url.Action("AllUsersEdit", "Account", new { item.UserName, item.RoleName, item.RankId })">
+                                            <img src="/assets/images/icons/edit.png" alt="Edit" class="icon-image">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("UserDelete", "Account", new { item.UserName, item.RoleName })">
+                                            <img src="/assets/images/Del.png" alt="Delete" class="icon-image">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button class="flag-toggle-btn" data-username="@item.UserName" data-rolename="@item.RoleName" data-flag="@item.Flag">
+                                            @if (item.Flag == true)
+                                            {
+                                                <span style="background: linear-gradient(to right, green 50%, red 50%); border: none; color: white; padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">ON</span>
+                                            }
+                                            else
+                                            {
+                                                <span style="background: linear-gradient(to right, red 50%, green 50%); border: none; color: white; padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">OFF</span>
+                                            }
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.flag-toggle-btn').click(function () {
+            var username = $(this).data('username');
+            var rolename = $(this).data('rolename');
+            var flag = $(this).data('flag');
+
+            // Toggle flag
+            flag = !flag;
+
+            // Update button text and color based on new flag state
+            if (flag) {
+                $(this).html('<span style="background: linear-gradient(to right, green 50%, red 50%); border: none; color: white; padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">ON</span>');
+            } else {
+                $(this).html('<span style="background: linear-gradient(to right, red 50%, green 50%); border: none; color: white; padding: 10px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">OFF</span>');
+            }
+
+            // Update the data-flag attribute with the new flag value
+            $(this).data('flag', flag);
+
+            // Make AJAX request to update flag on server
+            $.ajax({
+                type: 'POST',
+                url: '/Account/UpdateFlag',
+                data: { userName: username, roleName: rolename, flag: flag },
+                success: function (response) {
+                    console.log('Flag updated successfully');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error updating flag:', error);
+                }
+            });
+        });
+    });
+</script>
+
+@* <script src="~/DeveloperJs/Account.js"></script> *@
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Success',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("SuccessMessage");
+    }
+</script>
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Update Failed...!',
+                text: '@TempData["FailureMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+    }
+</script>

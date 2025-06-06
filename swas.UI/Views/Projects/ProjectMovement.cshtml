@@ -1,0 +1,374 @@
+﻿@using swas.BAL.DTO
+@model List<DTOProjectMovHistorypsm>
+@{
+    ViewData["Title"] = "Project Movement  Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int sno = 1;
+}
+
+<head>
+    <script src="~/js/jquery-ui.min.js"></script>
+    <link href="~/css/jquery-ui.min.css" rel="stylesheet" />
+    <style>
+        .search-container {
+            padding: 0px;
+            border-radius: 1px solid skyblue;
+            border-radius: 15px;
+            background-color: #f0f0f0;
+            margin-top: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            background-color: #f7f7f7;
+        }
+
+        #txtProjectName {
+                    width: 525px;
+                }
+
+        .custom-modal-size {
+            max-width: 85%; /* Set the modal width to 80% of the screen */
+            width: 85%; /* Ensure it scales responsively */
+            margin: auto; /* Center horizontally */
+        }
+
+            .custom-modal-size .modal-content {
+                height: 65vh; /* Ensure the content adjusts dynamically */
+                overflow-y: auto; /* Add vertical scrolling for long content */
+                overflow-x: hidden; /* Prevent horizontal overflow */
+                margin-left: 248px;
+            }
+
+        .modal-dialog {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Vertically center the modal */
+            margin: 0; /* Remove default margins for better centering */
+        }
+
+    </style>
+
+    <style>
+        /* Custom modal styling */
+        .custom-modal .custom-modal-dialog {
+            max-width: 80%; /* Adjust the modal width */
+            margin: auto; /* Center align the modal */
+        }
+
+        .custom-modal-content {
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            overflow: hidden; /* Prevent content overflow */
+        }
+
+        /* Header styling */
+        .custom-modal-header {
+            background-color: #0044cc; /* Blue background color */
+            color: white; /* White text */
+            border-bottom: 1px solid #ddd; /* Divider line */
+            padding: 10px 15px;
+        }
+
+            .custom-modal-header .custom-btn-close {
+                color: white; /* Close button color */
+                background-color: red;
+                border: none;
+                font-size: 20px;
+                line-height: 1;
+            }
+
+        /* Body styling */
+        .custom-modal-body {
+            padding: 15px;
+            background-color: #f9f9f9; /* Light background color */
+        }
+
+            /* Table styling */
+            .custom-modal-body table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .custom-modal-body th,
+            .custom-modal-body td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .custom-modal-body th {
+                background-color: #0044cc;
+                color: white;
+            }
+
+    </style>
+
+
+</head>
+
+
+
+@* <div id="searchContainer" class="search-container">
+    <form class="form-group" asp-action="GetProjLogview" method="post" id="searchFormProjName">
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-4">
+                <div class="form-group row mb-2" id="suggesstion-box">
+                    <span class="d-none" id="ProjectId">0</span>
+                    <span class="d-none" id="PslmId">0</span>
+
+                    <label class="col-form-label col-sm-2 fw-bold">Search Project Name <i class="fas fa-asterisk mand1"></i></label>
+                    <div class="col-sm-2">
+                        <input class="form-control" placeholder="Type Project Name" id="txtProjectName" name="txtProjectName" data-val="true" />
+                        <span class="text-danger field-validation-valid" data-valmsg-for="txtProjectName" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div> *@
+
+<div id="searchContainer" class="search-container">
+    <form class="form-group" asp-action="GetProjLogview" method="post" id="searchFormProjName">
+        <div class="row justify-content-center">
+            <label class="col-sm-4 col-form-label fw-bold text-end">Search Project Name : </label>
+            <div class="col-md-3">
+                <div class="form-group row mb-2 align-items-center" id="suggesstion-box">
+                    <span class="d-none" id="ProjectId">0</span>
+                    <span class="d-none" id="PslmId">0</span>
+
+                    <input class="form-control" placeholder="Type Project Name" id="txtProjectName" name="txtProjectName" data-val="true" />
+                    <span class="text-danger field-validation-valid" data-valmsg-for="txtProjectName" data-valmsg-replace="true"></span>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@* data-val-regex="This special chars not allowed for security reasons." data-val-required="Project  Name is required." data-val-regex-pattern="^[\w \& \()]*$" *@
+
+<div id="tableProjContainer">
+    <div class="card radius-10 w-100">
+        <div class="card-body" style="overflow:scroll">
+
+            <table id="moventdata" class="table table-striped table-bordered">
+                <!-- Table header -->
+                <thead>
+                    <tr>
+                        <th style="width: 23.4375px;" class="d-none">Ser No</th>
+                        <th style="text-align: center; border: 1px solid black; width: 23.4375px;">Ser No</th>
+                        <th style="text-align: center; border: 1px solid black;">Date</th>
+                        <th style="text-align: center; border: 1px solid black;">From (User Name/Domain ID)</th>
+                        <th style="text-align: center; border: 1px solid black;">To StakeHolder</th>
+                        <th style="text-align: center; border: 1px solid black;">Stage</th>
+                        <th style="text-align: center; border: 1px solid black;">SubStage</th>
+                        <th style="text-align: center; border: 1px solid black;">Action</th>
+                        <th style="text-align: center; border: 1px solid black;">Remarks</th>
+                        <th style="text-align: center; border: 1px solid black;">#Att</th>
+                        <th style="text-align: center; border: 1px solid black;">Edit</th>
+                    </tr>
+                </thead>
+
+                <tbody id="ProjectMovement">
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ProjFwdEdit" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl custom-modal-size">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fwdModal">Mov History</h5>
+                <span class="d-none" id="spanProjectId">0</span>
+                <span class="d-none" id="spanEditPslmId">0</span>
+                <span class="d-none" id="SpnFwdStakeHolderId">0</span>
+
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="card">
+                            <div class="modal-header">
+                                <h6 class="card-title">Pl select appropriate details Before Dispatch of Project to Next Stakeholder </h6>
+
+                            </div>
+                            <div class="card-body">
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 ProjectsFwd ">
+                                        <label for="inputEmail4">Stage</label>
+                                        <select class="form-control requiredField" style="width: 100%;" tabindex="-1"
+                                                name="fwdoffrs" required id="ddlfwdStage">
+                                            <option value="0">Select Stage</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label for="SubStage">Sub Stage</label>
+                                        <select class="form-control requiredField" style="width: 100%;" tabindex="-1"
+                                                name="fwdoffrs" required id="ddlfwdSubStage">
+                                            <option value="0">Select Sub Stage</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label for="SubStage">Action</label>
+                                        <select class="form-control requiredField" style="width: 100%;" tabindex="-1"
+                                                name="fwdoffrs" required id="ddlfwdAction">
+                                            <option value="0">Select Action</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label for="SubStage">Fwd To</label>
+                                        <select class="form-control requiredField" style="width: 100%;" tabindex="-1"
+                                                name="fwdoffrs" required id="ddlfwdFwdTo">
+                                            <option value="0">Select Fwd To</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label for="SubStage">Remarks</label>
+                                        <textarea class="form-control requiredField" id="txtRemarksfwd" style="width: 100%;"></textarea>
+                                    </div>
+
+                                    <div class="form-group col-md-6 ProjectsFwd">
+                                        <label>Date of Fwd:</label>
+                                        <input id="TimeStampToProjfwd" type="datetime-local" class="datePicker  form-control requiredField" />
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 Attmenthistory d-none">
+                                        <label for="SubStage">Attach Document Description</label>
+                                        <textarea class="form-control requiredFieldAttch" id="Reamarks"></textarea>
+                                    </div>
+                                    <div class="form-group col-md-6 Attmenthistory d-none">
+                                        <label for="SubStage">Upload Pdf File</label>
+                                        <input class="form-control requiredFieldAttch" type="file" id="pdfFileInput">
+                                    </div>
+                                    <div class="form-group col-md-12 Attmenthistory d-none text-center">
+
+                                        <button class="btn btn-warning" type="button" id="btnAttchMultiforpsmid">Upload File</button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12 Attmenthistory d-none">
+                    <div class="card">
+                        <div class="modal-header"><h5 class="card-title">Projects Move Att Details</h5></div>
+                        <div class="card-body">
+                            <table class="table table-striped table-bordered">
+
+
+                                <thead>
+                                    <tr>
+
+
+                                        <th>Delete</th>
+
+                                        <th>Docu Desc</th>
+                                        <th>File Name</th>
+                                        <th>Timestamp</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="DetailBody3">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mt-4 text-center">
+                    <input type="button" id="btnFwdNext" value="Update and Upload Docu's" class="btn btn-primary btn-lg ProjectsFwd" />
+                    <input type="button" id="btnFwdConfirm" value="Confirm" class="btn btn-primary btn-lg Attmenthistory d-none" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <div id='myModal' class='modal' style="width: 85% !important; margin-left: 79px !important;">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 203% !important">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+
+</div>
+ *@
+
+@*
+<div class="modal fade" id="myModalPagehistoryAttechment" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg custom-modal-size">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ATTACHMENTS</h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="myModalContenthistoryAttechment">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> *@
+
+@* <div class="modal fade" id="myModalPagehistoryAttechment" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg custom-modal-size">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ATTACHMENTS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="myModalContenthistoryAttechment"></div>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+
+<div class="modal fade custom-modal" id="myModalPagehistoryAttechment" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog custom-modal-dialog">
+        <div class="modal-content custom-modal-content">
+            <div class="modal-header custom-modal-header">
+                <h5 class="modal-title">ATTACHMENTS</h5>
+                <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body custom-modal-body">
+                <div id="myModalContenthistoryAttechment"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* <script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.pdf', function () {
+            $('#AttHistoryView').modal('show');
+        });
+    });
+</script> *@
+
+@* <script src="~/developerjs/projectstckholdercommentforprojhistory.js"></script> *@
+<script src="~/developerjs/projectstkholdercomments.js"></script>
+
+<script src="~/DeveloperJs/ProjectMovement.js"></script>
+<script src="~/developerjs/mtable.js"></script>

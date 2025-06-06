@@ -1,0 +1,98 @@
+﻿@using swas.BAL.DTO
+
+@{
+    ViewBag.Title = "View Action Sequence";
+     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+   <style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow-y: hidden; /* Hide the vertical scrollbar */
+    }
+
+     .cd-1 {
+            width: 750px;
+            
+            align-items: center;
+            display: flex;
+          
+            flex-direction: column;
+            box-shadow: 2px 2px 2px #808080;
+            margin: 10px;
+            padding-top: 10px;
+            font-size: 12px;
+            text-overflow: inherit;
+            font-weight: bolder;
+            text-align: center;
+            
+        }
+    .box {
+        align-items:center;
+        background-color: #3498db;
+        color: white;
+        margin: 10px;
+        padding: 10px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.5s, transform 0.5s;
+        width:750px;
+        height:50px;
+        display: flex;
+         box-shadow: 2px 2px 2px #808080;
+         text-align:center;
+       
+        align-items: center;
+        justify-content: center;
+       
+    }
+
+    .link-line {
+        width: 22px;
+        background-color: #800000;
+        height: 0px;
+        transition: height 0.5s;
+        margin-top:-15px;
+        margin-bottom:-15px;
+        
+    }
+</style>
+<img src="~/assets/images/flow.png" class="FlowImg" />
+@* 
+<div class="container" id="container" style="margin-top:5px"  >
+    @{
+        List<ActionsSeq> resultList = ViewBag.AnimatedView as List<ActionsSeq>;
+
+        if (resultList != null)
+        {
+            for (int i = 0; i < resultList.Count; i++)
+            {
+                var item = resultList[i];
+
+                <div class="box" id="box@(i + 1)">
+                
+                    <div style="align-items:center">
+
+                        @item.ActionDesc
+                    --->Resp : @item.UnitName
+                    </div>
+                </div>
+
+                @if (i < resultList.Count - 1)
+                {
+                    <div class="link-line"></div>
+                }
+            }
+        }
+    }
+</div>
+
+<script src="~/DeveloperJs/Actions.js"></script>
+
+
+ *@
+

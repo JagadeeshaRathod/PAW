@@ -1,0 +1,80 @@
+﻿
+@media (min-width: 768px) {
+.gradient-form {
+height: 100vh !important;
+}
+}
+@media (min-width: 769px) {
+.gradient-custom-2 {
+border-top-right-radius: .3rem;
+border-bottom-right-radius: .3rem;
+}
+}
+
+
+.title-black {
+    color: black;
+}
+
+
+.card1 {
+    transition: transform 0.2s ease-in-out;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.hover-point:hover {
+    transform: perspective(1000px) rotateY(10deg) rotateX(-5deg);
+}
+
+
+/* Optional: Enhance the 3D effect */
+.hover-point {
+    perspective: 1000px;
+}
+
+.card1 {
+    transform-origin: center center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hover-point:hover .card1 {
+    transform: perspective(1000px) rotateY(10deg) rotateX(-5deg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~hover ~~~~~~~~~~~~~~~~~~*/
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    display: none;
+    visibility: hidden;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    width: max-content;
+}
+
+.tooltip-container:hover .tooltip {
+    display: block;
+    visibility: visible;
+}
+
+
+
+@media (min-width: 1200px) {
+    .col-xl-10 {
+        flex: 0 0 auto;
+        width: 63.33333333% !important;
+    }
+}

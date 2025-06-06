@@ -1,0 +1,842 @@
+﻿@*View Created by Sub Maj M Sanal Kumar on :  05 Nov 23
+	Purpose  :   Retrive proj from Draft   :- Resolve the Obsn of Comdt
+*@
+
+@using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal
+@using Newtonsoft.Json;
+@using swas.BAL.Helpers
+@using swas.BAL.Repository
+@using swas.DAL
+@using swas.DAL.Models
+@using swas.BAL.Interfaces
+@using swas.BAL.DTO
+@inject IHttpContextAccessor _httpContextAccessors;
+@model CommonDTO
+@{
+
+    int tabshift = ViewBag.tabshift;
+    //bool submitcde = Model.Submitcde;
+    //int  psmid = SessionHelper.GetObjectFromJson<int>(_httpContextAccessors.HttpContext.Session, "psmid");
+    
+    //.SetObjectAsJson(HttpContext.Session, "psmid", ids);
+    //if (Model.ProjEdit != null )
+    //{
+    //    if (Model.ProjEdit.AttCnt == 12)
+    //    tabshift = 12;
+        
+    //}
+
+}
+
+
+
+
+<div class="container-fluid">
+
+
+    <div id="editFormContainer" style="display: block;">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                    <div class="newprojectheading">
+                        Edit Project
+                    </div>
+
+                    @using (Html.BeginForm("ProjDraftUndo", "Projects", FormMethod.Post, new { id = "msformx", enctype = "multipart/form-data" }))
+                    {
+
+                        <ul id="progressbar">
+                            <li class="active" id="BasicDetailsed"><strong> Project Basic Details</strong></li>
+                            <li id="AddlDetailsed"><strong>Project Additional Details</strong></li>
+                            <li id="Uploaded"><strong>Upload</strong></li>
+                            <li id="confirmed"><strong>Finish</strong></li>
+                        </ul>
+
+
+                        <fieldset id="5">
+
+
+                            <div class="form-card">
+
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title"></h2>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="steps">Step 1 - 4</div>
+                                    </div>
+                                </div>
+
+
+                                <!--First row start   EDIT BLOCK-->
+                                @*<div class="row d-flex justify-content-center">*@
+
+
+                                <table class="new-table">
+                                    <tr>
+                                        <td>
+                                            @Html.HiddenFor(model => model.ProjEdit.ProjId, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+
+                                            @Html.HiddenFor(model => model.ProjEdit.CurrentPslmId, new { htmlAttributes = new { @class = "form-control", required = "required"  } })
+
+                                            @Html.LabelFor(model => model.ProjEdit.ProjName, "Project Name")<font style="color:red;"><b>*</b></font>
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.ProjName, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.ProjName, "Project Name Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.InitiatedDate, "Initiation Date")<font style="color:red;"><b>*</b></font>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ProjEdit.InitiatedDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required" })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.InitiatedDate, "Initiation Date Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+
+                                        <td>
+
+                                            @Html.LabelFor(model => model.ProjEdit.CompletionDate, "Completion Date")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+
+                                           @*  @if (Model.ProjEdit != null)
+                                            {
+                                                <input asp-for="@Model.ProjEdit.CompletionDate" type="date" asp-format="{0:dd-MM-yyyy}" class="form-control" />
+                                            }
+                                            else
+                                            { *@
+                                                @Html.TextBoxFor(model => model.ProjEdit.CompletionDate,  "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", required = "required"})
+
+
+                                           @*  } *@
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.CompletionDate, "Completion Date Required", new { @class = "text-danger" })
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <!--next row-->
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.IsWhitelisted, "Is Whitelisted")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.IsWhitelisted, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.IsWhitelisted, "Whitelist Status Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.InitialRemark, "Initial Remark")<font style="color:red; "><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.InitialRemark, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.InitialRemark, "Initial Remark Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.StakeHolderId, "Stakeholder")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.ProjEdit.StakeHolderId,   ViewBag.stkhold as SelectList, new {id = "ddlUnitIdedit", @class = "form-control", required = "required" })
+
+                                            @* @Html.DropDownListFor(model => model.ProjEdit.StakeHolderId, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { id = "ddlUnitIdedit", @class = "form-control", required = "required" }) *@
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.StakeHolderId, "Stake Holder Required", new { @class = "text-danger" })
+                                            </div>
+
+
+
+                                            @Html.HiddenFor(model => model.ProjEdit.IsActive, new { htmlAttributes = new { @class = "form-control" } })
+
+                                            @Html.EditorFor(model => model.ProjEdit.DateTimeOfUpdate, new { htmlAttributes = new { @class = "hidden-date form-control", type = "date" } })
+
+
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.AimScope, "Aim and Scope")<font style="color:red; "><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(model => model.ProjEdit.AimScope,  new { @class = "form-control", required = "required",  oninput = "ValInData(this)"   })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.AimScope, "Aim and Scope Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.HQandITinfraReqd, "HQ and IT Infrastructure Required")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.HQandITinfraReqd, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.HQandITinfraReqd, "HQ and IT Infrastructure Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.HostTypeID)<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.ProjEdit.HostTypeID,  ViewBag.Hostedon as SelectList, new { id = "Hostedtype", @class = "form-control", required = "required" })
+
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.HostTypeID, "Hosted on  Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.ContentofSWApp)<font style="color:red; "><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(model => model.ProjEdit.ContentofSWApp,  new { @class = "form-control", required = "required", oninput = "ValInData(this)"  })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.ContentofSWApp, "Content of App  Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.ReqmtJustification)<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.TextAreaFor(model => model.ProjEdit.ReqmtJustification, new { @class = "form-control", required = "required", oninput = "ValInData(this)"  })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.ReqmtJustification, "Reqmt Justification  Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.UsabilityofProposedAppln)<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.UsabilityofProposedAppln, new { htmlAttributes = new { @class = "form-control", required = "required",onkeyup="ValInData(this)" } })
+                                            <div class="error-message" style="display: none;">
+                                                @Html.ValidationMessageFor(model => model.ProjEdit.UsabilityofProposedAppln, "Usability Proposed Appln Required", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                                    <tr>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.Apptype, "Appln Type")<font style="color:red;"><b>*</b></font>
+
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(model => model.ProjEdit.Apptype,  ViewBag.apptype as SelectList, new { id = "ddlAppTypeEdit", @class = "form-control", required = "required" })
+
+
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                </table>
+
+
+                            </div>
+
+                            <input type="button" name="next" class="next action-button" value="Next" />
+                        </fieldset>
+
+
+                        <fieldset id="6">
+
+
+                            <div class="form-card">
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title"></h2>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="steps">Step 2 - 4</div>
+                                    </div>
+                                </div>
+
+
+                                <table class="new-table">
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.DetlsofUserBase)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.DetlsofUserBase, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.EnvisagedCost)
+
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ProjEdit.EnvisagedCost, new { @class = "form-control", type = "number", id = "envisagedCostInput",onkeyup="ValInData(this)" })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.NWBandWidthReqmt)
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.NWBandWidthReqmt, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.MajTimeLines)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.MajTimeLines, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.TechStackProposed)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.TechStackProposed, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.DataSecurity_backup)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.DataSecurity_backup, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.TypeofSW)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.TypeofSW, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.BeingDevpInhouse)
+
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.BeingDevpInhouse, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+                                        <td>
+                                            @Html.LabelFor(model => model.ProjEdit.EndorsmentbyHeadof)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.ProjEdit.EndorsmentbyHeadof, new { htmlAttributes = new { @class = "form-control",onkeyup="ValInData(this)" } })
+
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+
+
+                            </div>
+                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                            @* <input type="submit" id="submitUpload" name="next" class="next action-button" value="Next" /> *@
+                            <input type="submit" id="submitUpload" name="next" class="next action-button" value="Next" onclick="submitFormAndExecuteFunction(event)" />
+
+
+                        </fieldset>
+
+                        <!--End Proeject Basic Details -->
+                        <!--Start Upload Form-->
+
+                        <fieldset id="uploaded">
+
+                            <div class="form-card">
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title"></h2>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="steps">Step 3 - 4</div>
+                                    </div>
+                                </div>
+
+                                @Html.Partial("_draftprojfwdupload", Model);
+                                
+                            </div>
+
+                            @*  <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                        *@
+                            <input type="button" id="finaluploaded" name="next" class="next action-button" value="Save & Fwd" />
+
+                        </fieldset>
+                        <fieldset id="8">
+                            <div class="form-card">
+
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title"></h2>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="steps">Step 4 - 4</div>
+                                    </div>
+                                </div>
+
+                                <br><br>
+                                <h2 class="purple-text text-center"><strong>Edited and Fwd !</strong></h2>
+                                <br> <br />
+
+
+                                <div class="purple-text text-center">
+                                    <center>
+                                        <a href="/Projects/ClearTempDataAndRedirect">
+                                            <input type="button" class="next action-button" value="Add More Projects" />
+                                        </a><br><br>
+                                        <a href="/Home/Index">
+                                            <input type="button" class="next action-button" value="Dashboard" />
+                                        </a>
+                                    </center>
+                                </div>
+                                <br><br>
+                                <div class="row justify-content-center">
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!--End Upload Form-->
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End This is Edit Project Layout Open and hide-->
+
+
+
+</div>
+
+
+<div class="modal fade" id="UnitAdd" tabindex="-1" aria-labelledby="UnitAddViewLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:650px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="UnitAddLabel">Add Unit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                @Html.Partial("_unitdetls", new UnitDtl { UnitName = "" })
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var fdsetid = '@tabshift';
+        
+        var current_fs, next_fs, previous_fs;
+        var opacity;
+        var steps = $("fieldset").length;
+        if (fdsetid == 3) {
+            var fdset = "fieldset#" + "upload";
+            editFormContainer.style.display = 'none';
+            addFormContainer.style.display = 'block';
+            $("#1").hide();
+            $("#AddlDetails").addClass("active");
+            $(fdset).show();
+
+        }
+        else if (fdsetid == 12) {
+            var fdset = "fieldset#" + "uploaded";
+            editFormContainer.style.display = 'block';
+
+            $("#5").hide();
+            $("#AddlDetailsed").addClass("active");
+            $(fdset).show();
+        }
+        else {
+            var fdset = "fieldset#" + fdsetid + "";
+
+        }
+
+
+
+        $("#1").hide();
+        $(fdset).show();
+
+        $(".editButton").click(function () {
+            $("#1").toggle();
+        });
+
+        current = $(fdset).index() + 1;
+        setProgressBar(current);
+
+       
+
+
+
+        $(".next").click(function () {
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+            if (fdsetid == 5) {
+                $("#BasicDetailsed").addClass("active");
+            }
+            else if (fdsetid == 6) {
+                $("#AddlDetailsed").addClass("active");
+            } else if (fdsetid == 7) {
+                $("#Uploaded").addClass("active");
+            } else if (fdsetid == 8) {
+                $("#confirmed").addClass("active");
+            }
+
+
+            // Validation
+            var isValid = true;
+            current_fs.find("input[required]").each(function () {
+                if ($(this).val() === "") {
+                    isValid = false;
+                    $(this).addClass("missing");
+                    $(this).next(".error-message").text("This field is required.").show();
+                } else {
+                    $(this).removeClass("missing");
+                    $(this).next(".error-message").hide();
+                }
+            });
+
+
+
+            var selectedValueX = $("#ProjEdit_Apptype").val();
+            var ProjEdit_HostTypeX = $("#ProjEdit_HostTypeID").val();
+
+            var ProjEdit_HostTypeXE = $("#Hostedtype").val();
+            var ddlAppTypeEditXE = $("#ddlAppTypeEdit").val();
+
+
+
+            if ((selectedValueX !== "0" && ProjEdit_HostTypeX !== "0") || (ProjEdit_HostTypeXE !== "0" && ddlAppTypeEditXE !== "0")) {
+                isValid = true;
+            }
+            else {
+                isValid = false;
+
+                Swal.fire({
+                    title: 'Something Went Wrong....!',
+                    text: 'App type or Hosting Type Not Selected .',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+
+                e.preventDefault();
+
+
+            }
+
+
+            if (!isValid) {
+                return;
+            }
+
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+            next_fs.show();
+
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now) {
+                    opacity = 1 - now;
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    next_fs.css({ 'opacity': opacity });
+                },
+                duration: 500,
+                complete: function () {
+                    current_fs.hide();
+                    next_fs.show();
+                }
+            });
+
+
+            setProgressBar(++current);
+        });
+
+        $(".previous").click(function () {
+            current_fs = $(this).parent();
+            previous_fs = $(this).parent().prev();
+
+            $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+            previous_fs.show();
+
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now) {
+                    opacity = 1 - now;
+
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    previous_fs.css({ 'opacity': opacity });
+                },
+                duration: 300,
+                complete: function () {
+                    current_fs.hide();
+                    previous_fs.show();
+                }
+            });
+
+            setProgressBar(--current);
+        });
+        function animateProgressBar() {
+            $("#upload-progress-bar").animate({ width: "100%" }, {
+                duration: 50,
+                complete: function () {
+
+                }
+            });
+        }
+
+        $("#submitUpload").click(function () {
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now) {
+                    opacity = 1 - now;
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    next_fs.css({ 'opacity': opacity });
+                },
+                duration: 500,
+                complete: function () {
+                    current_fs.hide();
+                    next_fs.show();
+                }
+            });
+
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+            setProgressBar(++current);
+        });
+
+
+
+        $("#finaluploaded").click(function () {
+
+            var fdset = "fieldset#" + "9";
+            editFormContainer.style.display = 'block';
+            addFormContainer.style.display = 'none';
+            $("fieldset#6").hide();
+            $("fieldset#7").hide();
+            $("fieldset#uploaded").hide();
+
+            $(fdset).show();
+
+            animateProgressBar();
+
+
+        });
+
+        function setProgressBar(curStep) {
+            var percent = parseFloat(100 / steps) * curStep;
+            percent = percent.toFixed();
+            $(".progress-bar")
+                .css("width", percent + "%")
+        }
+
+
+        $(".submit").click(function () {
+            return false;
+        });
+    });
+
+</script>
+
+
+<br />
+
+<script>
+    @if (TempData.ContainsKey("SuccessMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Saved & Ready for Next Step',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+
+
+        </text>
+        TempData.Remove("SuccessMessage");
+    }
+</script>
+
+
+
+<script>
+    @if (TempData.ContainsKey("FailureMessage"))
+    {
+        <text>
+            Swal.fire({
+                title: 'Something Went Wrong....!',
+                text: '@TempData["FailureMessage"]',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </text>
+        TempData.Remove("FailureMessage");
+
+    }
+</script>
+
+@* 
+<script>
+
+
+    $(document).ready(function () {
+
+
+
+        $('#CurrentPslmId').val('0');
+        $('#IsActive').val('True');
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        var day = String(today.getDate()).padStart(2, '0');
+        var defaultCompletionDate = year + '-' + month + '-' + day;
+        $('#DateTimeOfUpdate').val(defaultCompletionDate);
+        $('#InitialRemark').val('New Project');
+        $('#InitiatedDate').val(defaultCompletionDate);
+        $('#IsWhitelisted').val('No');
+
+
+    });
+
+</script>
+ *@
+<script>
+
+    $(document).ready(function () {
+        // Wait for the document to be ready
+
+        function submitFormnew() {
+
+
+            var curPSMid = 0;
+
+            if (@(Model.ProjMov != null ? "true" : "false")) {
+                curPSMid = @Model.ProjMov.PsmId ?? 0;
+
+            }
+
+
+
+            $.ajax({
+
+                type: 'POST',
+                url: 'FwdProjConfirm',
+                data: { "projid": curPSMid },
+                datatype: "json",
+
+                success: function (response) {
+                    window.location.href = '/Projects/ProjDetails';
+                    console.log('Request successful', response);
+                },
+                error: function (error) {
+                    console.error('Error occurred:', error);
+                }
+            });
+        }
+
+        
+
+        // Any other code that you need to run after the document is ready
+    });
+
+
+
+</script>
+
+
+<style>
+    .hidden-date {
+        display: none;
+    }
+
+    .validation-error {
+        display: none;
+    }
+</style>
+<style>
+    /* Reset all styles for the div and its descendants */
+    .strong-div, .strong-div * {
+        all: initial;
+    }
+
+    /* Apply custom styles to the div */
+    .strong-div {
+        border: 2px solid black;
+        padding: 10px;
+        background-color: lightgray;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+        $("#next").click(function (e) {
+            var selectedValuess = $("#ProjEdit_Apptype").val();
+            var ProjEdit_HostTypess = $("#ProjEdit_HostTypeID").val();
+
+
+            if (selectedValuess === "0" || ProjEdit_HostTypess === "0") {
+                Swal.fire({
+                    title: 'Something Went Wrong....!',
+                    text: 'App type or Hosting Type Not Selected .',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+
+                e.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+
+</script>
