@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paw-app
+  namespace: paw-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paw-app
+  template:
+    metadata:
+      labels:
+        app: paw-app
+    spec:
+      containers:
+        - name: paw-app
+          image: 172.23.235.11:8082/docker-private-repository/paw:latest
+          ports:
+            - containerPort: 7152
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://+:7152"
+      imagePullSecrets:
+        - name: nexus-docker-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: paw-app-service
+  namespace: paw-app
+spec:
+  selector:
+    app: paw-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 7152
+  type: NodePort
