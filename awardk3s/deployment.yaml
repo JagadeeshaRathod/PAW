@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: award-adminpanel
+  namespace: default                   # <--- add this line
+  labels:
+    app: award-adminpanel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: award-adminpanel
+  template:
+    metadata:
+      labels:
+        app: award-adminpanel
+    spec:
+      imagePullSecrets:
+        - name: nexus-registry-secret
+      containers:
+        - name: award-adminpanel
+          image: 192.168.11.21:8085/repository/docker_registry/award-adminpanel:26
+          ports:
+            - containerPort: 5173
+            - containerPort: 8385
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: award-adminpanel-service
+  namespace: default                   # <--- add this line
+spec:
+  type: NodePort
+  selector:
+    app: award-adminpanel
+  ports:
+    - name: frontend
+      port: 5173
+      targetPort: 5173
+      nodePort: 30173
+    - name: backend
+      port: 8385
+      targetPort: 8385
+      nodePort: 30385
